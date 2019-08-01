@@ -1,4 +1,6 @@
 ﻿namespace TrafficManager.API.Manager {
+    using Traffic.Data;
+
     public interface ISpeedLimitManager {
         // TODO define me!
         /// <summary>
@@ -9,9 +11,9 @@
         /// <param name="laneId">lane id</param>
         /// <param name="laneInfo">lane info</param>
         /// <returns>speed limit in game units</returns>
-        float GetLockFreeGameSpeedLimit(ushort segmentId,
-                                        byte laneIndex,
-                                        uint laneId,
-                                        NetInfo.Lane laneInfo);
+        SpeedValue GetLockFreeGameSpeedLimit(ushort segmentId,
+                                             byte laneIndex,
+                                             uint laneId,
+                                             NetInfo.Lane laneInfo);
     }
 }

@@ -1011,8 +1011,8 @@
             int prevRelSimilarLaneIndex = 0;
 
             // NON-STOCK CODE START
-            float prevMaxSpeed = 1f;
-            float prevLaneSpeed = 1f;
+            SpeedValue prevMaxSpeed = new SpeedValue(1f);
+            SpeedValue prevLaneSpeed = new SpeedValue(1f);
 
             // NON-STOCK CODE END
             NetInfo prevSegmentInfo = prevSegment.Info;
@@ -2091,8 +2091,8 @@
             BufferItem item,
             ref NetSegment prevSegment,
             ref NetLane prevLane,
-            float prevMaxSpeed,
-            float prevLaneSpeed,
+            SpeedValue prevMaxSpeed,
+            SpeedValue prevLaneSpeed,
             ushort nextNodeId,
             bool targetDisabled,
             ushort nextSegmentId,
@@ -2175,8 +2175,9 @@
             float offsetLength = Mathf.Abs(connectOffset - item.Position.m_offset) *
                                BYTE_TO_FLOAT_OFFSET_CONVERSION_FACTOR * prevLength;
             float methodDistance = item.MethodDistance + offsetLength;
-            float comparisonValue = item.ComparisonValue + offsetLength / (prevLaneSpeed * maxLength_);
-            float duration = item.Duration + offsetLength / prevMaxSpeed;
+            float comparisonValue = item.ComparisonValue +
+                                    offsetLength / (prevLaneSpeed.GameUnits * maxLength_);
+            float duration = item.Duration + offsetLength / prevMaxSpeed.GameUnits;
             Vector3 b = prevLane.CalculatePosition(
                 connectOffset * BYTE_TO_FLOAT_OFFSET_CONVERSION_FACTOR);
 
@@ -2274,7 +2275,7 @@
 
 #if SPEEDLIMITS
             // NON-STOCK CODE START
-            float nextMaxSpeed = speedLimitManager.GetLockFreeGameSpeedLimit(
+            SpeedValue nextMaxSpeed = speedLimitManager.GetLockFreeGameSpeedLimit(
                 nextSegmentId,
                 (byte)nextLaneIndex,
                 nextLaneId,
@@ -2287,8 +2288,11 @@
 
             nextItem.ComparisonValue = comparisonValue +
                                        (distance /
-                                       ((prevMaxSpeed + nextMaxSpeed) * 0.5f * maxLength_));
-            nextItem.Duration = duration + (distance / ((prevMaxSpeed + nextMaxSpeed) * 0.5f));
+                                        ((prevMaxSpeed.GameUnits + nextMaxSpeed.GameUnits) * 0.5f *
+                                         maxLength_));
+            nextItem.Duration = duration +
+                                (distance / ((prevMaxSpeed.GameUnits + nextMaxSpeed.GameUnits) *
+                                             0.5f));
 
             nextItem.Direction =
                 (nextSegment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None
@@ -2317,7 +2321,7 @@
                     return;
                 }
 
-                float nextSpeed = CalculateLaneSpeed(
+                SpeedValue nextSpeed = CalculateLaneSpeed(
                     nextMaxSpeed,
                     startOffsetA_,
                     nextItem.Position.m_offset,
@@ -2327,8 +2331,8 @@
                                  BYTE_TO_FLOAT_OFFSET_CONVERSION_FACTOR;
 
                 nextItem.ComparisonValue +=
-                    nextOffset * nextSegment.m_averageLength / (nextSpeed * maxLength_);
-                nextItem.Duration += nextOffset * nextSegment.m_averageLength / nextSpeed;
+                    nextOffset * nextSegment.m_averageLength / (nextSpeed.GameUnits * maxLength_);
+                nextItem.Duration += nextOffset * nextSegment.m_averageLength / nextSpeed.GameUnits;
             }
 
             if (nextLaneId == startLaneB_) {
@@ -2353,7 +2357,7 @@
                     return;
                 }
 
-                float nextSpeed = CalculateLaneSpeed(
+                SpeedValue nextSpeed = CalculateLaneSpeed(
                     nextMaxSpeed,
                     startOffsetB_,
                     nextItem.Position.m_offset,
@@ -2363,8 +2367,8 @@
                                  BYTE_TO_FLOAT_OFFSET_CONVERSION_FACTOR;
 
                 nextItem.ComparisonValue +=
-                    nextOffset * nextSegment.m_averageLength / (nextSpeed * maxLength_);
-                nextItem.Duration += nextOffset * nextSegment.m_averageLength / nextSpeed;
+                    nextOffset * nextSegment.m_averageLength / (nextSpeed.GameUnits * maxLength_);
+                nextItem.Duration += nextOffset * nextSegment.m_averageLength / nextSpeed.GameUnits;
             }
 
             nextItem.LaneId = nextLaneId;
@@ -2407,8 +2411,8 @@
             BufferItem item,
             ref NetSegment prevSegment,
             ref NetLane prevLane,
-            float prevMaxSpeed,
-            float prevLaneSpeed,
+            SpeedValue prevMaxSpeed,
+            SpeedValue prevLaneSpeed,
             ushort nextNodeId,
             ref NetNode nextNode,
             bool isMiddle,
@@ -2458,8 +2462,8 @@
             BufferItem item,
             ref NetSegment prevSegment,
             ref NetLane prevLane,
-            float prevMaxSpeed,
-            float prevLaneSpeed,
+            SpeedValue prevMaxSpeed,
+            SpeedValue prevLaneSpeed,
 #if ADVANCEDAI && ROUTING
             bool enableAdvancedAI,
             float laneChangingCost,
@@ -2576,7 +2580,7 @@
             float offsetLength = Mathf.Abs(connectOffset - item.Position.m_offset) *
                                BYTE_TO_FLOAT_OFFSET_CONVERSION_FACTOR * prevLength;
             float methodDistance = item.MethodDistance + offsetLength;
-            float duration = item.Duration + offsetLength / prevMaxSpeed;
+            float duration = item.Duration + offsetLength / prevMaxSpeed.GameUnits;
 
             if (!stablePath_) {
 #if ADVANCEDAI && ROUTING
@@ -2653,7 +2657,7 @@
             }
 #endif
 
-            float baseLength = offsetLength / (prevLaneSpeed * maxLength_); // NON-STOCK CODE
+            float baseLength = offsetLength / (prevLaneSpeed.GameUnits * maxLength_); // NON-STOCK CODE
             float comparisonValue = item.ComparisonValue; // NON-STOCK CODE
 #if ROUTING
             if (isLogEnabled) {
@@ -2808,7 +2812,7 @@
                             transitionCost *= 10f;
                         }
 
-                        float nextMaxSpeed;
+                        SpeedValue nextMaxSpeed;
 #if SPEEDLIMITS
                         // NON-STOCK CODE START
                         nextMaxSpeed = speedLimitManager.GetLockFreeGameSpeedLimit(
@@ -2822,7 +2826,8 @@
 #endif
 
                         float transitionCostOverMeanMaxSpeed =
-                            transitionCost / ((prevMaxSpeed + nextMaxSpeed) * 0.5f * maxLength_);
+                            transitionCost / ((prevMaxSpeed.GameUnits + nextMaxSpeed.GameUnits) *
+                                              0.5f * maxLength_);
 #if ADVANCEDAI && ROUTING
                         if (!enableAdvancedAI) {
 #endif
@@ -2924,7 +2929,9 @@
 
                         // NON-STOCK CODE END
                         nextItem.ComparisonValue = comparisonValue + transitionCostOverMeanMaxSpeed;
-                        nextItem.Duration = duration + transitionCost / ((prevMaxSpeed + nextMaxSpeed) * 0.5f);
+                        nextItem.Duration = duration + transitionCost /
+                                            ((prevMaxSpeed.GameUnits + nextMaxSpeed.GameUnits) *
+                                             0.5f);
                         nextItem.Direction = nextDir;
 
                         if (nextLaneId == startLaneA_) {
@@ -2952,7 +2959,7 @@
                                 continue;
                             }
 
-                            float nextLaneSpeed = CalculateLaneSpeed(
+                            SpeedValue nextLaneSpeed = CalculateLaneSpeed(
                                 nextMaxSpeed,
                                 startOffsetA_,
                                 nextItem.Position.m_offset,
@@ -2963,9 +2970,9 @@
 
                             nextItem.ComparisonValue +=
                                 nextOffset * nextSegment.m_averageLength /
-                                (nextLaneSpeed * maxLength_);
+                                (nextLaneSpeed.GameUnits * maxLength_);
                             nextItem.Duration +=
-                                nextOffset * nextSegment.m_averageLength / nextLaneSpeed;
+                                nextOffset * nextSegment.m_averageLength / nextLaneSpeed.GameUnits;
                         }
 
                         if (nextLaneId == startLaneB_) {
@@ -2993,7 +3000,7 @@
                                 continue;
                             }
 
-                            float nextLaneSpeed = CalculateLaneSpeed(
+                            SpeedValue nextLaneSpeed = CalculateLaneSpeed(
                                 nextMaxSpeed,
                                 startOffsetB_,
                                 nextItem.Position.m_offset,
@@ -3004,9 +3011,9 @@
 
                             nextItem.ComparisonValue +=
                                 nextOffset * nextSegment.m_averageLength /
-                                (nextLaneSpeed * maxLength_);
+                                (nextLaneSpeed.GameUnits * maxLength_);
                             nextItem.Duration +=
-                                nextOffset * nextSegment.m_averageLength / nextLaneSpeed;
+                                nextOffset * nextSegment.m_averageLength / nextLaneSpeed.GameUnits;
                         }
 
                         if (!ignoreBlocked_ &&
@@ -3094,11 +3101,13 @@
 #endif
                                 int firstTarget = netManager.m_lanes.m_buffer[nextLaneId].m_firstTarget;
                                 int lastTarget = netManager.m_lanes.m_buffer[nextLaneId].m_lastTarget;
+
                                 if (laneIndexFromInner < firstTarget ||
                                     laneIndexFromInner >= lastTarget) {
                                     nextItem.ComparisonValue +=
                                         Mathf.Max(1f, (transitionCost * 3f) - 3f) /
-                                        ((prevMaxSpeed + nextMaxSpeed) * 0.5f * maxLength_);
+                                        ((prevMaxSpeed.GameUnits + nextMaxSpeed.GameUnits) * 0.5f *
+                                         maxLength_);
                                 }
 
                                 if (isLogEnabled) {
@@ -3120,7 +3129,8 @@
                             if (!transportVehicle_ && nextLaneInfo.m_laneType ==
                                 NetInfo.LaneType.TransportVehicle) {
                                 nextItem.ComparisonValue +=
-                                    20f / ((prevMaxSpeed + nextMaxSpeed) * 0.5f * maxLength_);
+                                    20f / ((prevMaxSpeed.GameUnits + nextMaxSpeed.GameUnits) *
+                                           0.5f * maxLength_);
                             }
                         }
 
@@ -3190,8 +3200,8 @@
             BufferItem item,
             ref NetSegment prevSegment,
             ref NetLane prevLane,
-            float prevMaxSpeed,
-            float prevLaneSpeed,
+            SpeedValue prevMaxSpeed,
+            SpeedValue prevLaneSpeed,
             ushort nextSegmentId,
             ref NetSegment nextSegment,
             ushort nextNodeId,
@@ -3341,8 +3351,8 @@
                                BYTE_TO_FLOAT_OFFSET_CONVERSION_FACTOR * prevLength;
             float methodDistance = item.MethodDistance + offsetLength;
             float comparisonValue =
-                item.ComparisonValue + (offsetLength / (prevLaneSpeed * maxLength_));
-            float duration = item.Duration + (offsetLength / prevMaxSpeed);
+                item.ComparisonValue + (offsetLength / (prevLaneSpeed.GameUnits * maxLength_));
+            float duration = item.Duration + (offsetLength / prevMaxSpeed.GameUnits);
 
             if (!ignoreCost_) {
                 int ticketCost = prevLane.m_ticketCost;
@@ -3409,17 +3419,23 @@
 
 #if SPEEDLIMITS
             // NON-STOCK CODE START
-            float nextMaxSpeed = speedLimitManager.GetLockFreeGameSpeedLimit(nextSegmentId, (byte)nextLaneIndex, nextLaneId, nextLaneInfo);
+            SpeedValue nextMaxSpeed = speedLimitManager.GetLockFreeGameSpeedLimit(
+                nextSegmentId,
+                (byte)nextLaneIndex,
+                nextLaneId,
+                nextLaneInfo);
 
             // NON-STOCK CODE END
 #else
             var nextMaxSpeed = nextLaneInfo.m_speedLimit;
 #endif
 
-            nextItem.ComparisonValue = comparisonValue +
-                                       distance /
-                                       ((prevMaxSpeed + nextMaxSpeed) * 0.25f * maxLength_);
-            nextItem.Duration = duration + (distance / ((prevMaxSpeed + nextMaxSpeed) * 0.5f));
+            nextItem.ComparisonValue = comparisonValue + distance /
+                                       ((prevMaxSpeed.GameUnits + nextMaxSpeed.GameUnits) * 0.25f *
+                                        maxLength_);
+            nextItem.Duration = duration +
+                                (distance / ((prevMaxSpeed.GameUnits + nextMaxSpeed.GameUnits) *
+                                             0.5f));
 
             nextItem.Direction =
                 (nextSegment.m_flags & NetSegment.Flags.Invert) != NetSegment.Flags.None
@@ -3447,7 +3463,7 @@
                     return;
                 }
 
-                float nextSpeed = CalculateLaneSpeed(
+                SpeedValue nextSpeed = CalculateLaneSpeed(
                     nextMaxSpeed,
                     startOffsetA_,
                     nextItem.Position.m_offset,
@@ -3457,8 +3473,8 @@
                                  BYTE_TO_FLOAT_OFFSET_CONVERSION_FACTOR;
 
                 nextItem.ComparisonValue +=
-                    nextOffset * nextSegment.m_averageLength / (nextSpeed * maxLength_);
-                nextItem.Duration += nextOffset * nextSegment.m_averageLength / nextSpeed;
+                    nextOffset * nextSegment.m_averageLength / (nextSpeed.GameUnits * maxLength_);
+                nextItem.Duration += nextOffset * nextSegment.m_averageLength / nextSpeed.GameUnits;
             }
 
             if (nextLaneId == startLaneB_) {
@@ -3481,7 +3497,7 @@
                     return;
                 }
 
-                float nextSpeed = CalculateLaneSpeed(
+                SpeedValue nextSpeed = CalculateLaneSpeed(
                     nextMaxSpeed,
                     startOffsetB_,
                     nextItem.Position.m_offset,
@@ -3491,8 +3507,8 @@
                                  BYTE_TO_FLOAT_OFFSET_CONVERSION_FACTOR;
 
                 nextItem.ComparisonValue +=
-                    nextOffset * nextSegment.m_averageLength / (nextSpeed * maxLength_);
-                nextItem.Duration += nextOffset * nextSegment.m_averageLength / nextSpeed;
+                    nextOffset * nextSegment.m_averageLength / (nextSpeed.GameUnits * maxLength_);
+                nextItem.Duration += nextOffset * nextSegment.m_averageLength / nextSpeed.GameUnits;
             }
 
             nextItem.LaneId = nextLaneId;
@@ -3535,8 +3551,8 @@
             BufferItem item,
             ref NetSegment prevSegment,
             ref NetLane prevLane,
-            float prevMaxSpeed,
-            float prevLaneSpeed,
+            SpeedValue prevMaxSpeed,
+            SpeedValue prevLaneSpeed,
 #if ADVANCEDAI
             bool enableAdvancedAI,
             float laneChangingCost,
@@ -3999,11 +4015,11 @@
             laneTarget_[item.LaneId] = target;
         }
 
-        private float CalculateLaneSpeed(float maxSpeed,
-                                         byte startOffset,
-                                         byte endOffset,
-                                         ref NetSegment segment,
-                                         NetInfo.Lane laneInfo) {
+        private SpeedValue CalculateLaneSpeed(SpeedValue maxSpeed,
+                                              byte startOffset,
+                                              byte endOffset,
+                                              ref NetSegment segment,
+                                              NetInfo.Lane laneInfo) {
             NetInfo.Direction direction = (segment.m_flags & NetSegment.Flags.Invert) == NetSegment.Flags.None
                                 ? laneInfo.m_finalDirection
                                 : NetInfo.InvertDirection(laneInfo.m_finalDirection);
@@ -4013,14 +4029,17 @@
             }
 
             if (endOffset > startOffset && direction == NetInfo.Direction.AvoidForward) {
-                return maxSpeed * 0.1f;
+                // Plus 10% from max speed
+                return new SpeedValue(maxSpeed.GameUnits * 0.1f);
             }
 
             if (endOffset < startOffset && direction == NetInfo.Direction.AvoidBackward) {
-                return maxSpeed * 0.1f;
+                // Plus 10% from max speed
+                return new SpeedValue(maxSpeed.GameUnits * 0.1f);
             }
 
-            return maxSpeed * 0.2f;
+            // Plus 20% from max speed
+            return new SpeedValue(maxSpeed.GameUnits * 0.2f);
         }
 
         private void GetLaneDirection(PathUnit.Position pathPos,

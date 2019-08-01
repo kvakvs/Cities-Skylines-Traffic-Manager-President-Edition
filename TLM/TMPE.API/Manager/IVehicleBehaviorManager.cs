@@ -139,10 +139,10 @@
         /// <param name="extVehicle">ext. vehicle</param>
         /// <param name="vehicleInfo">vehicle info</param>
         /// <returns>modified target velocity</returns>
-        float ApplyRealisticSpeeds(float speed,
-                                   ushort vehicleId,
-                                   ref ExtVehicle extVehicle,
-                                   VehicleInfo vehicleInfo);
+        VelocityValue ApplyRealisticSpeeds(VelocityValue speed,
+                                           ushort vehicleId,
+                                           ref ExtVehicle extVehicle,
+                                           VehicleInfo vehicleInfo);
 
         /// <summary>
         /// Calculates the target velocity for the given vehicle.
@@ -156,13 +156,13 @@
         /// <param name="maxSpeed">vehicle target velocity</param>
         /// <param name="emergency">specifies if the segment is currently used by emergency vehicles</param>
         /// <returns>modified target velocity</returns>
-        float CalcMaxSpeed(ushort vehicleId,
-                           ref ExtVehicle extVehicle,
-                           VehicleInfo vehicleInfo,
-                           PathUnit.Position position,
-                           ref NetSegment segment,
-                           Vector3 pos,
-                           float maxSpeed,
-                           bool emergency);
+        VelocityValue CalcMaxSpeed(ushort vehicleId,
+                                   ref ExtVehicle extVehicle,
+                                   VehicleInfo vehicleInfo,
+                                   PathUnit.Position position,
+                                   ref NetSegment segment,
+                                   Vector3 pos,
+                                   VelocityValue maxSpeed,
+                                   bool emergency);
     }
 }

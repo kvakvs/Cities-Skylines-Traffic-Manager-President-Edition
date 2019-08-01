@@ -2,6 +2,7 @@
 namespace TrafficManager {
     using System;
     using System.Collections.Generic;
+    using API.Traffic.Data;
     using JetBrains.Annotations;
     using State;
     using Traffic;
@@ -17,6 +18,11 @@ namespace TrafficManager {
             /// Unit: km/h.
             /// </summary>
             public ushort speedLimit;
+
+            /// <summary>
+            /// Retrieves speedLimit field converted from km/h to game units
+            /// </summary>
+            public SpeedValue AsGameUnits => SpeedValue.FromKmph(speedLimit);
 
             public LaneSpeedLimit(uint laneId, float speedLimit) {
                 this.laneId = laneId;

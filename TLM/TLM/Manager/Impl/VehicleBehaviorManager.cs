@@ -14,30 +14,33 @@
     using UnityEngine;
     using Util;
 
-    public class VehicleBehaviorManager : AbstractCustomManager, IVehicleBehaviorManager {
-        public const float MIN_SPEED = 8f * 0.2f; // 10 km/h
+    public class VehicleBehaviorManager
+        : AbstractCustomManager,
+        IVehicleBehaviorManager
+    {
+        public const float MIN_SPEED = 10f * VelocityValue.KMPH_TO_VELOCITY; // 10 km/h
 
         [UsedImplicitly]
-        public const float MAX_EVASION_SPEED = 8f * 1f; // 50 km/h
+        public const float MAX_EVASION_SPEED = 50f * VelocityValue.KMPH_TO_VELOCITY; // 50 km/h
 
         [UsedImplicitly]
-        public const float EVASION_SPEED = 8f * 0.2f; // 10 km/h
+        public const float EVASION_SPEED = 10f * VelocityValue.KMPH_TO_VELOCITY; // 10 km/h
 
-        public const float ICY_ROADS_MIN_SPEED = 8f * 0.4f; // 20 km/h
+        public const float ICY_ROADS_MIN_SPEED = 20f * VelocityValue.KMPH_TO_VELOCITY; // 20 km/h
 
-        public const float ICY_ROADS_STUDDED_MIN_SPEED = 8f * 0.8f; // 40 km/h
+        public const float ICY_ROADS_STUDDED_MIN_SPEED = 40f * VelocityValue.KMPH_TO_VELOCITY; // 40 km/h
 
-        public const float WET_ROADS_MAX_SPEED = 8f * 2f; // 100 km/h
+        public const float WET_ROADS_MAX_SPEED = 100f * VelocityValue.KMPH_TO_VELOCITY; // 100 km/h
 
         public const float WET_ROADS_FACTOR = 0.75f;
 
-        public const float BROKEN_ROADS_MAX_SPEED = 8f * 1.6f; // 80 km/h
+        public const float BROKEN_ROADS_MAX_SPEED = 80f * VelocityValue.KMPH_TO_VELOCITY; // 80 km/h
 
         public const float BROKEN_ROADS_FACTOR = 0.75f;
 
         public const VehicleInfo.VehicleType RECKLESS_VEHICLE_TYPES = VehicleInfo.VehicleType.Car;
 
-        private static PathUnit.Position DUMMY_POS = default;
+        private static PathUnit.Position DUMMY_POS;
 
         private static readonly uint[] POW2MASKS = {
             1u << 0, 1u << 1, 1u << 2, 1u << 3,
@@ -1649,15 +1652,14 @@
                    || (vehicleData.m_flags & Vehicle.Flags.Parking) != 0;
         }
 
-        public float CalcMaxSpeed(ushort vehicleId,
-                                  ref ExtVehicle extVehicle,
-                                  VehicleInfo vehicleInfo,
-                                  PathUnit.Position position,
-                                  ref NetSegment segment,
-                                  Vector3 pos,
-                                  float maxSpeed,
-                                  bool emergency)
-        {
+        public VelocityValue CalcMaxSpeed(ushort vehicleId,
+                                          ref ExtVehicle extVehicle,
+                                          VehicleInfo vehicleInfo,
+                                          PathUnit.Position position,
+                                          ref NetSegment segment,
+                                          Vector3 pos,
+                                          VelocityValue maxSpeed,
+                                          bool emergency) {
             if (Singleton<NetManager>.instance.m_treatWetAsSnow) {
                 DistrictManager districtManager = Singleton<DistrictManager>.instance;
                 byte district = districtManager.GetDistrict(pos);
@@ -1665,74 +1667,88 @@
                     districtManager.m_districts.m_buffer[district].m_cityPlanningPolicies;
 
                 if ((cityPlanningPolicies & DistrictPolicies.CityPlanning.StuddedTires) !=
-                    DistrictPolicies.CityPlanning.None)
-                {
+                    DistrictPolicies.CityPlanning.None) {
                     if (Options.strongerRoadConditionEffects) {
-                        if (maxSpeed > ICY_ROADS_STUDDED_MIN_SPEED)
-                        {
-                            maxSpeed = ICY_ROADS_STUDDED_MIN_SPEED + ((255 - segment.m_wetness) *
-                                       0.0039215686f * (maxSpeed - ICY_ROADS_STUDDED_MIN_SPEED));
+                        if (maxSpeed.Velocity > ICY_ROADS_STUDDED_MIN_SPEED) {
+                            maxSpeed.Velocity =
+                                ICY_ROADS_STUDDED_MIN_SPEED +
+                                ((255 - segment.m_wetness) * (1f / 255f) *
+                                 (maxSpeed.Velocity - ICY_ROADS_STUDDED_MIN_SPEED));
                         }
                     } else {
-                        maxSpeed *= 1f - (segment.m_wetness * (1f / 1700f)); // vanilla: -15% .. ±0%
+                        // vanilla: -15% .. ±0%
+                        maxSpeed.Velocity *= 1f - (segment.m_wetness * (1f / 1700f));
                     }
 
                     districtManager.m_districts.m_buffer[district].m_cityPlanningPoliciesEffect
                         |= DistrictPolicies.CityPlanning.StuddedTires;
                 } else {
                     if (Options.strongerRoadConditionEffects) {
-                        if (maxSpeed > ICY_ROADS_MIN_SPEED) {
-                            maxSpeed = ICY_ROADS_MIN_SPEED + ((255 - segment.m_wetness) *
-                                       0.0039215686f * (maxSpeed - ICY_ROADS_MIN_SPEED));
+                        if (maxSpeed.Velocity > ICY_ROADS_MIN_SPEED) {
+                            maxSpeed.Velocity = ICY_ROADS_MIN_SPEED +
+                                                ((255 - segment.m_wetness) * (1f / 255f) *
+                                                 (maxSpeed.Velocity - ICY_ROADS_MIN_SPEED));
                         }
                     } else {
-                        maxSpeed *= 1f - (segment.m_wetness * (1f / 850f)); // vanilla: -30% .. ±0%
+                        // vanilla: -30% .. ±0%
+                        maxSpeed.Velocity *= 1f - (segment.m_wetness * (1f / 850f));
                     }
                 }
             } else {
                 if (Options.strongerRoadConditionEffects) {
-                    float minSpeed = Math.Min(maxSpeed * WET_ROADS_FACTOR, WET_ROADS_MAX_SPEED); // custom: -25% .. 0
-                    if (maxSpeed > minSpeed) {
-                        maxSpeed = minSpeed + ((255 - segment.m_wetness) * 0.0039215686f *
-                                   (maxSpeed - minSpeed));
+                    // custom: -25% .. 0
+                    float minSpeed = Math.Min(
+                        maxSpeed.Velocity * WET_ROADS_FACTOR,
+                        WET_ROADS_MAX_SPEED);
+
+                    if (maxSpeed.Velocity > minSpeed) {
+                        maxSpeed.Velocity =
+                            minSpeed + ((255 - segment.m_wetness) * (1f / 255f) *
+                                        (maxSpeed.Velocity - minSpeed));
                     }
                 } else {
-                    maxSpeed *= 1f - (segment.m_wetness * (1f / 1700f)); // vanilla: -15% .. ±0%
+                    // vanilla: -15% .. ±0%
+                    maxSpeed.Velocity *= 1f - (segment.m_wetness * (1f / 1700f));
                 }
             }
 
             if (Options.strongerRoadConditionEffects) {
-                float minSpeed = Math.Min(maxSpeed * BROKEN_ROADS_FACTOR, BROKEN_ROADS_MAX_SPEED);
-                if (maxSpeed > minSpeed) {
-                    maxSpeed = minSpeed + (segment.m_condition * (1f / 255f) * (maxSpeed - minSpeed));
+                float minSpeed = Math.Min(
+                    maxSpeed.Velocity * BROKEN_ROADS_FACTOR,
+                    BROKEN_ROADS_MAX_SPEED);
+                if (maxSpeed.Velocity > minSpeed) {
+                    maxSpeed.Velocity = minSpeed +
+                                        (segment.m_condition * (1f / 255f) *
+                                         (maxSpeed.Velocity - minSpeed));
                 }
             } else {
-                maxSpeed *= 1f + (segment.m_condition * (1f / 1700f)); // vanilla: ±0% .. +15 %
+                // vanilla: ±0% .. +15%
+                maxSpeed.Velocity *= 1f + (segment.m_condition * (1f / 1700f));
             }
 
             maxSpeed = ApplyRealisticSpeeds(maxSpeed, vehicleId, ref extVehicle, vehicleInfo);
-            maxSpeed = Math.Max(MIN_SPEED, maxSpeed); // at least 10 km/h
+            maxSpeed.Velocity = Math.Max(MIN_SPEED, maxSpeed.Velocity); // at least 10 km/h
 
             return maxSpeed;
         }
 
-        public float ApplyRealisticSpeeds(float speed,
-                                          ushort vehicleId,
-                                          ref ExtVehicle extVehicle,
-                                          VehicleInfo vehicleInfo) {
+        public VelocityValue ApplyRealisticSpeeds(VelocityValue speed,
+                                                  ushort vehicleId,
+                                                  ref ExtVehicle extVehicle,
+                                                  VehicleInfo vehicleInfo) {
             if (Options.individualDrivingStyle) {
                 float vehicleRand =
                     0.01f * Constants.ManagerFactory.ExtVehicleManager.GetTimedVehicleRand(
                         vehicleId);
                 if (vehicleInfo.m_isLargeVehicle) {
-                    speed *= 0.75f + (vehicleRand * 0.25f); // a little variance, 0.75 .. 1
+                    speed.Velocity *= 0.75f + (vehicleRand * 0.25f); // a little variance, 0.75 .. 1
                 } else if (extVehicle.recklessDriver) {
-                    speed *= 1.3f + (vehicleRand * 1.7f); // woohooo, 1.3 .. 3
+                    speed.Velocity *= 1.3f + (vehicleRand * 1.7f); // woohooo, 1.3 .. 3
                 } else {
-                    speed *= 0.8f + (vehicleRand * 0.5f); // a little variance, 0.8 .. 1.3
+                    speed.Velocity *= 0.8f + (vehicleRand * 0.5f); // a little variance, 0.8 .. 1.3
                 }
             } else if (extVehicle.recklessDriver) {
-                speed *= 1.5f;
+                speed.Velocity *= 1.5f;
             }
 
             return speed;
@@ -1859,16 +1875,20 @@
                 }
 
                 VehicleInfo vehicleInfo = vehicleData.Info;
-                float vehicleMaxSpeed = vehicleInfo.m_maxSpeed / 8f;
-                float vehicleCurSpeed = vehicleData.GetLastFrameVelocity().magnitude / 8f;
+                SpeedValue vehicleMaxSpeed = new SpeedValue(vehicleInfo.m_maxSpeed / 8f);
+                SpeedValue vehicleCurSpeed = new SpeedValue(vehicleData.GetLastFrameVelocity().magnitude / 8f);
 
-                float bestStayMeanSpeed = 0f;
-                float bestStaySpeedDiff = float.PositiveInfinity; // best speed difference on next continuous lane
+                SpeedValue bestStayMeanSpeed = new SpeedValue(0f);
+
+                // best speed difference on next continuous lane
+                SpeedValue bestStaySpeedDiff = new SpeedValue(float.PositiveInfinity);
                 int bestStayTotalLaneDist = int.MaxValue;
                 byte bestStayNext1LaneIndex = next1PathPos.m_lane;
 
-                float bestOptMeanSpeed = 0f;
-                float bestOptSpeedDiff = float.PositiveInfinity; // best speed difference on all next lanes
+                SpeedValue bestOptMeanSpeed = new SpeedValue(0f);
+
+                // best speed difference on all next lanes
+                SpeedValue bestOptSpeedDiff = new SpeedValue(float.PositiveInfinity);
                 int bestOptTotalLaneDist = int.MaxValue;
                 byte bestOptNext1LaneIndex = next1PathPos.m_lane;
 
@@ -2395,18 +2415,18 @@
 #endif
                     NetInfo.Lane next1LaneInfo =
                         next1SegInfo.m_lanes[currentFwdTransitions[i].laneIndex];
-                    float next1MaxSpeed = SpeedLimitManager.Instance.GetLockFreeGameSpeedLimit(
+                    SpeedValue next1MaxSpeed = SpeedLimitManager.Instance.GetLockFreeGameSpeedLimit(
                         currentFwdTransitions[i].segmentId,
                         currentFwdTransitions[i].laneIndex,
                         currentFwdTransitions[i].laneId,
                         next1LaneInfo);
-                    float targetSpeed = Math.Min(
-                        vehicleMaxSpeed,
+                    SpeedValue targetSpeed = new SpeedValue(Math.Min(
+                        vehicleMaxSpeed.GameUnits,
                         ApplyRealisticSpeeds(
-                            next1MaxSpeed,
+                            next1MaxSpeed.GameUnits,
                             vehicleId,
                             ref vehicleState,
-                            vehicleInfo));
+                            vehicleInfo)));
 
                     ushort meanSpeed = TrafficMeasurementManager.Instance.CalcLaneRelativeMeanSpeed(
                         currentFwdTransitions[i].segmentId,
@@ -2429,7 +2449,7 @@
 
                     float relMeanSpeed = relMeanSpeedInPercent /
                                          TrafficMeasurementManager.REF_REL_SPEED_PERCENT_DENOMINATOR;
-                    float next1MeanSpeed = relMeanSpeed * next1MaxSpeed;
+                    SpeedValue next1MeanSpeed = new SpeedValue(relMeanSpeed * next1MaxSpeed.GameUnits);
 
                     //if (
                     //#if DEBUG
@@ -2462,7 +2482,7 @@
 
                     // > 0: lane is faster than vehicle would go. < 0: vehicle could go faster
                     // than this lane allows
-                    float speedDiff = next1MeanSpeed - targetSpeed;
+                    SpeedValue speedDiff = next1MeanSpeed - targetSpeed;
 
                     if (logLaneSelection) {
                         Log._DebugFormat(
@@ -2474,9 +2494,12 @@
                     }
 
                     if (!laneChange) {
-                        if (float.IsInfinity(bestStaySpeedDiff) ||
-                             (bestStaySpeedDiff < 0 && speedDiff > bestStaySpeedDiff) ||
-                             (bestStaySpeedDiff > 0 && speedDiff < bestStaySpeedDiff && speedDiff >= 0))
+                        if (float.IsInfinity(bestStaySpeedDiff.GameUnits) ||
+                            (bestStaySpeedDiff.GameUnits < 0 &&
+                             speedDiff.GameUnits > bestStaySpeedDiff.GameUnits) ||
+                            (bestStaySpeedDiff.GameUnits > 0 &&
+                             speedDiff.GameUnits < bestStaySpeedDiff.GameUnits &&
+                             speedDiff.GameUnits >= 0))
                         {
                             bestStaySpeedDiff = speedDiff;
                             bestStayNext1LaneIndex = currentFwdTransitions[i].laneIndex;
@@ -2644,22 +2667,22 @@
                     // float improvement = 100f * ((bestOptSpeedDiff - bestStaySpeedDiff)
                     //     / ((bestStayMeanSpeed + bestOptMeanSpeed) / 2f));
                     float speedDiff = Mathf.Abs(bestOptMeanSpeed - vehicleCurSpeed);
-                    float optImprovementSpeed = bestOptSpeedDiff - bestStaySpeedDiff;
+                    SpeedValue optImprovementSpeed = new SpeedValue(bestOptSpeedDiff - bestStaySpeedDiff);
 
                     if (logLaneSelection) {
                         Log._DebugFormat(
                             "VehicleBehaviorManager.FindBestLane({0}): a lane change for speed " +
-                            "improvement is possible. optImprovementInKmH={1} km/h speedDiff={2} " +
+                            "improvement is possible. optImprovementInKmH={1} speedDiff={2} " +
                             "(bestOptMeanSpeed={3}, vehicleCurVelocity={4}, foundSafeLaneChange={5})",
                             vehicleId,
-                            SpeedLimit.ToKmphPrecise(optImprovementSpeed),
+                            optImprovementSpeed.ToKmphPrecise(),
                             speedDiff,
                             bestOptMeanSpeed,
                             vehicleCurSpeed,
                             foundSafeLaneChange);
                     }
 
-                    if (optImprovementSpeed >= vehicleState.minSafeSpeedImprovement &&
+                    if (optImprovementSpeed.GameUnits >= vehicleState.minSafeSpeedImprovement &&
                         (foundSafeLaneChange || (speedDiff <= vehicleState.maxUnsafeSpeedDiff)))
                     {
                         // speed improvement is significant

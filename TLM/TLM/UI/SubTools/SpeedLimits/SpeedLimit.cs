@@ -1,5 +1,6 @@
 ﻿namespace TrafficManager.UI.SubTools.SpeedLimits {
     using System.Collections.Generic;
+    using API.Traffic.Data;
     using State;
     using UnityEngine;
     using Util;
@@ -69,48 +70,20 @@
             return result;
         }
 
-        public static string ToMphPreciseString(float speed) {
-            if (FloatUtil.IsZero(speed)) {
+        public static string ToMphPreciseString(SpeedValue speed) {
+            if (FloatUtil.IsZero(speed.GameUnits)) {
                 return Translation.GetString("Speed_limit_unlimited");
             }
 
-            return ToMphPrecise(speed) + " MPH";
+            return speed.ToMphPrecise() + " MPH";
         }
 
-        public static string ToKmphPreciseString(float speed) {
-            if (FloatUtil.IsZero(speed)) {
+        public static string ToKmphPreciseString(SpeedValue speed) {
+            if (FloatUtil.IsZero(speed.GameUnits)) {
                 return Translation.GetString("Speed_limit_unlimited");
             }
 
-            return ToKmphPrecise(speed) + " km/h";
-        }
-
-        /// <summary>
-        /// Convert float game speed to mph and round to nearest STEP
-        /// </summary>
-        /// <param name="speed">Speed, scale: 1f=32 MPH</param>
-        /// <returns>Speed in MPH rounded to nearest 5 MPH</returns>
-        public static ushort ToMphRounded(float speed) {
-            var mph = speed * Constants.SPEED_TO_MPH;
-            return (ushort)(Mathf.Round(mph / MPH_STEP) * MPH_STEP);
-        }
-
-        public static ushort ToMphPrecise(float speed) {
-            return (ushort)Mathf.Round(speed * Constants.SPEED_TO_MPH);
-        }
-
-        /// <summary>
-        /// Convert float game speed to km/h and round to nearest STEP
-        /// </summary>
-        /// <param name="speed">Speed, scale: 1f=50km/h</param>
-        /// <returns>Speed in km/h rounded to nearest 10 km/h</returns>
-        public static ushort ToKmphRounded(float speed) {
-            var kmph = speed * Constants.SPEED_TO_KMPH;
-            return (ushort)(Mathf.Round(kmph / KMPH_STEP) * KMPH_STEP);
-        }
-
-        public static ushort ToKmphPrecise(float speed) {
-            return (ushort)Mathf.Round(speed * Constants.SPEED_TO_KMPH);
+            return speed.ToKmphPrecise() + " km/h";
         }
 
         /// <summary>
@@ -119,33 +92,37 @@
         /// </summary>
         /// <param name="speed">Ingame speed</param>
         /// <returns>Ingame speed decreased by the increment for MPH or KMPH</returns>
-        public static float GetPrevious(float speed) {
-            if (speed < 0f) {
-                return -1f;
+        public static SpeedValue GetPrevious(SpeedValue speed) {
+            if (speed.GameUnits < 0f) {
+                return new SpeedValue(-1f);
             }
 
             if (GlobalConfig.Instance.Main.DisplaySpeedLimitsMph) {
-                ushort rounded = ToMphRounded(speed);
-                if (rounded == LOWER_MPH) {
-                    return 0;
+                MphValue rounded = speed.ToMphRounded(MPH_STEP);
+                if (rounded.Mph == LOWER_MPH) {
+                    return new SpeedValue(0);
                 }
 
-                if (rounded == 0) {
-                    return UPPER_MPH / Constants.SPEED_TO_MPH;
+                if (rounded.Mph == 0) {
+                    return SpeedValue.FromMph(UPPER_MPH);
                 }
 
-                return (rounded > LOWER_MPH ? rounded - MPH_STEP : LOWER_MPH) / Constants.SPEED_TO_MPH;
+                return SpeedValue.FromMph(rounded.Mph > LOWER_MPH
+                                              ? (ushort)(rounded.Mph - MPH_STEP)
+                                              : LOWER_MPH);
             } else {
-                ushort rounded = ToKmphRounded(speed);
-                if (rounded == LOWER_KMPH) {
-                    return 0;
+                KmphValue rounded = speed.ToKmphRounded(KMPH_STEP);
+                if (rounded.Kmph == LOWER_KMPH) {
+                    return new SpeedValue(0);
                 }
 
-                if (rounded == 0) {
-                    return UPPER_KMPH / Constants.SPEED_TO_KMPH;
+                if (rounded.Kmph == 0) {
+                    return SpeedValue.FromKmph(UPPER_KMPH);
                 }
 
-                return (rounded > LOWER_KMPH ? rounded - KMPH_STEP : LOWER_KMPH) / Constants.SPEED_TO_KMPH;
+                return SpeedValue.FromKmph(rounded.Kmph > LOWER_KMPH
+                                               ? (ushort)(rounded.Kmph - KMPH_STEP)
+                                               : LOWER_KMPH);
             }
         }
 
@@ -155,29 +132,29 @@
         /// </summary>
         /// <param name="speed">Ingame speed</param>
         /// <returns>Ingame speed increased by the increment for MPH or KMPH</returns>
-        public static float GetNext(float speed) {
-            if (speed < 0f) {
-                return -1f;
+        public static SpeedValue GetNext(SpeedValue speed) {
+            if (speed.GameUnits < 0f) {
+                return new SpeedValue(-1f);
             }
 
             if (GlobalConfig.Instance.Main.DisplaySpeedLimitsMph) {
-                ushort rounded = ToMphRounded(speed);
-                rounded += MPH_STEP;
+                MphValue rounded = speed.ToMphRounded(MPH_STEP);
+                rounded.Mph += MPH_STEP;
 
-                if (rounded > UPPER_MPH) {
-                    rounded = 0;
+                if (rounded.Mph > UPPER_MPH) {
+                    rounded.Mph = 0;
                 }
 
-                return rounded / Constants.SPEED_TO_MPH;
+                return SpeedValue.FromMph(rounded);
             } else {
-                ushort rounded = ToKmphRounded(speed);
-                rounded += KMPH_STEP;
+                KmphValue rounded = speed.ToKmphRounded(KMPH_STEP);
+                rounded.Kmph += KMPH_STEP;
 
-                if (rounded > UPPER_KMPH) {
-                    rounded = 0;
+                if (rounded.Kmph > UPPER_KMPH) {
+                    rounded.Kmph = 0;
                 }
 
-                return rounded / Constants.SPEED_TO_KMPH;
+                return SpeedValue.FromKmph(rounded);
             }
         }
 

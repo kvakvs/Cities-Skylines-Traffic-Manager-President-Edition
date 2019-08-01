@@ -1,6 +1,7 @@
 ﻿namespace TrafficManager.UI.SubTools.SpeedLimits {
     using System;
     using System.Collections.Generic;
+    using API.Traffic.Data;
     using ColossalFramework;
     using ColossalFramework.UI;
     using CSUtil.Commons;
@@ -32,7 +33,11 @@
         private readonly HashSet<ushort> currentlyVisibleSegmentIds;
         private bool defaultsWindowVisible;
         private int currentInfoIndex = -1;
-        private float currentSpeedLimit = -1f;
+
+        /// <summary>
+        /// Current selected speed limit in game speed units
+        /// </summary>
+        private SpeedValue currentSpeedLimit = new SpeedValue(-1f);
 
         private Texture2D RoadTexture {
             get {
@@ -115,7 +120,7 @@
             lastCamPos = null;
             lastCamRot = null;
             currentInfoIndex = -1;
-            currentSpeedLimit = -1f;
+            currentSpeedLimit = new SpeedValue(-1f);
         }
 
         private Quaternion? lastCamRot;
@@ -222,7 +227,7 @@
                 UpdateRoadTex(info);
             }
 
-            if (currentSpeedLimit < 0f) {
+            if (currentSpeedLimit.GameUnits < 0f) {
                 currentSpeedLimit = SpeedLimitManager.Instance.GetCustomNetInfoSpeedLimit(info);
                 Log._Debug($"set currentSpeedLimit to {currentSpeedLimit}");
             }

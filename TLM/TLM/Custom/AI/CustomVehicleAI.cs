@@ -3,6 +3,7 @@
 namespace TrafficManager.Custom.AI {
     using System;
     using System.Runtime.CompilerServices;
+    using API.Traffic.Data;
     using ColossalFramework;
     using ColossalFramework.Math;
     using CSUtil.Commons;
@@ -60,17 +61,20 @@ namespace TrafficManager.Custom.AI {
             NetInfo info = netManager.m_segments.m_buffer[position.m_segment].Info;
 
             if (info.m_lanes != null && info.m_lanes.Length > position.m_lane) {
-                float laneSpeedLimit = Options.customSpeedLimitsEnabled
-                                         ? SpeedLimitManager.Instance.GetLockFreeGameSpeedLimit(
-                                             position.m_segment,
-                                             position.m_lane,
-                                             laneId,
-                                             info.m_lanes[position.m_lane])
-                                         : info.m_lanes[position.m_lane].m_speedLimit; // NON-STOCK CODE
+                SpeedValue laneSpeedLimit
+                    = Options.customSpeedLimitsEnabled
+                          ? SpeedLimitManager.Instance.GetLockFreeGameSpeedLimit(
+                              position.m_segment,
+                              position.m_lane,
+                              laneId,
+                              info.m_lanes[position.m_lane])
+                          : new SpeedValue(info.m_lanes[position.m_lane].m_speedLimit);
+
+                // NON-STOCK CODE
                 maxSpeed = CalculateTargetSpeed(
                     vehicleId,
                     ref vehicleData,
-                    laneSpeedLimit,
+                    laneSpeedLimit.GameUnits,
                     netManager.m_lanes.m_buffer[laneId].m_curve);
             } else {
                 maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, 1f, 0f);

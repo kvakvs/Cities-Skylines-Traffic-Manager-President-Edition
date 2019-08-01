@@ -4,6 +4,7 @@ namespace TrafficManager.State {
     using System;
     using System.Collections.Generic;
     using System.Threading;
+    using API.Traffic.Data;
     using API.Traffic.Enums;
     using ColossalFramework;
     using ConfigData;
@@ -34,7 +35,7 @@ namespace TrafficManager.State {
         private static Dictionary<uint, float> laneSpeedLimit; // TODO remove
 
         // for faster, lock-free access, 1st index: segment id, 2nd index: lane index
-        internal static float?[][] laneSpeedLimitArray;
+        internal static SpeedValue?[][] laneSpeedLimitArray;
 
         /// <summary>
         /// For each lane: Defines the lane arrows which are set in highway rule mode (they are not saved)
@@ -492,7 +493,7 @@ namespace TrafficManager.State {
                     (NetSegment.Flags.Created | NetSegment.Flags.Deleted)) == NetSegment.Flags.Created;
         }
 
-        public static void SetLaneSpeedLimit(uint laneId, float? speedLimit) {
+        public static void SetLaneSpeedLimit(uint laneId, SpeedValue? speedLimit) {
             if (!CheckLane(laneId)) {
                 return;
             }
@@ -513,13 +514,13 @@ namespace TrafficManager.State {
             }
         }
 
-        public static void removeLaneSpeedLimit(uint laneId) {
+        public static void RemoveLaneSpeedLimit(uint laneId) {
             SetLaneSpeedLimit(laneId, null);
         }
 
         [UsedImplicitly]
         // Not used
-        public static void SetLaneSpeedLimit(ushort segmentId, uint laneIndex, float speedLimit) {
+        public static void SetLaneSpeedLimit(ushort segmentId, uint laneIndex, SpeedValue speedLimit) {
             if (segmentId <= 0) {
                 return;
             }
@@ -552,7 +553,7 @@ namespace TrafficManager.State {
         public static void SetLaneSpeedLimit(ushort segmentId,
                                              uint laneIndex,
                                              uint laneId,
-                                             float? speedLimit) {
+                                             SpeedValue? speedLimit) {
             if (segmentId <= 0 || laneId <= 0) {
                 return;
             }
@@ -593,7 +594,7 @@ namespace TrafficManager.State {
 
                     laneSpeedLimitArray[segmentId][laneIndex] = null;
                 } else {
-                    laneSpeedLimit[laneId] = speedLimit.Value;
+                    laneSpeedLimit[laneId] = speedLimit.Value.GameUnits;
 
                     // save speed limit into the fast-access array.
                     // (1) ensure that the array is defined and large enough
@@ -606,7 +607,7 @@ namespace TrafficManager.State {
                     }
 
                     // (2) insert the custom speed limit
-                    laneSpeedLimitArray[segmentId][laneIndex] = speedLimit;
+                    laneSpeedLimitArray[segmentId][laneIndex] = speedLimit.Value.GameUnits;
                 }
             }
             finally {
@@ -884,7 +885,7 @@ namespace TrafficManager.State {
             return false;
         }
 
-        public static float? GetLaneSpeedLimit(uint laneId) {
+        public static SpeedValue? GetLaneSpeedLimit(uint laneId) {
             try {
                 Monitor.Enter(laneSpeedLimitLock);
 
@@ -892,13 +893,18 @@ namespace TrafficManager.State {
                     return null;
                 }
 
-                return speedLimit;
+                return new SpeedValue(speedLimit);
             }
             finally {
                 Monitor.Exit(laneSpeedLimitLock);
             }
         }
 
+        /// <summary>
+        /// Contains speed limits per lane, in game units. Use SpeedValue class to further handle
+        /// the speed limit values.
+        /// </summary>
+        /// <returns></returns>
         internal static IDictionary<uint, float> GetAllLaneSpeedLimits() {
             IDictionary<uint, float> ret = new Dictionary<uint, float>();
             try {

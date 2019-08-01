@@ -90,7 +90,7 @@
                                     segmentId,
                                     laneIndex,
                                     laneId,
-                                    laneInfo)
+                                    laneInfo).GameUnits
                                 : laneInfo.m_speedLimit) * 8f));
 
                 if (laneVehicleSpeedLimit <= 0) {

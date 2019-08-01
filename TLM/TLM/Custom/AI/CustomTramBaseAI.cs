@@ -334,19 +334,20 @@
 
             NetInfo info = segBuffer[prevPosition.m_segment].Info;
             if (info.m_lanes != null && info.m_lanes.Length > prevPosition.m_lane) {
-                float speedLimit = Options.customSpeedLimitsEnabled
-                                     ? SpeedLimitManager.Instance.GetLockFreeGameSpeedLimit(
-                                         prevPosition.m_segment,
-                                         prevPosition.m_lane,
-                                         prevLaneId,
-                                         info.m_lanes[prevPosition.m_lane])
-                                     : info.m_lanes[prevPosition.m_lane].m_speedLimit;
+                SpeedValue speedLimit
+                    = Options.customSpeedLimitsEnabled
+                          ? SpeedLimitManager.Instance.GetLockFreeGameSpeedLimit(
+                              prevPosition.m_segment,
+                              prevPosition.m_lane,
+                              prevLaneId,
+                              info.m_lanes[prevPosition.m_lane])
+                          : new SpeedValue(info.m_lanes[prevPosition.m_lane].m_speedLimit);
 
                 // NON-STOCK CODE
                 maxSpeed = CalculateTargetSpeed(
                     vehicleId,
                     ref vehicleData,
-                    speedLimit,
+                    speedLimit.GameUnits,
                     netManager.m_lanes.m_buffer[prevLaneId].m_curve);
             } else {
                 maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, 1f, 0f);
@@ -372,17 +373,20 @@
             if (info.m_lanes != null
                 && info.m_lanes.Length > position.m_lane)
             {
-                float speedLimit = Options.customSpeedLimitsEnabled
-                                     ? SpeedLimitManager.Instance.GetLockFreeGameSpeedLimit(
-                                         position.m_segment,
-                                         position.m_lane,
-                                         laneId,
-                                         info.m_lanes[position.m_lane])
-                                     : info.m_lanes[position.m_lane].m_speedLimit; // NON-STOCK CODE
+                SpeedValue speedLimit
+                    = Options.customSpeedLimitsEnabled
+                          ? SpeedLimitManager.Instance.GetLockFreeGameSpeedLimit(
+                              position.m_segment,
+                              position.m_lane,
+                              laneId,
+                              info.m_lanes[position.m_lane])
+                          : new SpeedValue(info.m_lanes[position.m_lane].m_speedLimit);
+
+                // NON-STOCK CODE
                 maxSpeed = CalculateTargetSpeed(
                     vehicleId,
                     ref vehicleData,
-                    speedLimit,
+                    speedLimit.GameUnits,
                     instance.m_lanes.m_buffer[laneId].m_curve);
             } else {
                 maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, 1f, 0f);

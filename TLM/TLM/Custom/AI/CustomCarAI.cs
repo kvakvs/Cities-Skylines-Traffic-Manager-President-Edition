@@ -361,19 +361,20 @@ namespace TrafficManager.Custom.AI {
             if (prevSegmentInfo.m_lanes != null
                 && prevSegmentInfo.m_lanes.Length > nextPosition.m_lane) {
                 // NON-STOCK CODE START
-                float laneSpeedLimit = !Options.customSpeedLimitsEnabled
-                                           ? prevSegmentInfo.m_lanes[nextPosition.m_lane].m_speedLimit
-                                           : Constants.ManagerFactory.SpeedLimitManager.GetLockFreeGameSpeedLimit(
-                                               nextPosition.m_segment,
-                                               nextPosition.m_lane,
-                                               nextLaneId,
-                                               prevSegmentInfo.m_lanes[nextPosition.m_lane]);
+                SpeedValue laneSpeedLimit =
+                    !Options.customSpeedLimitsEnabled
+                        ? new SpeedValue(prevSegmentInfo.m_lanes[nextPosition.m_lane].m_speedLimit)
+                        : Constants.ManagerFactory.SpeedLimitManager.GetLockFreeGameSpeedLimit(
+                            nextPosition.m_segment,
+                            nextPosition.m_lane,
+                            nextLaneId,
+                            prevSegmentInfo.m_lanes[nextPosition.m_lane]);
 
                 // NON-STOCK CODE END
                 maxSpeed = CalculateTargetSpeed(
                     vehicleId,
                     ref vehicleData,
-                    laneSpeedLimit,
+                    laneSpeedLimit.GameUnits,
                     netManager.m_lanes.m_buffer[nextLaneId].m_curve);
             } else {
                 maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, 1f, 0f);
@@ -387,8 +388,8 @@ namespace TrafficManager.Custom.AI {
                 nextPosition,
                 ref segmentsBuffer[nextPosition.m_segment],
                 pos,
-                maxSpeed,
-                false);
+                new VelocityValue(maxSpeed),
+                false).Velocity;
 
             // NON-STOCK CODE END
         }
@@ -412,19 +413,20 @@ namespace TrafficManager.Custom.AI {
             if (segmentInfo.m_lanes != null
                 && segmentInfo.m_lanes.Length > position.m_lane) {
                 // NON-STOCK CODE START
-                float laneSpeedLimit = !Options.customSpeedLimitsEnabled
-                                         ? segmentInfo.m_lanes[position.m_lane].m_speedLimit
-                                         : Constants.ManagerFactory.SpeedLimitManager.GetLockFreeGameSpeedLimit(
-                                             position.m_segment,
-                                             position.m_lane,
-                                             laneId,
-                                             segmentInfo.m_lanes[position.m_lane]);
+                SpeedValue laneSpeedLimit
+                    = !Options.customSpeedLimitsEnabled
+                          ? new SpeedValue(segmentInfo.m_lanes[position.m_lane].m_speedLimit)
+                          : Constants.ManagerFactory.SpeedLimitManager.GetLockFreeGameSpeedLimit(
+                              position.m_segment,
+                              position.m_lane,
+                              laneId,
+                              segmentInfo.m_lanes[position.m_lane]);
 
                 // NON-STOCK CODE END
                 maxSpeed = CalculateTargetSpeed(
                     vehicleId,
                     ref vehicleData,
-                    laneSpeedLimit,
+                    laneSpeedLimit.GameUnits,
                     netManager.m_lanes.m_buffer[laneId].m_curve);
             } else {
                 maxSpeed = CalculateTargetSpeed(vehicleId, ref vehicleData, 1f, 0f);
@@ -438,8 +440,8 @@ namespace TrafficManager.Custom.AI {
                 position,
                 ref netManager.m_segments.m_buffer[position.m_segment],
                 pos,
-                maxSpeed,
-                false);
+                new VelocityValue(maxSpeed),
+                false).Velocity;
 
             // NON-STOCK CODE END
         }
