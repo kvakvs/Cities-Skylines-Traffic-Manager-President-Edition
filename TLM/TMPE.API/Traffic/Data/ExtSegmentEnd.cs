@@ -2,60 +2,49 @@
     using System;
 
     public struct ExtSegmentEnd : IEquatable<ExtSegmentEnd> {
-        /// <summary>
-        /// Segment id
-        /// </summary>
-        public ushort segmentId;
+        /// <summary>Segment id in game.</summary>
+        public readonly ushort SegmentId;
 
-        /// <summary>
-        /// At start node?
-        /// </summary>
-        public bool startNode;
+        /// <summary>Whether this is a start node.</summary>
+        public readonly bool IsStartNode;
 
-        /// <summary>
-        /// Node id
-        /// </summary>
-        public ushort nodeId;
+        /// <summary>Node id.</summary>
+        public readonly ushort NodeId;
 
-        /// <summary>
-        /// Can vehicles leave the node via this segment end?
-        /// </summary>
-        public bool outgoing;
+        /// <summary>Whether vehicles can leave the node via this segment end.</summary>
+        public bool IsOutgoing;
 
-        /// <summary>
-        /// Can vehicles enter the node via this segment end?
-        /// </summary>
-        public bool incoming;
+        /// <summary>Whether vehicles can enter the node via this segment end.</summary>
+        public bool IsIncoming;
 
-        /// <summary>
-        /// First registered vehicle id on this segment end
-        /// </summary>
-        public ushort firstVehicleId;
+        /// <summary>First registered vehicle id on this segment end.</summary>
+        public ushort FirstVehicleId;
 
+        /// <inheritdoc />
         public override string ToString() {
             return string.Format(
-                "[ExtSegmentEnd {0}\n\tsegmentId={1}\n\tstartNode={2}\n\tnodeId={3}\n" +
-                "\toutgoing={4}\n\tincoming={5}\n\tfirstVehicleId={6}\nExtSegmentEnd]",
+                "ExtSegmentEnd {0} {{ segmentId={1}\n\tstartNode={2}\n\tnodeId={3}\n" +
+                "\toutgoing={4}\n\tincoming={5}\n\tfirstVehicleId={6} }}",
                 base.ToString(),
-                segmentId,
-                startNode,
-                nodeId,
-                outgoing,
-                incoming,
-                firstVehicleId);
+                SegmentId,
+                IsStartNode,
+                NodeId,
+                IsOutgoing,
+                IsIncoming,
+                FirstVehicleId);
         }
 
-        public ExtSegmentEnd(ushort segmentId, bool startNode) {
-            this.segmentId = segmentId;
-            this.startNode = startNode;
-            nodeId = 0;
-            outgoing = false;
-            incoming = false;
-            firstVehicleId = 0;
+        public ExtSegmentEnd(ushort segmentId, bool isStartNode) {
+            this.SegmentId = segmentId;
+            this.IsStartNode = isStartNode;
+            NodeId = 0;
+            IsOutgoing = false;
+            IsIncoming = false;
+            FirstVehicleId = 0;
         }
 
         public bool Equals(ExtSegmentEnd otherSegEnd) {
-            return segmentId == otherSegEnd.segmentId && startNode == otherSegEnd.startNode;
+            return SegmentId == otherSegEnd.SegmentId && IsStartNode == otherSegEnd.IsStartNode;
         }
 
         public override bool Equals(object other) {
@@ -64,10 +53,10 @@
         }
 
         public override int GetHashCode() {
-            int prime = 31;
+            const int prime = 31;
             int result = 1;
-            result = prime * result + segmentId.GetHashCode();
-            result = prime * result + startNode.GetHashCode();
+            result = (prime * result) + SegmentId.GetHashCode();
+            result = (prime * result) + IsStartNode.GetHashCode();
             return result;
         }
     }

@@ -2,150 +2,148 @@
     using System;
     using CSUtil.Commons;
 
-    /// <summary>
-    /// Segment flags hold both segment end flags
-    /// </summary>
+    /// <summary>Segment flags hold both segment end flags.</summary>
     public struct SegmentFlags {
-        public SegmentEndFlags startNodeFlags;
-        public SegmentEndFlags endNodeFlags;
+        public SegmentEndFlags StartNodeFlags;
+        public SegmentEndFlags EndNodeFlags;
 
         public bool IsUturnAllowed(bool startNode) {
             return startNode
-                       ? startNodeFlags.IsUturnAllowed()
-                       : endNodeFlags.IsUturnAllowed();
+                       ? StartNodeFlags.IsUturnAllowed()
+                       : EndNodeFlags.IsUturnAllowed();
         }
 
         public bool IsNearTurnOnRedAllowed(bool startNode) {
             return startNode
-                       ? startNodeFlags.IsNearTurnOnRedAllowed()
-                       : endNodeFlags.IsNearTurnOnRedAllowed();
+                       ? StartNodeFlags.IsNearTurnOnRedAllowed()
+                       : EndNodeFlags.IsNearTurnOnRedAllowed();
         }
 
         public bool IsFarTurnOnRedAllowed(bool startNode) {
             return startNode
-                       ? startNodeFlags.IsFarTurnOnRedAllowed()
-                       : endNodeFlags.IsFarTurnOnRedAllowed();
+                       ? StartNodeFlags.IsFarTurnOnRedAllowed()
+                       : EndNodeFlags.IsFarTurnOnRedAllowed();
         }
 
         public bool IsLaneChangingAllowedWhenGoingStraight(bool startNode) {
             return startNode
-                       ? startNodeFlags.IsLaneChangingAllowedWhenGoingStraight()
-                       : endNodeFlags.IsLaneChangingAllowedWhenGoingStraight();
+                       ? StartNodeFlags.IsLaneChangingAllowedWhenGoingStraight()
+                       : EndNodeFlags.IsLaneChangingAllowedWhenGoingStraight();
         }
 
         public bool IsEnteringBlockedJunctionAllowed(bool startNode) {
             return startNode
-                       ? startNodeFlags.IsEnteringBlockedJunctionAllowed()
-                       : endNodeFlags.IsEnteringBlockedJunctionAllowed();
+                       ? StartNodeFlags.IsEnteringBlockedJunctionAllowed()
+                       : EndNodeFlags.IsEnteringBlockedJunctionAllowed();
         }
 
         public bool IsPedestrianCrossingAllowed(bool startNode) {
             return startNode
-                       ? startNodeFlags.IsPedestrianCrossingAllowed()
-                       : endNodeFlags.IsPedestrianCrossingAllowed();
+                       ? StartNodeFlags.IsPedestrianCrossingAllowed()
+                       : EndNodeFlags.IsPedestrianCrossingAllowed();
         }
 
         public TernaryBool GetUturnAllowed(bool startNode) {
-            return startNode ? startNodeFlags.uturnAllowed : endNodeFlags.uturnAllowed;
+            return startNode ? StartNodeFlags.UturnAllowed : EndNodeFlags.UturnAllowed;
         }
 
         public TernaryBool GetNearTurnOnRedAllowed(bool startNode) {
             return startNode
-                       ? startNodeFlags.nearTurnOnRedAllowed
-                       : endNodeFlags.nearTurnOnRedAllowed;
+                       ? StartNodeFlags.NearTurnOnRedAllowed
+                       : EndNodeFlags.NearTurnOnRedAllowed;
         }
 
         public TernaryBool GetFarTurnOnRedAllowed(bool startNode) {
             return startNode
-                       ? startNodeFlags.farTurnOnRedAllowed
-                       : endNodeFlags.farTurnOnRedAllowed;
+                       ? StartNodeFlags.FarTurnOnRedAllowed
+                       : EndNodeFlags.FarTurnOnRedAllowed;
         }
 
         public TernaryBool GetLaneChangingAllowedWhenGoingStraight(bool startNode) {
             return startNode
-                       ? startNodeFlags.straightLaneChangingAllowed
-                       : endNodeFlags.straightLaneChangingAllowed;
+                       ? StartNodeFlags.StraightLaneChangingAllowed
+                       : EndNodeFlags.StraightLaneChangingAllowed;
         }
 
         public TernaryBool GetEnteringBlockedJunctionAllowed(bool startNode) {
             return startNode
-                       ? startNodeFlags.enterWhenBlockedAllowed
-                       : endNodeFlags.enterWhenBlockedAllowed;
+                       ? StartNodeFlags.EnterWhenBlockedAllowed
+                       : EndNodeFlags.EnterWhenBlockedAllowed;
         }
 
         public TernaryBool GetPedestrianCrossingAllowed(bool startNode) {
             return startNode
-                       ? startNodeFlags.pedestrianCrossingAllowed
-                       : endNodeFlags.pedestrianCrossingAllowed;
+                       ? StartNodeFlags.PedestrianCrossingAllowed
+                       : EndNodeFlags.PedestrianCrossingAllowed;
         }
 
         public void SetUturnAllowed(bool startNode, bool value) {
             if (startNode) {
-                startNodeFlags.SetUturnAllowed(value);
+                StartNodeFlags.SetUturnAllowed(value);
             } else {
-                endNodeFlags.SetUturnAllowed(value);
+                EndNodeFlags.SetUturnAllowed(value);
             }
         }
 
         public void SetNearTurnOnRedAllowed(bool startNode, bool value) {
             if (startNode) {
-                startNodeFlags.SetNearTurnOnRedAllowed(value);
+                StartNodeFlags.SetNearTurnOnRedAllowed(value);
             } else {
-                endNodeFlags.SetNearTurnOnRedAllowed(value);
+                EndNodeFlags.SetNearTurnOnRedAllowed(value);
             }
         }
 
         public void SetFarTurnOnRedAllowed(bool startNode, bool value) {
             if (startNode) {
-                startNodeFlags.SetFarTurnOnRedAllowed(value);
+                StartNodeFlags.SetFarTurnOnRedAllowed(value);
             } else {
-                endNodeFlags.SetFarTurnOnRedAllowed(value);
+                EndNodeFlags.SetFarTurnOnRedAllowed(value);
             }
         }
 
         public void SetLaneChangingAllowedWhenGoingStraight(bool startNode, bool value) {
             if (startNode) {
-                startNodeFlags.SetLaneChangingAllowedWhenGoingStraight(value);
+                StartNodeFlags.SetLaneChangingAllowedWhenGoingStraight(value);
             } else {
-                endNodeFlags.SetLaneChangingAllowedWhenGoingStraight(value);
+                EndNodeFlags.SetLaneChangingAllowedWhenGoingStraight(value);
             }
         }
 
         public void SetEnteringBlockedJunctionAllowed(bool startNode, bool value) {
             if (startNode) {
-                startNodeFlags.SetEnteringBlockedJunctionAllowed(value);
+                StartNodeFlags.SetEnteringBlockedJunctionAllowed(value);
             } else {
-                endNodeFlags.SetEnteringBlockedJunctionAllowed(value);
+                EndNodeFlags.SetEnteringBlockedJunctionAllowed(value);
             }
         }
 
         public void SetPedestrianCrossingAllowed(bool startNode, bool value) {
             if (startNode) {
-                startNodeFlags.SetPedestrianCrossingAllowed(value);
+                StartNodeFlags.SetPedestrianCrossingAllowed(value);
             } else {
-                endNodeFlags.SetPedestrianCrossingAllowed(value);
+                EndNodeFlags.SetPedestrianCrossingAllowed(value);
             }
         }
 
         public bool IsDefault() {
-            return startNodeFlags.IsDefault() && endNodeFlags.IsDefault();
+            return StartNodeFlags.IsDefault() && EndNodeFlags.IsDefault();
         }
 
         public void Reset(bool? startNode = null, bool resetDefaults = true) {
             if (startNode == null || (bool)startNode) {
-                startNodeFlags.Reset(resetDefaults);
+                StartNodeFlags.Reset(resetDefaults);
             }
 
             if (startNode == null || !(bool)startNode) {
-                endNodeFlags.Reset(resetDefaults);
+                EndNodeFlags.Reset(resetDefaults);
             }
         }
 
         public override string ToString() {
             return string.Format(
                 "[SegmentFlags\n\tstartNodeFlags = {0}\n\tendNodeFlags = {1}\nSegmentFlags]",
-                startNodeFlags,
-                endNodeFlags);
+                StartNodeFlags,
+                EndNodeFlags);
         }
     }
 }

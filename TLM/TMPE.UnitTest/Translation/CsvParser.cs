@@ -267,12 +267,10 @@ namespace TMUnitTest.Translation {
             CollectionAssert.Contains(resultMap["en"], new KeyValuePair<string, string>("multiple-new-lines-contains-multiple-commas-and-quote-marks-3", "test en"));
         }
 
-        /// <summary>
-        /// Runs original method which should collect translations
-        /// </summary>
-        /// <param name="dataBlock"></param>
-        /// <param name="columns"></param>
-        /// <param name="result">map of translations [langCode][key][translated_string]</param>
+        /// <summary>Runs original method which should collect translations.</summary>
+        /// <param name="dataBlock">Data block.</param>
+        /// <param name="columns">Columns data.</param>
+        /// <param name="result">map of translations [langCode][key][translated_string].</param>
         private static void TestCollectTranslations(string dataBlock, List<string> columns,
                                      out Dictionary<string, Dictionary<string, string>> result) {
             PrivateType privateType = new PrivateType(typeof(LookupTable));

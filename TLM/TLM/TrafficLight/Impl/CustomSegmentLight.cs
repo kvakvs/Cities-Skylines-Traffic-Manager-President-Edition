@@ -11,9 +11,7 @@ namespace TrafficManager.TrafficLight.Impl {
     using TrafficManager.API.TrafficLight;
     using TrafficManager.State.ConfigData;
 
-    /// <summary>
-    /// Represents the traffic light (left, forward, right) at a specific segment end
-    /// </summary>
+    /// <summary>Represents the traffic light (left, forward, right) at a specific segment end.</summary>
     public class CustomSegmentLight
         : ICustomSegmentLight
     {

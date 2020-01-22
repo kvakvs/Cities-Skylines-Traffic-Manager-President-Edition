@@ -34,9 +34,7 @@ namespace TrafficManager {
             [Obsolete]
             public ExtVehicleType vehicleTypes;
 
-            /// <summary>
-            /// Use this to access new ExtVehicleType, from TMPE.API
-            /// </summary>
+            /// <summary>Use this to access new ExtVehicleType, from TMPE.API.</summary>
             // Property will not be serialized, permit use of obsolete symbol
 #pragma warning disable 612
             public API.Traffic.Enums.ExtVehicleType ApiVehicleTypes
@@ -74,7 +72,7 @@ namespace TrafficManager {
 
             /// <summary>
             /// This is using old type for save compatibility.
-            /// Use LegacyExtVehicleType helper class to convert between old/new
+            /// Use LegacyExtVehicleType helper class to convert between old/new.
             /// </summary>
             [Obsolete]
             public Dictionary<ExtVehicleType, CustomSegmentLight> customLights;
@@ -252,64 +250,40 @@ namespace TrafficManager {
             }
         }
 
-        /// <summary>
-        /// Stored ext. citizen data
-        /// </summary>
+        /// <summary>Stored ext. citizen data.</summary>
         public List<ExtCitizenData> ExtCitizens = new List<ExtCitizenData>();
 
-        /// <summary>
-        /// Stored ext. citizen instance data
-        /// </summary>
+        /// <summary>Stored ext. citizen instance data.</summary>
         public List<ExtCitizenInstanceData> ExtCitizenInstances = new List<ExtCitizenInstanceData>();
 
-        /// <summary>
-        /// Stored toggled traffic lights
-        /// </summary>
+        /// <summary>Stored toggled traffic lights.</summary>
         public List<NodeTrafficLight> ToggledTrafficLights = new List<NodeTrafficLight>();
 
-        /// <summary>
-        /// Stored lane connections
-        /// </summary>
+        /// <summary>Stored lane connections.</summary>
         public List<LaneConnection> LaneConnections = new List<LaneConnection>();
 
-        /// <summary>
-        /// Stored lane arrows
-        /// </summary>
+        /// <summary>Stored lane arrows.</summary>
         public List<LaneArrowData> LaneArrows = new List<LaneArrowData>();
 
-        /// <summary>
-        /// Stored lane speed limits
-        /// </summary>
+        /// <summary>Stored lane speed limits.</summary>
         public List<LaneSpeedLimit> LaneSpeedLimits = new List<LaneSpeedLimit>();
 
-        /// <summary>
-        /// Stored vehicle restrictions
-        /// </summary>
+        /// <summary>Stored vehicle restrictions.</summary>
         public List<LaneVehicleTypes> LaneAllowedVehicleTypes = new List<LaneVehicleTypes>();
 
-        /// <summary>
-        /// Timed traffic lights
-        /// </summary>
+        /// <summary>Timed traffic lights.</summary>
         public List<TimedTrafficLights> TimedLights = new List<TimedTrafficLights>();
 
-        /// <summary>
-        /// Segment-at-Node configurations
-        /// </summary>
+        /// <summary>Segment-at-Node configurations.</summary>
         public List<SegmentNodeConf> SegmentNodeConfs = new List<SegmentNodeConf>();
 
-        /// <summary>
-        /// Custom default speed limits (in game speed units)
-        /// </summary>
+        /// <summary>Custom default speed limits (in game speed units).</summary>
         public Dictionary<string, float> CustomDefaultSpeedLimits = new Dictionary<string, float>();
 
-        /// <summary>
-        /// Priority segments
-        /// </summary>
+        /// <summary>Priority segments.</summary>
         public List<PrioritySegment> CustomPrioritySegments = new List<PrioritySegment>();
 
-        /// <summary>
-        /// Parking restrictions
-        /// </summary>
+        /// <summary>Parking restrictions.</summary>
         public List<ParkingRestriction> ParkingRestrictions = new List<ParkingRestriction>();
 
         [Obsolete]

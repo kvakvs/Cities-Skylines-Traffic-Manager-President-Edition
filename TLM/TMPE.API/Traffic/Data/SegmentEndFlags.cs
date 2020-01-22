@@ -2,122 +2,120 @@
     using System;
     using CSUtil.Commons;
 
-    /// <summary>
-    /// Segment end flags store junction restrictions
-    /// </summary>
+    /// <summary>Segment end flags store junction restrictions.</summary>
     public struct SegmentEndFlags {
-        public TernaryBool uturnAllowed;
-        public TernaryBool nearTurnOnRedAllowed;
-        public TernaryBool farTurnOnRedAllowed;
-        public TernaryBool straightLaneChangingAllowed;
-        public TernaryBool enterWhenBlockedAllowed;
-        public TernaryBool pedestrianCrossingAllowed;
+        public TernaryBool UturnAllowed;
+        public TernaryBool NearTurnOnRedAllowed;
+        public TernaryBool FarTurnOnRedAllowed;
+        public TernaryBool StraightLaneChangingAllowed;
+        public TernaryBool EnterWhenBlockedAllowed;
+        public TernaryBool PedestrianCrossingAllowed;
 
-        public bool defaultUturnAllowed;
-        public bool defaultNearTurnOnRedAllowed;
-        public bool defaultFarTurnOnRedAllowed;
-        public bool defaultStraightLaneChangingAllowed;
-        public bool defaultEnterWhenBlockedAllowed;
-        public bool defaultPedestrianCrossingAllowed;
+        public bool DefaultUturnAllowed;
+        public bool DefaultNearTurnOnRedAllowed;
+        public bool DefaultFarTurnOnRedAllowed;
+        public bool DefaultStraightLaneChangingAllowed;
+        public bool DefaultEnterWhenBlockedAllowed;
+        public bool DefaultPedestrianCrossingAllowed;
 
         public bool IsUturnAllowed() {
-            return uturnAllowed == TernaryBool.Undefined
-                       ? defaultUturnAllowed
-                       : TernaryBoolUtil.ToBool(uturnAllowed);
+            return UturnAllowed == TernaryBool.Undefined
+                       ? DefaultUturnAllowed
+                       : TernaryBoolUtil.ToBool(UturnAllowed);
         }
 
         public bool IsNearTurnOnRedAllowed() {
-            return nearTurnOnRedAllowed == TernaryBool.Undefined
-                       ? defaultNearTurnOnRedAllowed
-                       : TernaryBoolUtil.ToBool(nearTurnOnRedAllowed);
+            return NearTurnOnRedAllowed == TernaryBool.Undefined
+                       ? DefaultNearTurnOnRedAllowed
+                       : TernaryBoolUtil.ToBool(NearTurnOnRedAllowed);
         }
 
         public bool IsFarTurnOnRedAllowed() {
-            return farTurnOnRedAllowed == TernaryBool.Undefined
-                       ? defaultFarTurnOnRedAllowed
-                       : TernaryBoolUtil.ToBool(farTurnOnRedAllowed);
+            return FarTurnOnRedAllowed == TernaryBool.Undefined
+                       ? DefaultFarTurnOnRedAllowed
+                       : TernaryBoolUtil.ToBool(FarTurnOnRedAllowed);
         }
 
         public bool IsLaneChangingAllowedWhenGoingStraight() {
-            return straightLaneChangingAllowed == TernaryBool.Undefined
-                       ? defaultStraightLaneChangingAllowed
-                       : TernaryBoolUtil.ToBool(straightLaneChangingAllowed);
+            return StraightLaneChangingAllowed == TernaryBool.Undefined
+                       ? DefaultStraightLaneChangingAllowed
+                       : TernaryBoolUtil.ToBool(StraightLaneChangingAllowed);
         }
 
         public bool IsEnteringBlockedJunctionAllowed() {
-            return enterWhenBlockedAllowed == TernaryBool.Undefined
-                       ? defaultEnterWhenBlockedAllowed
-                       : TernaryBoolUtil.ToBool(enterWhenBlockedAllowed);
+            return EnterWhenBlockedAllowed == TernaryBool.Undefined
+                       ? DefaultEnterWhenBlockedAllowed
+                       : TernaryBoolUtil.ToBool(EnterWhenBlockedAllowed);
         }
 
         public bool IsPedestrianCrossingAllowed() {
-            return pedestrianCrossingAllowed == TernaryBool.Undefined
-                       ? defaultPedestrianCrossingAllowed
-                       : TernaryBoolUtil.ToBool(pedestrianCrossingAllowed);
+            return PedestrianCrossingAllowed == TernaryBool.Undefined
+                       ? DefaultPedestrianCrossingAllowed
+                       : TernaryBoolUtil.ToBool(PedestrianCrossingAllowed);
         }
 
         public void SetUturnAllowed(bool value) {
-            uturnAllowed = TernaryBoolUtil.ToTernaryBool(value);
+            UturnAllowed = TernaryBoolUtil.ToTernaryBool(value);
         }
 
         public void SetNearTurnOnRedAllowed(bool value) {
-            nearTurnOnRedAllowed = TernaryBoolUtil.ToTernaryBool(value);
+            NearTurnOnRedAllowed = TernaryBoolUtil.ToTernaryBool(value);
         }
 
         public void SetFarTurnOnRedAllowed(bool value) {
-            farTurnOnRedAllowed = TernaryBoolUtil.ToTernaryBool(value);
+            FarTurnOnRedAllowed = TernaryBoolUtil.ToTernaryBool(value);
         }
 
         public void SetLaneChangingAllowedWhenGoingStraight(bool value) {
-            straightLaneChangingAllowed = TernaryBoolUtil.ToTernaryBool(value);
+            StraightLaneChangingAllowed = TernaryBoolUtil.ToTernaryBool(value);
         }
 
         public void SetEnteringBlockedJunctionAllowed(bool value) {
-            enterWhenBlockedAllowed = TernaryBoolUtil.ToTernaryBool(value);
+            EnterWhenBlockedAllowed = TernaryBoolUtil.ToTernaryBool(value);
         }
 
         public void SetPedestrianCrossingAllowed(bool value) {
-            pedestrianCrossingAllowed = TernaryBoolUtil.ToTernaryBool(value);
+            PedestrianCrossingAllowed = TernaryBoolUtil.ToTernaryBool(value);
         }
 
         public bool IsDefault() {
-            bool uturnIsDefault = uturnAllowed == TernaryBool.Undefined ||
-                                  TernaryBoolUtil.ToBool(uturnAllowed) == defaultUturnAllowed;
-            bool nearTurnOnRedIsDefault = nearTurnOnRedAllowed == TernaryBool.Undefined ||
-                                          TernaryBoolUtil.ToBool(nearTurnOnRedAllowed) ==
-                                          defaultNearTurnOnRedAllowed;
-            bool farTurnOnRedIsDefault = farTurnOnRedAllowed == TernaryBool.Undefined ||
-                                         TernaryBoolUtil.ToBool(farTurnOnRedAllowed) ==
-                                         defaultFarTurnOnRedAllowed;
-            bool straightChangeIsDefault = straightLaneChangingAllowed == TernaryBool.Undefined ||
-                                           TernaryBoolUtil.ToBool(straightLaneChangingAllowed) ==
-                                           defaultStraightLaneChangingAllowed;
-            bool enterWhenBlockedIsDefault = enterWhenBlockedAllowed == TernaryBool.Undefined ||
-                                             TernaryBoolUtil.ToBool(enterWhenBlockedAllowed) ==
-                                             defaultEnterWhenBlockedAllowed;
-            bool pedCrossingIsDefault = pedestrianCrossingAllowed == TernaryBool.Undefined ||
-                                        TernaryBoolUtil.ToBool(pedestrianCrossingAllowed) ==
-                                        defaultPedestrianCrossingAllowed;
+            bool uturnIsDefault = UturnAllowed == TernaryBool.Undefined ||
+                                  TernaryBoolUtil.ToBool(UturnAllowed) == DefaultUturnAllowed;
+            bool nearTurnOnRedIsDefault = NearTurnOnRedAllowed == TernaryBool.Undefined ||
+                                          TernaryBoolUtil.ToBool(NearTurnOnRedAllowed) ==
+                                          DefaultNearTurnOnRedAllowed;
+            bool farTurnOnRedIsDefault = FarTurnOnRedAllowed == TernaryBool.Undefined ||
+                                         TernaryBoolUtil.ToBool(FarTurnOnRedAllowed) ==
+                                         DefaultFarTurnOnRedAllowed;
+            bool straightChangeIsDefault = StraightLaneChangingAllowed == TernaryBool.Undefined ||
+                                           TernaryBoolUtil.ToBool(StraightLaneChangingAllowed) ==
+                                           DefaultStraightLaneChangingAllowed;
+            bool enterWhenBlockedIsDefault = EnterWhenBlockedAllowed == TernaryBool.Undefined ||
+                                             TernaryBoolUtil.ToBool(EnterWhenBlockedAllowed) ==
+                                             DefaultEnterWhenBlockedAllowed;
+            bool pedCrossingIsDefault = PedestrianCrossingAllowed == TernaryBool.Undefined ||
+                                        TernaryBoolUtil.ToBool(PedestrianCrossingAllowed) ==
+                                        DefaultPedestrianCrossingAllowed;
 
             return uturnIsDefault && nearTurnOnRedIsDefault && farTurnOnRedIsDefault &&
                    straightChangeIsDefault && enterWhenBlockedIsDefault && pedCrossingIsDefault;
         }
 
         public void Reset(bool resetDefaults = true) {
-            uturnAllowed = TernaryBool.Undefined;
-            nearTurnOnRedAllowed = TernaryBool.Undefined;
-            farTurnOnRedAllowed = TernaryBool.Undefined;
-            straightLaneChangingAllowed = TernaryBool.Undefined;
-            enterWhenBlockedAllowed = TernaryBool.Undefined;
-            pedestrianCrossingAllowed = TernaryBool.Undefined;
+            UturnAllowed = TernaryBool.Undefined;
+            NearTurnOnRedAllowed = TernaryBool.Undefined;
+            FarTurnOnRedAllowed = TernaryBool.Undefined;
+            StraightLaneChangingAllowed = TernaryBool.Undefined;
+            EnterWhenBlockedAllowed = TernaryBool.Undefined;
+            PedestrianCrossingAllowed = TernaryBool.Undefined;
 
             if (resetDefaults) {
-                defaultUturnAllowed = false;
-                defaultNearTurnOnRedAllowed = false;
-                defaultFarTurnOnRedAllowed = false;
-                defaultStraightLaneChangingAllowed = false;
-                defaultEnterWhenBlockedAllowed = false;
-                defaultPedestrianCrossingAllowed = false;
+                DefaultUturnAllowed = false;
+                DefaultNearTurnOnRedAllowed = false;
+                DefaultFarTurnOnRedAllowed = false;
+                DefaultStraightLaneChangingAllowed = false;
+                DefaultEnterWhenBlockedAllowed = false;
+                DefaultPedestrianCrossingAllowed = false;
             }
         }
 
@@ -127,12 +125,12 @@
                 "\tfarTurnOnRedAllowed = {2}\n\tstraightLaneChangingAllowed = {3}\n\t" +
                 "enterWhenBlockedAllowed = {4}\n\tpedestrianCrossingAllowed = {5}\n" +
                 "SegmentEndFlags]",
-                uturnAllowed,
-                nearTurnOnRedAllowed,
-                farTurnOnRedAllowed,
-                straightLaneChangingAllowed,
-                enterWhenBlockedAllowed,
-                pedestrianCrossingAllowed);
+                UturnAllowed,
+                NearTurnOnRedAllowed,
+                FarTurnOnRedAllowed,
+                StraightLaneChangingAllowed,
+                EnterWhenBlockedAllowed,
+                PedestrianCrossingAllowed);
         }
     }
 }

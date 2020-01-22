@@ -40,7 +40,7 @@ namespace TrafficManager.Traffic.Impl {
 
         /// <summary>
         /// Number of vehicles / vehicle length going to a certain segment.
-        /// First key: source lane index, second key: target segment id, value: total normalized vehicle length
+        /// First key: source lane index, second key: target segment id, value: total normalized vehicle length.
         /// </summary>
         private IDictionary<ushort, uint>[] numVehiclesMovingToSegmentId; // minimum speed required
         private IDictionary<ushort, uint>[] numVehiclesGoingToSegmentId; // no minimum speed required
@@ -336,7 +336,7 @@ namespace TrafficManager.Traffic.Impl {
                     segId,
                     (bool)Constants.ServiceFactory.NetService.IsStartNode(segId, NodeId));
 
-                if (!segEndMan.ExtSegmentEnds[index0].outgoing) {
+                if (!segEndMan.ExtSegmentEnds[index0].IsOutgoing) {
                     continue;
                 }
 

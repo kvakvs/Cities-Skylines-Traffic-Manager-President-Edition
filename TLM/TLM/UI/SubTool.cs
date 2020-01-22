@@ -107,9 +107,6 @@ namespace TrafficManager.UI {
             // OnLeftClickOverlay();
         }
 
-        /// <summary>
-        /// Called whenever the
-        /// </summary>
         public abstract void OnPrimaryClickOverlay();
 
         public virtual void OnSecondaryClickOverlay() { }

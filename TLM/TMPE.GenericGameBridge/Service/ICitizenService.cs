@@ -28,10 +28,8 @@
                                     ref CitizenInstance citizenInstance,
                                     CitizenInstanceHandler handler);
 
-        /// <summary>
-        /// Despawns and releases the given citizen instance.
-        /// </summary>
-        /// <param name="citizenInstanceId">Citizen instance id to release</param>
+        /// <summary>Despawns and releases the given citizen instance.</summary>
+        /// <param name="citizenInstanceId">Citizen instance id to release.</param>
         void ReleaseCitizenInstance(ushort citizenInstanceId);
     }
 }

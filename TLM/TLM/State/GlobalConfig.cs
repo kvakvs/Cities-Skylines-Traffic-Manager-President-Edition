@@ -32,9 +32,7 @@
 
         //private object ObserverLock = new object();
 
-        /// <summary>
-        /// Holds a list of observers which are being notified as soon as the configuration is updated
-        /// </summary>
+        // / <summary>Holds a list of observers which are being notified as soon as the configuration is updated.</summary>
         //private List<IObserver<GlobalConfig>> observers = new List<IObserver<GlobalConfig>>();
 
         static GlobalConfig() {
@@ -46,14 +44,10 @@
 
         private static DateTime ModifiedTime = DateTime.MinValue;
 
-        /// <summary>
-        /// Configuration version
-        /// </summary>
+        /// <summary>Configuration version.</summary>
         public int Version = LATEST_VERSION;
 
-        /// <summary>
-        /// Language to use (if null then the game's language is being used)
-        /// </summary>
+        /// <summary>Language to use (if null then the game's language is being used).</summary>
         [CanBeNull]
         public string LanguageCode = null;
 

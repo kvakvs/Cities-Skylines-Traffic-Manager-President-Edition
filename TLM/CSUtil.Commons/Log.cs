@@ -34,7 +34,7 @@
     ///     Log.DebugIf is optimized away if not in Debug mode
     ///     ⚠ Cannot capture out and ref values
     ///
-    /// Log.NotImpl logs an error if something is not implemented and only in debug mode
+    /// Log.NotImpl logs an error if something is not implemented and only in debug mode.
     /// </summary>
     public static class Log {
         private static readonly object LogLock = new object();
@@ -48,7 +48,7 @@
             Debug,
             Info,
             Warning,
-            Error
+            Error,
         }
 
         private static Stopwatch _sw = Stopwatch.StartNew();
@@ -59,22 +59,21 @@
                     File.Delete(LogFilename);
                 }
             }
-            catch (Exception) { }
+            catch (Exception) {
+                // ignored
+            }
         }
 
-        /// <summary>
-        /// Will log only if debug mode
-        /// </summary>
-        /// <param name="s">The text</param>
+        /// <summary>Will log only if debug mode.</summary>
+        /// <param name="s">The text.</param>
         [Conditional("DEBUG")]
         public static void _Debug(string s) {
             LogToFile(s, LogLevel.Debug);
         }
 
-        /// <summary>
-        /// Will log only if debug mode, the string is prepared using string.Format
-        /// </summary>
-        /// <param name="format">The text</param>
+        /// <summary>Will log only if debug mode, the string is prepared using string.Format.</summary>
+        /// <param name="format">The text.</param>
+        /// <param name="args">Args passed to string.Format.</param>
         [Conditional("DEBUG")]
         public static void _DebugFormat(string format, params object[] args) {
             LogToFile(string.Format(format, args), LogLevel.Debug);
@@ -83,10 +82,10 @@
         /// <summary>
         /// Will log only if debug mode is enabled and the condition is true
         /// NOTE: If a lambda contains values from `out` and `ref` scope args,
-        /// then you can not use a lambda, instead use `if (cond) { Log._Debug }`
+        /// then you can not use a lambda, instead use `if (cond) { Log._Debug }`.
         /// </summary>
-        /// <param name="cond">The condition</param>
-        /// <param name="s">The function which returns text to log</param>
+        /// <param name="cond">The condition.</param>
+        /// <param name="s">The function which returns text to log.</param>
         // TODO: Add log thread and replace formatted strings with lists to perform late formatting in that thread
         [Conditional("DEBUG")]
         public static void _DebugIf(bool cond, Func<string> s) {
@@ -108,10 +107,8 @@
             LogToFile(string.Format(format, args), LogLevel.Info);
         }
 
-        /// <summary>
-        /// Will log a warning only if debug mode
-        /// </summary>
-        /// <param name="s">The text</param>
+        /// <summary>Will log a warning only if debug mode.</summary>
+        /// <param name="s">The text.</param>
         [Conditional("DEBUG")]
         public static void _DebugOnlyWarning(string s) {
             LogToFile(s, LogLevel.Warning);
@@ -120,10 +117,10 @@
         /// <summary>
         /// Log a warning only in debug mode if cond is true
         /// NOTE: If a lambda contains values from `out` and `ref` scope args,
-        /// then you can not use a lambda, instead use `if (cond) { Log._DebugOnlyWarning() }`
+        /// then you can not use a lambda, instead use `if (cond) { Log._DebugOnlyWarning() }`.
         /// </summary>
-        /// <param name="cond">The condition</param>
-        /// <param name="s">The function which returns text to log</param>
+        /// <param name="cond">The condition.</param>
+        /// <param name="s">The function which returns text to log.</param>
         [Conditional("DEBUG")]
         public static void _DebugOnlyWarningIf(bool cond, Func<string> s) {
             if (cond) {
@@ -142,10 +139,10 @@
         /// <summary>
         /// Log a warning only if cond is true
         /// NOTE: If a lambda contains values from `out` and `ref` scope args,
-        /// then you can not use a lambda, instead use `if (cond) { Log.Warning() }`
+        /// then you can not use a lambda, instead use `if (cond) { Log.Warning() }`.
         /// </summary>
-        /// <param name="cond">The condition</param>
-        /// <param name="s">The function which returns text to log</param>
+        /// <param name="cond">The condition.</param>
+        /// <param name="s">The function which returns text to log.</param>
         public static void WarningIf(bool cond, Func<string> s) {
             if (cond) {
                 LogToFile(s(), LogLevel.Warning);
@@ -163,29 +160,25 @@
         /// <summary>
         /// Log an error only if cond is true
         /// NOTE: If a lambda contains values from `out` and `ref` scope args,
-        /// then you can not use a lambda, instead use `if (cond) { Log.Error() }`
+        /// then you can not use a lambda, instead use `if (cond) { Log.Error() }`.
         /// </summary>
-        /// <param name="cond">The condition</param>
-        /// <param name="s">The function which returns text to log</param>
+        /// <param name="cond">The condition.</param>
+        /// <param name="s">The function which returns text to log.</param>
         public static void ErrorIf(bool cond, Func<string> s) {
             if (cond) {
                 LogToFile(s(), LogLevel.Error);
             }
         }
 
-        /// <summary>
-        /// Log error only in debug mode
-        /// </summary>
-        /// <param name="s">The text</param>
+        /// <summary>Log error only in debug mode.</summary>
+        /// <param name="s">The text.</param>
         [Conditional("DEBUG")]
         public static void _DebugOnlyError(string s) {
             LogToFile(s, LogLevel.Error);
         }
 
-        /// <summary>
-        /// Writes an Error message about something not implemented. Debug only.
-        /// </summary>
-        /// <param name="what">The hint about what is not implemented</param>
+        /// <summary>Writes an Error message about something not implemented. Debug only.</summary>
+        /// <param name="what">The hint about what is not implemented.</param>
         [Conditional("DEBUG")]
         public static void NotImpl(string what) {
             LogToFile("Not implemented: " + what, LogLevel.Error);
@@ -204,7 +197,7 @@
                         $"{log}");
 
                     if (level == LogLevel.Warning || level == LogLevel.Error) {
-                        w.WriteLine((new System.Diagnostics.StackTrace()).ToString());
+                        w.WriteLine(new System.Diagnostics.StackTrace().ToString());
                         w.WriteLine();
                     }
                 }

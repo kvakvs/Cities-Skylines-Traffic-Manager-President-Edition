@@ -4,43 +4,38 @@
     using CSUtil.Commons;
 
     public struct ExtNode : IEquatable<ExtNode> {
-        /// <summary>
-        /// Node id
-        /// </summary>
-        public ushort nodeId;
+        /// <summary>Node id in game.</summary>
+        public readonly ushort NodeId;
 
-        /// <summary>
-        /// Connected segment ids
-        /// </summary>
-        public HashSet<ushort> segmentIds;
+        /// <summary>Connected segment ids, up to 8.</summary>
+        public readonly HashSet<ushort> SegmentIds;
 
-        /// <summary>
-        /// Last removed segment id
-        /// </summary>
-        public ISegmentEndId removedSegmentEndId;
+        /// <summary>Last removed segment id.</summary>
+        public ISegmentEndId RemovedSegmentEndId;
 
+        /// <inheritdoc />
         public override string ToString() {
             return string.Format(
-                "[ExtNode {0}\n\tnodeId={1}\n\tsegmentIds={2}\n\tremovedSegmentEndId={3}\nExtNode]",
+                "ExtNode {0} {{ nodeId={1}\n\tsegmentIds={2}\n\tremovedSegmentEndId={3} }}",
                 base.ToString(),
-                nodeId,
-                segmentIds.CollectionToString(),
-                removedSegmentEndId);
+                NodeId,
+                SegmentIds.CollectionToString(),
+                RemovedSegmentEndId);
         }
 
         public ExtNode(ushort nodeId) {
-            this.nodeId = nodeId;
-            segmentIds = new HashSet<ushort>();
-            removedSegmentEndId = null;
+            this.NodeId = nodeId;
+            SegmentIds = new HashSet<ushort>();
+            RemovedSegmentEndId = null;
         }
 
         public void Reset() {
-            segmentIds.Clear();
-            removedSegmentEndId = null;
+            SegmentIds.Clear();
+            RemovedSegmentEndId = null;
         }
 
         public bool Equals(ExtNode otherNode) {
-            return nodeId == otherNode.nodeId;
+            return NodeId == otherNode.NodeId;
         }
 
         public override bool Equals(object other) {
@@ -49,9 +44,9 @@
         }
 
         public override int GetHashCode() {
-            int prime = 31;
+            const int prime = 31;
             int result = 1;
-            result = prime * result + nodeId.GetHashCode();
+            result = (prime * result) + NodeId.GetHashCode();
             return result;
         }
     }

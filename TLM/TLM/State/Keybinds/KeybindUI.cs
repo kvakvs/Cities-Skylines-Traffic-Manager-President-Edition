@@ -9,31 +9,25 @@ namespace TrafficManager.State.Keybinds {
     using TrafficManager.UI;
     using UnityEngine;
 
-    /// <summary>
-    /// Helper for creating keyboard bindings Settings page.
-    /// </summary>
+    /// <summary>Helper for creating keyboard bindings Settings page.</summary>
     public class KeybindUI {
         private const float ROW_WIDTH = 744f - 15f;
         private const float ROW_HEIGHT = 34f;
 
         private KeybindSetting.Editable? currentlyEditedBinding_;
 
-        /// <summary>
-        /// Scrollable panel, first created on Unity Awake call
-        /// </summary>
+        /// <summary>Scrollable panel, first created on Unity Awake call.</summary>
         private UIComponent scrollPanel_;
 
-        /// <summary>
-        /// Group panel with text title for adding controls in it
-        /// </summary>
+        /// <summary>Group panel with text title for adding controls in it.</summary>
         private UIComponent currentGroup_;
 
         /// <summary>
         /// Creates a row for keyboard bindings editor. The row will contain a text
         /// label, a button to edit the key, and X button to delete the key.
         /// </summary>
-        /// <param name="root">The component where the UI is attached</param>
-        /// <returns>The new scrollable panel</returns>
+        /// <param name="root">The component where the UI is attached.</param>
+        /// <returns>The new scrollable panel.</returns>
         public static UIComponent CreateScrollablePanel(UIComponent root) {
             var scrollablePanel = root.AddUIComponent<UIScrollablePanel>();
             scrollablePanel.backgroundSprite = string.Empty;
@@ -79,10 +73,8 @@ namespace TrafficManager.State.Keybinds {
             scrollPanel_ = CreateScrollablePanel(component);
         }
 
-        /// <summary>
-        /// Create an empty row of ROW_HEIGHT pixels, with left-to-right layout
-        /// </summary>
-        /// <returns>The row panel</returns>
+        /// <summary>Create an empty row of ROW_HEIGHT pixels, with left-to-right layout.</summary>
+        /// <returns>The row panel.</returns>
         public UIPanel CreateRowPanel() {
             var rowPanel = currentGroup_.AddUIComponent<UIPanel>();
             rowPanel.size = new Vector2(ROW_WIDTH, ROW_HEIGHT);
@@ -93,10 +85,8 @@ namespace TrafficManager.State.Keybinds {
             return rowPanel;
         }
 
-        /// <summary>
-        /// Create a box with title
-        /// </summary>
-        /// <param name="text">Title</param>
+        /// <summary>Create a box with title.</summary>
+        /// <param name="text">Title.</param>
         private void BeginGroup(string text) {
             const string K_GROUP_TEMPLATE = "OptionsGroupTemplate";
             var groupPanel = scrollPanel_.AttachUIComponent(
@@ -110,9 +100,7 @@ namespace TrafficManager.State.Keybinds {
             currentGroup_ = groupPanel.Find("Content");
         }
 
-        /// <summary>
-        /// Close the group and expand the scroll panel to include it
-        /// </summary>
+        /// <summary>Close the group and expand the scroll panel to include it.</summary>
         private void EndGroup() {
             currentGroup_ = null;
         }
@@ -128,7 +116,9 @@ namespace TrafficManager.State.Keybinds {
             return label;
         }
 
-        public void CreateKeybindButton(UIPanel parent, KeybindSetting setting, SavedInputKey editKey,
+        public void CreateKeybindButton(UIPanel parent,
+                                        KeybindSetting setting,
+                                        SavedInputKey editKey,
                                         float widthFraction) {
             var btn = parent.AddUIComponent<UIButton>();
             btn.size = new Vector2(ROW_WIDTH * widthFraction, ROW_HEIGHT);
@@ -145,12 +135,10 @@ namespace TrafficManager.State.Keybinds {
             AddXButton(parent, editKey, btn);
         }
 
-        /// <summary>
-        /// Add X button to the right of another button
-        /// </summary>
-        /// <param name="parent">The panel to host the new button</param>
-        /// <param name="editKey">The key to be cleared on click</param>
-        /// <param name="alignTo">Align X button to the right of this</param>
+        /// <summary>Add X button to the right of another button.</summary>
+        /// <param name="parent">The panel to host the new button.</param>
+        /// <param name="editKey">The key to be cleared on click.</param>
+        /// <param name="alignTo">Align X button to the right of this.</param>
         private static void AddXButton(UIPanel parent, SavedInputKey editKey, UIButton alignTo) {
             var btnX = parent.AddUIComponent<UIButton>();
             btnX.autoSize = false;
@@ -164,11 +152,9 @@ namespace TrafficManager.State.Keybinds {
             };
         }
 
-        /// <summary>
-        /// Create read-only display of a key binding
-        /// </summary>
-        /// <param name="parent">The panel to host it</param>
-        /// <param name="showKey">The key to display</param>
+        /// <summary>Create read-only display of a key binding.</summary>
+        /// <param name="parent">The panel to host it.</param>
+        /// <param name="showKey">The key to display.</param>
         public void CreateKeybindText(UIPanel parent, SavedInputKey showKey, float widthFraction) {
             var label = parent.AddUIComponent<UILabel>();
             label.autoSize = false;
@@ -179,11 +165,9 @@ namespace TrafficManager.State.Keybinds {
             label.textColor = new Color32(128, 128, 128, 255); // grey
         }
 
-        /// <summary>
-        /// Performs group creation sequence: BeginGroup, add keybinds UI rows, EndGroup
-        /// </summary>
-        /// <param name="title">Translated title</param>
-        /// <param name="code">Function which adds keybind rows</param>
+        /// <summary>Performs group creation sequence: BeginGroup, add keybinds UI rows, EndGroup.</summary>
+        /// <param name="title">Translated title.</param>
+        /// <param name="code">Function which adds keybind rows.</param>
         public void AddGroup(string title, Action code) {
             BeginGroup(title);
             code.Invoke();
@@ -204,7 +188,7 @@ namespace TrafficManager.State.Keybinds {
 
                 var keybindButton = evParam.source as UIButton;
                 var inputKey = SavedInputKey.Encode(evParam.keycode, evParam.control, evParam.shift, evParam.alt);
-                var editable = (KeybindSetting.Editable) evParam.source.objectUserData;
+                var editable = (KeybindSetting.Editable)evParam.source.objectUserData;
                 var category = editable.Target.Category;
 
                 if (evParam.keycode != KeyCode.Escape) {
@@ -214,7 +198,7 @@ namespace TrafficManager.State.Keybinds {
                         var message = Translation.Options.Get("Keybinds.Dialog.Text:Keybind conflict")
                                       + "\n\n" + maybeConflict;
                         Log.Info($"Keybind conflict: {message}");
-                    UIView.library
+                        UIView.library
                           .ShowModal<ExceptionPanel>("ExceptionPanel")
                           .SetMessage("Key Conflict", message, false);
                     } else {
@@ -225,11 +209,11 @@ namespace TrafficManager.State.Keybinds {
 
                 keybindButton.text = Keybind.ToLocalizedString(editedBinding.Value.TargetKey);
                 currentlyEditedBinding_ = null;
-            } catch (Exception e) {Log.Error($"{e}");}
+            } catch (Exception e) { Log.Error($"{e}"); }
         }
 
         private void OnBindingMouseDown(UIComponent comp, UIMouseEventParameter evParam) {
-            var editable = (KeybindSetting.Editable) evParam.source.objectUserData;
+            var editable = (KeybindSetting.Editable)evParam.source.objectUserData;
             var keybindButton = evParam.source as UIButton;
 
             // This will only work if the user is not in the process of changing the shortcut
@@ -270,8 +254,8 @@ namespace TrafficManager.State.Keybinds {
         /// Set the button text to welcoming message. Push the button as modal blocking
         /// everything else on screen and capturing the input.
         /// </summary>
-        /// <param name="editable">The keysetting and inputkey inside it, to edit</param>
-        /// <param name="keybindButton">The button to become modal</param>
+        /// <param name="editable">The keysetting and inputkey inside it, to edit.</param>
+        /// <param name="keybindButton">The button to become modal.</param>
         private void StartKeybindEditMode(KeybindSetting.Editable editable, UIButton keybindButton) {
             currentlyEditedBinding_ = editable;
 
@@ -284,10 +268,8 @@ namespace TrafficManager.State.Keybinds {
             UIView.PushModal(keybindButton, OnKeybindModalPopped);
         }
 
-        /// <summary>
-        /// Called by the UIView when modal was popped without us knowing
-        /// </summary>
-        /// <param name="component">The button which temporarily was modal</param>
+        /// <summary>Called by the UIView when modal was popped without us knowing.</summary>
+        /// <param name="component">The button which temporarily was modal.</param>
         private void OnKeybindModalPopped(UIComponent component) {
             var keybindButton = component as UIButton;
             if (keybindButton != null && currentlyEditedBinding_ != null) {
@@ -300,9 +282,9 @@ namespace TrafficManager.State.Keybinds {
         /// For an inputkey, try find where possibly it is already used.
         /// This covers game Settings class, and self (OptionsKeymapping class).
         /// </summary>
-        /// <param name="k">Key to search for the conflicts</param>
-        /// <param name="sampleCategory">Check the same category keys if possible</param>
-        /// <returns>Empty string for no conflict, or the conflicting key name</returns>
+        /// <param name="editedKeybind">Key to search for the conflicts.</param>
+        /// <param name="sampleCategory">Check the same category keys if possible.</param>
+        /// <returns>Empty string for no conflict, or the conflicting key name.</returns>
         private string FindConflict(KeybindSetting.Editable editedKeybind,
                                     InputKey sample,
                                     string sampleCategory) {
@@ -376,10 +358,10 @@ namespace TrafficManager.State.Keybinds {
         /// and the same category if it is not Global. This will allow reusing key in other tool
         /// categories without conflicting.
         /// </summary>
-        /// <param name="testSample">The key to search for</param>
-        /// <param name="testSampleCategory">The category Global or some tool name</param>
-        /// <param name="fields">Fields of the key settings class</param>
-        /// <returns>Empty string if no conflicts otherwise the key name to print an error</returns>
+        /// <param name="testSample">The key to search for.</param>
+        /// <param name="testSampleCategory">The category Global or some tool name.</param>
+        /// <param name="fields">Fields of the key settings class.</param>
+        /// <returns>Empty string if no conflicts otherwise the key name to print an error.</returns>
         private static string FindConflictInTmpe(InputKey testSample,
                                                  string testSampleCategory,
                                                  FieldInfo[] fields) {

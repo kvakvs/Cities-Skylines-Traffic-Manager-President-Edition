@@ -347,7 +347,7 @@ namespace TrafficManager.UI.SubTools {
                         ExtSegment seg = segMan.ExtSegments[segmentId];
                         ExtSegmentEnd segEnd = segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, startNode)];
 
-                        if (seg.oneWay && segEnd.outgoing) {
+                        if (seg.oneWay && segEnd.IsOutgoing) {
                             continue;
                         }
 

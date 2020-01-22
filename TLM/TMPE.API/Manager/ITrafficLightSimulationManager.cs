@@ -20,19 +20,19 @@
         /// Retrieves the current traffic light state for the given segment end without checking if
         ///     any incoming vehicle/pedestrian traffic is present.
         /// </summary>
-        /// <param name="nodeId">junction node id</param>
-        /// <param name="fromSegmentId">source segment id</param>
-        /// <param name="fromLaneIndex">source lane index</param>
-        /// <param name="toSegmentId">target segment id</param>
-        /// <param name="segmentData">source segment data</param>
-        /// <param name="frame">simulation frame index</param>
-        /// <param name="vehicleLightState">traffic light state for vehicles</param>
-        /// <param name="pedestrianLightState">traffic light state for pedestrians</param>
+        /// <param name="nodeId">junction node id.</param>
+        /// <param name="fromSegmentId">source segment id.</param>
+        /// <param name="fromLaneIndex">source lane index.</param>
+        /// <param name="toSegmentId">target segment id.</param>
+        /// <param name="segmentData">source segment data.</param>
+        /// <param name="frame">simulation frame index.</param>
+        /// <param name="vehicleLightState">traffic light state for vehicles.</param>
+        /// <param name="pedestrianLightState">traffic light state for pedestrians.</param>
         void GetTrafficLightState(
 #if DEBUG
             ushort vehicleId,
             ref Vehicle vehicleData,
-# endif
+#endif
             ushort nodeId,
             ushort fromSegmentId,
             byte fromLaneIndex,
@@ -46,14 +46,14 @@
         /// Retrieves the current traffic light state for the given segment end and checks if any
         ///     incoming vehicle/pedestrian traffic is present.
         /// </summary>
-        /// <param name="nodeId">junction node id</param>
-        /// <param name="fromSegmentId">source segment id</param>
-        /// <param name="fromLaneIndex">source lane index</param>
-        /// <param name="toSegmentId">target segment id</param>
-        /// <param name="segmentData">source segment data</param>
-        /// <param name="frame">simulation frame index</param>
-        /// <param name="vehicleLightState">traffic light state for vehicles</param>
-        /// <param name="pedestrianLightState">traffic light state for pedestrians</param>
+        /// <param name="nodeId">junction node id.</param>
+        /// <param name="fromSegmentId">source segment id.</param>
+        /// <param name="fromLaneIndex">source lane index.</param>
+        /// <param name="toSegmentId">target segment id.</param>
+        /// <param name="segmentData">source segment data.</param>
+        /// <param name="frame">simulation frame index.</param>
+        /// <param name="vehicleLightState">traffic light state for vehicles.</param>
+        /// <param name="pedestrianLightState">traffic light state for pedestrians.</param>
         /// <param name="vehicles"><code>true</code> if incoming vehicle traffic is detected,
         ///     <code>false otherwise</code>. Note that this only yield correct results for vanilla
         ///     junctions.</param>
@@ -79,13 +79,13 @@
         /// <summary>
         /// Sets the visual traffic light state at the given segment end.
         /// </summary>
-        /// <param name="nodeId">junction node id</param>
-        /// <param name="segmentData">segment data</param>
-        /// <param name="frame">simulation frame index</param>
-        /// <param name="vehicleLightState">traffic light state for vehicles</param>
-        /// <param name="pedestrianLightState">traffic light state for pedestrians</param>
-        /// <param name="vehicles">has incoming vehicle traffic?</param>
-        /// <param name="pedestrians">has incoming pedetrian traffic?</param>
+        /// <param name="nodeId">junction node id.</param>
+        /// <param name="segmentData">segment data.</param>
+        /// <param name="frame">simulation frame index.</param>
+        /// <param name="vehicleLightState">traffic light state for vehicles.</param>
+        /// <param name="pedestrianLightState">traffic light state for pedestrians.</param>
+        /// <param name="vehicles">Whether it has incoming vehicle traffic.</param>
+        /// <param name="pedestrians">Whether it has incoming pedetrian traffic.</param>
         void SetVisualState(ushort nodeId,
                             ref NetSegment segmentData,
                             uint frame,

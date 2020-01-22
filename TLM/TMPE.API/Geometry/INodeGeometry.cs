@@ -5,44 +5,28 @@
     // Not used
     [UsedImplicitly]
     public interface INodeGeometry {
-        /// <summary>
-        /// Holds the node id
-        /// </summary>
+        /// <summary>Gets the node id.</summary>
         ushort NodeId { get; }
 
-        /// <summary>
-        /// Holds whether this node is a simple junction
-        /// </summary>
+        /// <summary>Gets a value indicating whether this node is a simple junction.</summary>
         bool SimpleJunction { get; }
 
-        /// <summary>
-        /// Holds the number of incoming segments
-        /// </summary>
+        /// <summary>Gets the number of incoming segments.</summary>
         int NumIncomingSegments { get; }
 
-        /// <summary>
-        /// Holds the number of outgoing segments
-        /// </summary>
+        /// <summary>Gets the number of outgoing segments.</summary>
         int NumOutgoingSegments { get; }
 
-        /// <summary>
-        /// Holds all connected segment ends
-        /// </summary>
+        /// <summary>Gets all connected segment ends.</summary>
         ISegmentEndGeometry[] SegmentEndGeometries { get; }
 
-        /// <summary>
-        /// Holds the number of the connected segment ends
-        /// </summary>
+        /// <summary>Gets the number of the connected segment ends.</summary>
         byte NumSegmentEnds { get; }
 
-        /// <summary>
-        /// Holds whether the node is valid
-        /// </summary>
+        /// <summary>Gets a value indicating whether the node is valid.</summary>
         bool Valid { get; }
 
-        /// <summary>
-        /// Recalculates the geometry
-        /// </summary>
+        /// <summary>Recalculates the geometry.</summary>
         void Recalculate();
     }
 }

@@ -17,7 +17,7 @@ namespace TrafficManager.State.Keybinds {
         // to be fields of type KeybindSetting.
 
         /// <value>
-        /// This input key can not be changed and is not checked, instead it is display only
+        /// This input key can not be changed and is not checked, instead it is display only.
         /// </value>
         protected static KeybindSetting ToolCancelViewOnly = new KeybindSetting(
             "Global",
@@ -82,8 +82,8 @@ namespace TrafficManager.State.Keybinds {
         /// Creates a row in the current panel with the label and the button
         /// which will prompt user to press a new key.
         /// </summary>
-        /// <param name="label">Localized label</param>
-        /// <param name="keybind">The setting to edit</param>
+        /// <param name="label">Localized label.</param>
+        /// <param name="keybind">The setting to edit.</param>
         protected void AddKeybindRowUI(string label, KeybindSetting keybind) {
             var settingsRow = keybindUi_.CreateRowPanel();
             if (uiRowCount_++ % 2 == 1) {
@@ -99,8 +99,8 @@ namespace TrafficManager.State.Keybinds {
         /// previous key editor.
         /// </summary>
         /// <param name="keybind"></param>
-        /// <param name="editable1">Whether main key binding is editable or readonly</param>
-        /// <param name="editable2">Whether alt key binding is editable or readonly</param>
+        /// <param name="editable1">Whether main key binding is editable or readonly.</param>
+        /// <param name="editable2">Whether alt key binding is editable or readonly.</param>
         protected void AddAlternateKeybindUI(string title, KeybindSetting keybind,
                                              bool editable1, bool editable2) {
             var settingsRow = keybindUi_.CreateRowPanel();
@@ -127,8 +127,8 @@ namespace TrafficManager.State.Keybinds {
         /// Creates a line of key mapping but does not allow changing it.
         /// Used to improve awareness.
         /// </summary>
-        /// <param name="label">Localized label</param>
-        /// <param name="keybind">The setting to edit</param>
+        /// <param name="label">Localized label.</param>
+        /// <param name="keybind">The setting to edit.</param>
         protected void AddReadOnlyKeybind(string label, KeybindSetting keybind) {
             var settingsRow = keybindUi_.CreateRowPanel();
             if (uiRowCount_++ % 2 == 1) {

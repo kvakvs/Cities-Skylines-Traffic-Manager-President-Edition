@@ -39,9 +39,9 @@ namespace TrafficManager.UI.Textures {
         /// <summary>
         /// Given the float speed, style and MPH option return a texture to render.
         /// </summary>
-        /// <param name="spd">float speed</param>
-        /// <param name="mphStyle">Signs theme</param>
-        /// <param name="unit">Mph or km/h</param>
+        /// <param name="spd">float speed.</param>
+        /// <param name="mphStyle">Signs theme.</param>
+        /// <param name="unit">Mph or km/h.</param>
         /// <returns></returns>
         public static Texture2D GetSpeedLimitTexture(SpeedValue spd, MphSignStyle mphStyle, SpeedUnit unit) {
             // Select the source for the textures based on unit and the theme
@@ -80,11 +80,9 @@ namespace TrafficManager.UI.Textures {
             return textures[trimIndex];
         }
 
-        /// <summary>
-        /// Given speed limit, round it up to nearest Kmph or Mph and produce a texture
-        /// </summary>
-        /// <param name="spd">Ingame speed</param>
-        /// <returns>The texture, hopefully it existed</returns>
+        /// <summary>Given speed limit, round it up to nearest Kmph or Mph and produce a texture.</summary>
+        /// <param name="spd">Ingame speed.</param>
+        /// <returns>The texture, hopefully it existed.</returns>
         public static Texture2D GetSpeedLimitTexture(SpeedValue spd) {
             var m = GlobalConfig.Instance.Main;
             var unit = m.DisplaySpeedLimitsMph ? SpeedUnit.Mph : SpeedUnit.Kmph;

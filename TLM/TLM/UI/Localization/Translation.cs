@@ -14,7 +14,7 @@ namespace TrafficManager.UI {
     /// 2. Visit the Files menu and click "Edit Schema" on each file
     /// 3. In the file selection dialog provide the recently exported CSV file
     /// 4. The columns selection window appears, scroll right and select the new language in some column
-    /// 5. In this file: <see cref="AvailableLanguageCodes"/> and <see cref="CsvColumnsToLocales"/>
+    /// 5. In this file: <see cref="AvailableLanguageCodes"/> and <see cref="CsvColumnsToLocales"/>.
     /// </summary>
     public class Translation {
         internal const string DEFAULT_LANGUAGE_CODE = "en";
@@ -145,10 +145,10 @@ namespace TrafficManager.UI {
 
         /// <summary>
         /// Translates a filename to current language. Also use this if LoadingExtension does not
-        /// have Translator field set (during construction initial loading)
+        /// have Translator field set (during construction initial loading).
         /// </summary>
-        /// <param name="filename">Filename to translate</param>
-        /// <returns>Filename with language inserted before extension</returns>
+        /// <param name="filename">Filename to translate.</param>
+        /// <returns>Filename with language inserted before extension.</returns>
         public static string GetTranslatedFileName(string filename, string language) {
             language = GetValidLanguageCode(language);
 
@@ -224,7 +224,7 @@ namespace TrafficManager.UI {
 
                 var key = new Locale.Key() {
                     m_Identifier = identifier,
-                    m_Key = tutorialKey
+                    m_Key = tutorialKey,
                 };
 
                 resetFun?.Invoke(locale, new object[] { key });
@@ -295,10 +295,8 @@ namespace TrafficManager.UI {
                 : DEFAULT_LANGUAGE_CODE;
         }
 
-        /// <summary>
-        /// Get the currently selected language.
-        /// </summary>
-        /// <returns>A valid language code</returns>
+        /// <summary>Get the currently selected language.</summary>
+        /// <returns>A valid language code.</returns>
         internal static string GetCurrentLanguage() {
             if (string.IsNullOrEmpty(CurrentLanguage)) {
                 SetCurrentLanguageToTMPELanguage();

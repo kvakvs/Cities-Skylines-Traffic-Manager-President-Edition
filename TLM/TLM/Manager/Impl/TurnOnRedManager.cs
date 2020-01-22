@@ -110,7 +110,7 @@ namespace TrafficManager.Manager.Impl {
                     int index0 = segmentEndManager.GetIndex(otherSegId,otherSeg.m_startNode == nodeId);
 
                     if (otherSegId != segmentId
-                        && segmentEndManager.ExtSegmentEnds[index0].outgoing)
+                        && segmentEndManager.ExtSegmentEnds[index0].IsOutgoing)
                     {
                         hasOutgoingSegment = true;
                         return false;
@@ -120,7 +120,7 @@ namespace TrafficManager.Manager.Impl {
                 });
 
             // check if traffic can flow to the node and that there is at least one left segment
-            if (!end.incoming || !hasOutgoingSegment) {
+            if (!end.IsIncoming || !hasOutgoingSegment) {
                 if (logTurnOnRed) {
                     Log._Debug($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
                                "outgoing one-way or insufficient number of outgoing segments.");
@@ -197,7 +197,7 @@ namespace TrafficManager.Manager.Impl {
 
             // check for incoming one-ways
             if (leftSegmentId != 0
-                && !segmentEndManager.ExtSegmentEnds[segmentEndManager.GetIndex(leftSegmentId, nodeId)].outgoing)
+                && !segmentEndManager.ExtSegmentEnds[segmentEndManager.GetIndex(leftSegmentId, nodeId)].IsOutgoing)
             {
                 if (logTurnOnRed) {
                     Log._Debug($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +
@@ -208,7 +208,7 @@ namespace TrafficManager.Manager.Impl {
             }
 
             if (rightSegmentId != 0
-                && !segmentEndManager.ExtSegmentEnds[segmentEndManager.GetIndex(rightSegmentId, nodeId)].outgoing)
+                && !segmentEndManager.ExtSegmentEnds[segmentEndManager.GetIndex(rightSegmentId, nodeId)].IsOutgoing)
             {
                 if (logTurnOnRed) {
                     Log._Debug($"TurnOnRedManager.UpdateSegmentEnd({end.segmentId}, {end.startNode}): " +

@@ -8,7 +8,7 @@ namespace TrafficManager.State.Keybinds {
     /// </summary>
     public class KeybindSetting {
         /// <summary>
-        /// Used by the GUI to tell the button event handler which key is being edited
+        /// Used by the GUI to tell the button event handler which key is being edited.
         /// </summary>
         public struct Editable {
             public KeybindSetting Target;
@@ -20,14 +20,10 @@ namespace TrafficManager.State.Keybinds {
         /// </summary>
         public string Category;
 
-        /// <summary>
-        /// The key itself, bound to a config file value
-        /// </summary>
+        /// <summary>The key itself, bound to a config file value.</summary>
         public SavedInputKey Key { get; }
 
-        /// <summary>
-        /// A second key, which can possibly be used or kept null
-        /// </summary>
+        /// <summary>A second key, which can possibly be used or kept null.</summary>
         [CanBeNull]
         public SavedInputKey AlternateKey { get; }
 
@@ -74,8 +70,8 @@ namespace TrafficManager.State.Keybinds {
         /// <summary>
         /// Produce a keybind tooltip text, or two if alternate key is set. Prefixed if not empty.
         /// </summary>
-        /// <param name="prefix">Prefix will be added if any key is not empty</param>
-        /// <returns>String tooltip with the key shortcut or two</returns>
+        /// <param name="prefix">Prefix will be added if any key is not empty.</param>
+        /// <returns>String tooltip with the key shortcut or two.</returns>
         public string ToLocalizedString(string prefix = "") {
             var result = default(string);
             if (!Keybind.IsEmpty(Key)) {
@@ -100,11 +96,9 @@ namespace TrafficManager.State.Keybinds {
                    || (AlternateKey != null && AlternateKey.IsPressed(e));
         }
 
-        /// <summary>
-        /// Check whether main or alt key are the same as k
-        /// </summary>
-        /// <param name="k">Find key</param>
-        /// <returns>We have the key</returns>
+        /// <summary>Check whether main or alt key are the same as k.</summary>
+        /// <param name="k">Find key.</param>
+        /// <returns>We have the key.</returns>
         public bool HasKey(InputKey k) {
             return Key.value == k
                    || (AlternateKey != null && AlternateKey.value == k);

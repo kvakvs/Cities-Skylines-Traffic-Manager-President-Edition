@@ -55,7 +55,7 @@ namespace TrafficManager.UI.Localization {
 
         /// <summary>
         /// Stores all languages (first key), and for each language stores translations
-        /// (indexed by the second key in the value)
+        /// (indexed by the second key in the value).
         /// </summary>
         internal Dictionary<string, Dictionary<string, string>> AllLanguages;
 
@@ -104,11 +104,11 @@ namespace TrafficManager.UI.Localization {
         }
 
         /// <summary>
-        /// Collects translations to map - collection of keyValue pairs for each language code
+        /// Collects translations to map - collection of keyValue pairs for each language code.
         /// </summary>
-        /// <param name="dataBlock">block of data (all rows excluding first)</param>
-        /// <param name="languageCodes">list of language codes</param>
-        /// <param name="allLanguages">result dictionary where all translation string will be collected</param>
+        /// <param name="dataBlock">block of data (all rows excluding first).</param>
+        /// <param name="languageCodes">list of language codes.</param>
+        /// <param name="allLanguages">result dictionary where all translation string will be collected.</param>
         private static void CollectTranslations(string dataBlock,
                                                 List<string> languageCodes,
                                                 out Dictionary<string, Dictionary<string, string>> allLanguages) {
@@ -142,13 +142,11 @@ namespace TrafficManager.UI.Localization {
             }
         }
 
-        /// <summary>
-        /// Split stream of data on first row and remaining dataBlock
-        /// </summary>
-        /// <param name="sr">stream to read from</param>
-        /// <param name="firstLine">first line of tranlation - row with language code names</param>
-        /// <param name="dataBlock">string block of data (all remaining lines)</param>
-        /// <returns>collection of valid translation rows</returns>
+        /// <summary>Split stream of data on first row and remaining dataBlock.</summary>
+        /// <param name="sr">stream to read from.</param>
+        /// <param name="firstLine">first line of tranlation - row with language code names.</param>
+        /// <param name="dataBlock">string block of data (all remaining lines).</param>
+        /// <returns>collection of valid translation rows.</returns>
         private static void ReadLines(StreamReader sr, out string firstLine, out string dataBlock) {
             firstLine = sr.ReadLine();
             dataBlock = sr.ReadToEnd();
@@ -159,8 +157,8 @@ namespace TrafficManager.UI.Localization {
         /// string (in this case double quotes are decoded to a quote character) and respects
         /// newlines \n too.
         /// </summary>
-        /// <param name="sr">Source for reading CSV</param>
-        /// <returns>Cell contents</returns>
+        /// <param name="sr">Source for reading CSV.</param>
+        /// <returns>Cell contents.</returns>
         private static string ReadCsvCell(StringReader sr) {
             var sb = new StringBuilder();
             if (sr.Peek() == '"') {
@@ -198,8 +196,8 @@ namespace TrafficManager.UI.Localization {
                                 }
                                 case '\r':
                                     //Followed by a \r then \n or just \n - end-of-string
-                                    sr.Read();// consume double quote
-                                    sr.Read();// consume \r
+                                    sr.Read(); // consume double quote
+                                    sr.Read(); // consume \r
                                     if (sr.Peek() == '\n') {
                                         sr.Read(); // consume \n
                                     }
@@ -244,9 +242,7 @@ namespace TrafficManager.UI.Localization {
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Used only once to write out existing translations
-        /// </summary>
+        /// <summary>Used only once to write out existing translations.</summary>
         [Conditional("DUMP_TRANSLATIONS")]
         private void DumpTranslationsToCsv() {
             string Quote(string s) {
@@ -279,6 +275,5 @@ namespace TrafficManager.UI.Localization {
 
             File.WriteAllText("lang.csv", sb.ToString(), Encoding.UTF8);
         }
-
     } // end class
 }

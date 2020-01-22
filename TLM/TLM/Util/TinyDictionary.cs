@@ -5,11 +5,9 @@
     using System.Linq;
     using CSUtil.Commons;
 
-    /// <summary>
-    /// Dictionary for use cases with a small number of entries and arbitrary keys
-    /// </summary>
-    /// <typeparam name="TKey">key type</typeparam>
-    /// <typeparam name="TValue">value type</typeparam>
+    /// <summary>Dictionary for use cases with a small number of entries and arbitrary keys.</summary>
+    /// <typeparam name="TKey">key type.</typeparam>
+    /// <typeparam name="TValue">value type.</typeparam>
     public class TinyDictionary<TKey, TValue> : IDictionary<TKey, TValue> {
         private TKey[] keys;
         private TValue[] values;

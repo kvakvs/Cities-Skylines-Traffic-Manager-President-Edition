@@ -5,43 +5,35 @@
     public interface IExtBuildingManager {
         // TODO define me!
 
-        /// <summary>
-        /// Extended building data
-        /// </summary>
+        /// <summary>Extended building data.</summary>
         ExtBuilding[] ExtBuildings { get; }
 
-        /// <summary>
-        /// Handles a building before a simulation step is performed.
-        /// </summary>
-        /// <param name="buildingId">building id</param>
-        /// <param name="data">building data</param>
+        /// <summary>Handles a building before a simulation step is performed.</summary>
+        /// <param name="buildingId">building id.</param>
+        /// <param name="data">building data.</param>
         void OnBeforeSimulationStep(ushort buildingId, ref Building data);
 
-        /// <summary>
-        /// Checks if the building with the given id is valid.
-        /// </summary>
-        /// <param name="buildingId">building id</param>
-        /// <returns><code>true</code> if the building is valid, <code>false</code> otherwise</returns>
+        /// <summary>Checks if the building with the given id is valid.</summary>
+        /// <param name="buildingId">building id.</param>
+        /// <returns>Whether the building is valid.</returns>
         bool IsValid(ushort buildingId);
 
-        /// <summary>
-        /// Resets the given building.
-        /// </summary>
-        /// <param name="extBuilding">ext. building</param>
+        /// <summary>Resets the given building.</summary>
+        /// <param name="extBuilding">ext. building.</param>
         void Reset(ref ExtBuilding extBuilding);
 
         /// <summary>
         /// Adds <paramref name="delta"/> units of parking space demand to the given building.
         /// </summary>
-        /// <param name="extBuilding">ext. building</param>
-        /// <param name="delta">demand to add</param>
+        /// <param name="extBuilding">ext. building.</param>
+        /// <param name="delta">demand to add.</param>
         void AddParkingSpaceDemand(ref ExtBuilding extBuilding, uint delta);
 
         /// <summary>
         /// Removes <paramref name="delta"/> units of parking space demand from the given building.
         /// </summary>
-        /// <param name="extBuilding">ext. building</param>
-        /// <param name="delta">demand to remove</param>
+        /// <param name="extBuilding">ext. building.</param>
+        /// <param name="delta">demand to remove.</param>
         void RemoveParkingSpaceDemand(ref ExtBuilding extBuilding, uint delta);
 
         /// <summary>
@@ -50,10 +42,10 @@
         ///     according to the distance present between the building and the given parking
         ///     position <paramref name="parkPos"/>.
         /// </summary>
-        /// <param name="extBuilding">ext. building</param>
-        /// <param name="parkPos">parking position</param>
-        /// <param name="minDelta">minimum demand to add</param>
-        /// <param name="minDelta">maximum demand to add</param>
+        /// <param name="extBuilding">ext. building.</param>
+        /// <param name="parkPos">parking position.</param>
+        /// <param name="minDelta">minimum demand to add.</param>
+        /// <param name="maxDelta">maximum demand to add.</param>
         void ModifyParkingSpaceDemand(ref ExtBuilding extBuilding,
                                       Vector3 parkPos,
                                       int minDelta = -10,
@@ -64,10 +56,9 @@
         ///     Depending on the flag <paramref name="outgoing"/>, either ougoing or incoming demand
         ///     values are updated.
         /// </summary>
-        /// <param name="extBuilding">ext. building</param>
-        /// <param name="delta">demand to add</param>
-        /// <param name="outgoing">if <code>true</code>, demand is counted as outgoing, otherwise
-        ///     demand is counted as incoming</param>
+        /// <param name="extBuilding">ext. building.</param>
+        /// <param name="delta">demand to add.</param>
+        /// <param name="outgoing"><code>true</code>: demand is counted as outgoing, else incoming.</param>
         void AddPublicTransportDemand(ref ExtBuilding extBuilding, uint delta, bool outgoing);
 
         /// <summary>
@@ -75,10 +66,9 @@
         ///     Depending on the flag <paramref name="outgoing"/>, either ougoing or incoming demand
         ///     values are updated.
         /// </summary>
-        /// <param name="extBuilding">ext. building</param>
-        /// <param name="delta">demand to remove</param>
-        /// <param name="outgoing">if <code>true</code>, demand is counted as outgoing, otherwise
-        ///     demand is counted as incoming</param>
+        /// <param name="extBuilding">ext. building.</param>
+        /// <param name="delta">demand to remove.</param>
+        /// <param name="outgoing"><code>true</code>: demand is counted as outgoing, else incoming.</param>
         void RemovePublicTransportDemand(ref ExtBuilding extBuilding, uint delta, bool outgoing);
     }
 }

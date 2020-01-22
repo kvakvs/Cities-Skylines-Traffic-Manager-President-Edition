@@ -2,7 +2,7 @@
     using JetBrains.Annotations;
 
     /// <summary>
-    /// Represents vehicle restrictions effect strength
+    /// Represents vehicle restrictions effect strength.
     /// </summary>
     public enum VehicleRestrictionsAggression {
         /// <summary>
@@ -25,6 +25,6 @@
         /// <summary>
         /// Strict aggression
         /// </summary>
-        Strict = 3
+        Strict = 3,
     }
 }

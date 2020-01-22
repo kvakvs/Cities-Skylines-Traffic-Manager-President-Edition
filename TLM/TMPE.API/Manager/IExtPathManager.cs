@@ -1,9 +1,7 @@
 ﻿namespace TrafficManager.API.Manager {
     using UnityEngine;
 
-    /// <summary>
-    /// Provides path functions
-    /// </summary>
+    /// <summary>Provides path functions.</summary>
     public interface IExtPathManager {
         // TODO documentation
 

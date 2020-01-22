@@ -14,9 +14,7 @@ namespace TrafficManager.TrafficLight.Impl {
     using TrafficManager.State.ConfigData;
     using TrafficManager.Util;
 
-    /// <summary>
-    /// Represents the set of custom traffic lights located at a node
-    /// </summary>
+    /// <summary>Represents the set of custom traffic lights located at a node.</summary>
     public class CustomSegmentLights
         : SegmentEndId,
           ICustomSegmentLights
@@ -48,9 +46,7 @@ namespace TrafficManager.TrafficLight.Impl {
             get; private set;
         } = new ExtVehicleType?[0];
 
-        /// <summary>
-        /// Vehicles types that have their own traffic light
-        /// </summary>
+        /// <summary>Vehicles types that have their own traffic light.</summary>
         private ExtVehicleType SeparateVehicleTypes {
             get;
             set;
@@ -495,7 +491,7 @@ namespace TrafficManager.TrafficLight.Impl {
             var autoPedestrianLightState = RoadBaseAI.TrafficLightState.Green;
             bool lht = Constants.ServiceFactory.SimulationService.TrafficDrivesOnLeft;
 
-            if (!(segEnd.incoming && seg.oneWay)) {
+            if (!(segEnd.IsIncoming && seg.oneWay)) {
                 for (int i = 0; i < 8; ++i) {
                     ushort otherSegmentId = node.GetSegment(i);
 
@@ -508,7 +504,7 @@ namespace TrafficManager.TrafficLight.Impl {
                         otherSegmentId,
                         (bool)Constants.ServiceFactory.NetService.IsStartNode(otherSegmentId, NodeId));
 
-                    if (!segEndMan.ExtSegmentEnds[index0].incoming) {
+                    if (!segEndMan.ExtSegmentEnds[index0].IsIncoming) {
                         continue;
                     }
 

@@ -56,9 +56,7 @@ namespace TrafficManager {
         // public static TrafficManagerMode ToolMode { get; set; }
         // public static TrafficManagerTool TrafficManagerTool { get; set; }
 
-        /// <summary>
-        /// Contains loaded languages and lookup functions for text translations
-        /// </summary>
+        /// <summary>Contains loaded languages and lookup functions for text translations.</summary>
         public static Translation TranslationDatabase = new Translation();
 
         public static UIBase BaseUI { get; private set; }
@@ -69,9 +67,7 @@ namespace TrafficManager {
 
         public static bool IsGameLoaded { get; private set; }
 
-        /// <summary>
-        /// Manually deployed Harmony patches
-        /// </summary>
+        /// <summary>Manually deployed Harmony patches.</summary>
         public static IList<ManualHarmonyPatch> ManualHarmonyPatches { get; } =
             new List<ManualHarmonyPatch> {
                 new ManualHarmonyPatch() {
@@ -82,7 +78,7 @@ namespace TrafficManager {
                         new[] { typeof(ushort), typeof(Building).MakeByRefType() },
                         null),
                     prefix = new HarmonyMethod(
-                        typeof(Patch._CommonBuildingAI.SimulationStepPatch).GetMethod("Prefix"))
+                        typeof(Patch._CommonBuildingAI.SimulationStepPatch).GetMethod("Prefix")),
                 },
                 new ManualHarmonyPatch() {
                     method = typeof(RoadBaseAI).GetMethod(
@@ -93,7 +89,7 @@ namespace TrafficManager {
                         null),
                     prefix = new HarmonyMethod(
                         typeof(Patch._RoadBaseAI.TrafficLightSimulationStepPatch).GetMethod(
-                            "Prefix"))
+                            "Prefix")),
                 },
                 new ManualHarmonyPatch() {
                     method = typeof(TrainTrackBaseAI).GetMethod(
@@ -104,7 +100,7 @@ namespace TrafficManager {
                         null),
                     prefix = new HarmonyMethod(
                         typeof(Patch._TrainTrackBase.LevelCrossingSimulationStepPatch).GetMethod(
-                            "Prefix"))
+                            "Prefix")),
                 },
                 new ManualHarmonyPatch() {
                     method = typeof(RoadBaseAI).GetMethod(
@@ -114,20 +110,16 @@ namespace TrafficManager {
                         new[] { typeof(ushort), typeof(NetSegment).MakeByRefType() },
                         null),
                     prefix = new HarmonyMethod(
-                        typeof(Patch._RoadBaseAI.SegmentSimulationStepPatch).GetMethod("Prefix"))
-                }
+                        typeof(Patch._RoadBaseAI.SegmentSimulationStepPatch).GetMethod("Prefix")),
+                },
             };
 
-        /// <summary>
-        /// Method redirection states for Harmony-driven patches
-        /// </summary>
+        /// <summary>Method redirection states for Harmony-driven patches.</summary>
         public static IDictionary<MethodBase, RedirectCallsState> HarmonyMethodStates {
             get;
         } = new Dictionary<MethodBase, RedirectCallsState>();
 
-        /// <summary>
-        /// Method redirection states for attribute-driven detours
-        /// </summary>
+        /// <summary>Method redirection states for attribute-driven detours.</summary>
         public static IDictionary<MethodInfo, RedirectCallsState> DetouredMethodStates {
             get;
             private set;

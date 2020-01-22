@@ -17,28 +17,20 @@
             /// <summary>
             /// Traversal stops when a segment consists of a different number of filtered lanes than the initial segment
             /// </summary>
-            LaneCount = 1
+            LaneCount = 1,
         }
 
         public class SegmentLaneVisitData {
-            /// <summary>
-            /// Segment visit data
-            /// </summary>
+            /// <summary>Segment visit data.</summary>
             public SegmentVisitData SegVisitData;
 
-            /// <summary>
-            /// Iteration index
-            /// </summary>
+            /// <summary>Iteration index.</summary>
             public int SortedLaneIndex;
 
-            /// <summary>
-            /// current traversed lane position
-            /// </summary>
+            /// <summary>current traversed lane position.</summary>
             public LanePos CurLanePos;
 
-            /// <summary>
-            /// matching initial lane position
-            /// </summary>
+            /// <summary>matching initial lane position.</summary>
             public LanePos InitLanePos;
 
             public SegmentLaneVisitData(SegmentVisitData segVisitData,

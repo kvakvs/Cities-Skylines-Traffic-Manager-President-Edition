@@ -145,8 +145,9 @@
 
     public interface IRoutingManager {
         // TODO documentation
+
         /// <summary>
-        /// Structs for path-finding that contain required segment-related routing data
+        /// Structs for path-finding that contain required segment-related routing data.
         /// </summary>
         SegmentRoutingData[] SegmentRoutings { get; }
 

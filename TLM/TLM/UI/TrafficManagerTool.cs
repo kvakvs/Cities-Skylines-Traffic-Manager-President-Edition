@@ -37,9 +37,8 @@ namespace TrafficManager.UI {
         private const bool HoverPrefersSmallerSegments = true;
 
         public const float DEBUG_CLOSE_LOD = 300f;
-        /// <summary>
-        /// Square of the distance, where overlays are not rendered
-        /// </summary>
+
+        /// <summary>Square of the distance, where overlays are not rendered.</summary>
         public const float MAX_OVERLAY_DISTANCE_SQR = 450f * 450f;
 
         private IDictionary<ToolMode, SubTool> subTools_;
@@ -298,7 +297,7 @@ namespace TrafficManager.UI {
         /// <summary>
         /// Renders overlays (node selection, segment selection, etc.)
         /// </summary>
-        /// <param name="cameraInfo">The camera to use</param>
+        /// <param name="cameraInfo">The camera to use.</param>
         public override void RenderOverlay(RenderManager.CameraInfo cameraInfo) {
             // Log._Debug($"RenderOverlay");
             // Log._Debug($"RenderOverlay: {_toolMode} {activeSubTool} {this.GetHashCode()}");
@@ -318,9 +317,7 @@ namespace TrafficManager.UI {
             }
         }
 
-        /// <summary>
-        /// Primarily handles click events on hovered nodes/segments
-        /// </summary>
+        /// <summary>Primarily handles click events on hovered nodes/segments.</summary>
         protected override void OnToolUpdate() {
             base.OnToolUpdate();
 
@@ -448,7 +445,7 @@ namespace TrafficManager.UI {
             return pos;
         }
 
-        /// <returns>the average half width of all connected segments</returns>
+        /// <returns>the average half width of all connected segments.</returns>
         private static float CalculateNodeRadius(ushort nodeId) {
 
             float sum_half_width = 0;
@@ -476,7 +473,7 @@ namespace TrafficManager.UI {
         /// Draws a half sausage at segment end.
         /// </summary>
         /// <param name="segmentId"></param>
-        /// <param name="cut">The lenght of the highlight [0~1] </param>
+        /// <param name="cut">The lenght of the highlight [0~1].</param>
         /// <param name="bStartNode">Determines the direction of the half sausage.</param>
         public void DrawCutSegmentEnd(RenderManager.CameraInfo cameraInfo,
                        ushort segmentId,
@@ -760,9 +757,7 @@ namespace TrafficManager.UI {
             return hovered;
         }
 
-        /// <summary>
-        /// Transforms a world point into a screen point
-        /// </summary>
+        /// <summary>Transforms a world point into a screen point.</summary>
         /// <param name="worldPos"></param>
         /// <param name="screenPos"></param>
         /// <returns></returns>
@@ -773,9 +768,7 @@ namespace TrafficManager.UI {
             return screenPos.z >= 0;
         }
 
-        /// <summary>
-        /// Shows a tutorial message. Must be called by a Unity thread.
-        /// </summary>
+        /// <summary>Shows a tutorial message. Must be called by a Unity thread.</summary>
         /// <param name="localeKey"></param>
         public static void ShowAdvisor(string localeKey) {
             if (!GlobalConfig.Instance.Main.EnableTutorial) {
@@ -989,9 +982,7 @@ namespace TrafficManager.UI {
         }
 
 
-        /// <summary>
-        /// Displays lane ids over lanes
-        /// </summary>
+        /// <summary>Displays lane ids over lanes.</summary>
         private void GuiDisplayLanes(ushort segmentId,
                                      ref NetSegment segment,
                                      ref NetInfo segmentInfo)
@@ -1164,9 +1155,7 @@ namespace TrafficManager.UI {
             GUI.Label(labelRect, labelStr, _counterStyle);
         }
 
-        /// <summary>
-        /// Displays segment ids over segments
-        /// </summary>
+        /// <summary>Displays segment ids over segments.</summary>
         private void GuiDisplaySegments() {
             TrafficMeasurementManager trafficMeasurementManager = TrafficMeasurementManager.Instance;
             NetManager netManager = Singleton<NetManager>.instance;
@@ -1310,9 +1299,7 @@ namespace TrafficManager.UI {
             }
         }
 
-        /// <summary>
-        /// Displays node ids over nodes
-        /// </summary>
+        /// <summary>Displays node ids over nodes.</summary>
         private void GuiDisplayNodes() {
             var counterStyle = new GUIStyle();
             NetManager netManager = Singleton<NetManager>.instance;
@@ -1356,9 +1343,7 @@ namespace TrafficManager.UI {
             }
         }
 
-        /// <summary>
-        /// Displays vehicle ids over vehicles
-        /// </summary>
+        /// <summary>Displays vehicle ids over vehicles.</summary>
         private void GuiDisplayVehicles() {
             GUIStyle _counterStyle = new GUIStyle();
             SimulationManager simManager = Singleton<SimulationManager>.instance;
@@ -1458,9 +1443,7 @@ namespace TrafficManager.UI {
             }
         }
 
-        /// <summary>
-        /// Displays debug data over citizens
-        /// </summary>
+        /// <summary>Displays debug data over citizens.</summary>
         private void GuiDisplayCitizens() {
             GUIStyle _counterStyle = new GUIStyle();
             CitizenManager citManager = Singleton<CitizenManager>.instance;
@@ -1698,13 +1681,11 @@ namespace TrafficManager.UI {
             }
         }
 
-        /// <summary>
-        /// Creates a texture width x height, filled with color
-        /// </summary>
-        /// <param name="width">Size</param>
-        /// <param name="height">Size</param>
-        /// <param name="col">Fill color</param>
-        /// <returns>Texture 2D</returns>
+        /// <summary>Creates a texture width x height, filled with color.</summary>
+        /// <param name="width">Size x.</param>
+        /// <param name="height">Size y.</param>
+        /// <param name="col">Fill color.</param>
+        /// <returns>Texture 2D.</returns>
         public static Texture2D CreateSolidColorTexture(int width, int height, Color col) {
             var pix = new Color[width * height];
 
@@ -1719,12 +1700,10 @@ namespace TrafficManager.UI {
             return result;
         }
 
-        /// <summary>
-        /// Creates new texture with changed alpha transparency for every pixel
-        /// </summary>
-        /// <param name="tex">Copy from</param>
-        /// <param name="alpha">New alpha</param>
-        /// <returns>New texture</returns>
+        /// <summary>Creates new texture with changed alpha transparency for every pixel.</summary>
+        /// <param name="tex">Copy from.</param>
+        /// <param name="alpha">New alpha.</param>
+        /// <returns>New texture.</returns>
         public static Texture2D AdjustAlpha(Texture2D tex, float alpha) {
             Color[] texColors = tex.GetPixels();
             Color[] retPixels = new Color[texColors.Length];
@@ -1758,8 +1737,8 @@ namespace TrafficManager.UI {
             return false;
         }
 
-        /// <summary>Displays modal popup with an error</summary>
-        /// <param name="text">The localized message</param>
+        /// <summary>Displays modal popup with an error.</summary>
+        /// <param name="text">The localized message.</param>
         public void ShowError(string text) {
             if (text == null) {
                 return;

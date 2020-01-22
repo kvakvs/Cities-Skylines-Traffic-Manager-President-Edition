@@ -134,7 +134,7 @@ namespace TrafficManager.Manager.Impl {
             IExtSegmentManager segMan = Constants.ManagerFactory.ExtSegmentManager;
             IExtSegmentEndManager segEndMan = Constants.ManagerFactory.ExtSegmentEndManager;
 
-            if (segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, startNode)].outgoing &&
+            if (segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, startNode)].IsOutgoing &&
                 segMan.ExtSegments[segmentId].oneWay) {
                 reason = SetPrioritySignError.NotIncoming;
                 Log._DebugIf(
@@ -830,7 +830,7 @@ namespace TrafficManager.Manager.Impl {
         /// <param name="incomingCurPos">incoming vehicle current path position</param>
         /// <param name="incomingNextPos">incoming vehicle next path position</param>
         /// <param name="incomingOnMain">true if the incoming vehicle is coming from a main road</param>
-        /// <returns>true if the target vehicle has priority, false otherwise</returns>
+        /// <returns>Whether the target vehicle has priority.</returns>
         private bool HasVehiclePriority(bool logPriority,
                                         ushort vehicleId,
                                         ref Vehicle vehicle,
@@ -1014,7 +1014,7 @@ namespace TrafficManager.Manager.Impl {
         /// <param name="incomingToRelDir">relative incoming vehicle destination direction</param>
         /// <param name="vehicleId">(optional) target vehicle id</param>
         /// <param name="incomingVehicleId">(optional) incoming vehicle id</param>
-        /// <returns>true if both vehicles are on a collision course, false otherwise</returns>
+        /// <returns>Whether both vehicles are on a collision course.</returns>
         public bool DetectCollision(bool logPriority,
                                     ref PathUnit.Position curPos,
                                     ushort transitNodeId,
@@ -1336,7 +1336,7 @@ namespace TrafficManager.Manager.Impl {
         ///     <paramref name="rightLaneIndex"/>.
         /// </summary>
         /// <param name="logPriority">enable debugging</param>
-        /// <param name="segmentId">segment id</param>
+        /// <param name="segmentId">segment id.</param>
         /// <param name="nodeId">transit node id</param>
         /// <param name="leftLaneIndex">lane index that is checked to lie left</param>
         /// <param name="rightLaneIndex">lane index that is checked to lie right</param>

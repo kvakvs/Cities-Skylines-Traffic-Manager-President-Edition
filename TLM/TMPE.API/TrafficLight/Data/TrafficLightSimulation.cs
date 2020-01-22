@@ -5,40 +5,38 @@ namespace TrafficManager.API.TrafficLight.Data {
     using TrafficManager.API.TrafficLight;
 
     public struct TrafficLightSimulation {
-        /// <summary>
-        /// Timed traffic light by node id
-        /// </summary>
-        public ITimedTrafficLights timedLight;
+        /// <summary>Timed traffic light by node id.</summary>
+        public ITimedTrafficLights TimedLight;
 
-        public ushort nodeId;
-        public TrafficLightSimulationType type;
+        public ushort NodeId;
+        public TrafficLightSimulationType Type;
 
+        /// <inheritdoc />
         public override string ToString() {
             return string.Format(
-                "[TrafficLightSimulation\n\tnodeId = {0}\n\ttype = {1}\n\ttimedLight = {2}\n" +
-                "TrafficLightSimulation]",
-                nodeId,
-                type,
-                timedLight);
+                "TrafficLightSimulation {{ nodeId = {0}\n\ttype = {1}\n\ttimedLight = {2} }}",
+                NodeId,
+                Type,
+                TimedLight);
         }
 
         public TrafficLightSimulation(ushort nodeId) {
             // Log._Debug($"TrafficLightSimulation: Constructor called @ node {nodeId}");
-            this.nodeId = nodeId;
-            timedLight = null;
-            type = TrafficLightSimulationType.None;
+            this.NodeId = nodeId;
+            TimedLight = null;
+            Type = TrafficLightSimulationType.None;
         }
 
         public bool IsTimedLight() {
-            return type == TrafficLightSimulationType.Timed && timedLight != null;
+            return Type == TrafficLightSimulationType.Timed && TimedLight != null;
         }
 
         public bool IsManualLight() {
-            return type == TrafficLightSimulationType.Manual;
+            return Type == TrafficLightSimulationType.Manual;
         }
 
         public bool IsTimedLightRunning() {
-            return IsTimedLight() && timedLight.IsStarted();
+            return IsTimedLight() && TimedLight.IsStarted();
         }
 
         public bool IsSimulationRunning() {
@@ -55,22 +53,22 @@ namespace TrafficManager.API.TrafficLight.Data {
             }
 
             if (IsTimedLightRunning()) {
-                timedLight.SimulationStep();
+                TimedLight.SimulationStep();
             }
         }
 
         public void Update() {
-            Log._Trace($"TrafficLightSimulation.Update(): called for node {nodeId}");
+            Log._Trace($"TrafficLightSimulation.Update(): called for node {NodeId}");
 
             if (IsTimedLight()) {
-                timedLight.OnGeometryUpdate();
-                timedLight.Housekeeping();
+                TimedLight.OnGeometryUpdate();
+                TimedLight.Housekeeping();
             }
         }
 
         public void Housekeeping() {
             // TODO improve & remove
-            timedLight?.Housekeeping(); // removes unused step lights
+            TimedLight?.Housekeeping(); // removes unused step lights
         }
     }
 }

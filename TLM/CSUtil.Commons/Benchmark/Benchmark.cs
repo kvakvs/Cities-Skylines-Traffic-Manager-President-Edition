@@ -7,9 +7,7 @@
         private BenchmarkProfile profile;
 
 #if !BENCHMARK
-        /// <summary>
-        /// Does nothing when #define BENCHMARK is not set
-        /// </summary>
+        /// <summary>Does nothing when #define BENCHMARK is not set.</summary>
         public class NullBenchmark : IDisposable {
             public void Dispose() { }
         }
@@ -18,7 +16,7 @@
 #endif
 
         /// <summary>
-        /// Creates Benchmark object if #define BENCHMARK is set, otherwise creates a NullBenchmark
+        /// Creates Benchmark object if #define BENCHMARK is set, otherwise creates a NullBenchmark.
         /// </summary>
         public static IDisposable MaybeCreateBenchmark(string id = null, string postfix = null) {
 #if BENCHMARK

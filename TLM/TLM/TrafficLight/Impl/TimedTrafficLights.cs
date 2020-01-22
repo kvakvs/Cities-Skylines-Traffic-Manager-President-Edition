@@ -42,15 +42,13 @@ namespace TrafficManager.TrafficLight.Impl {
         private bool started;
 
         /// <summary>
-        /// Indicates the total amount and direction of rotation that was applied to this timed traffic light
+        /// Indicates the total amount and direction of rotation that was applied to this timed traffic light.
         /// </summary>
         public short RotationOffset { get; private set; }
 
         public IDictionary<ushort, IDictionary<ushort, ArrowDirection>> Directions { get; private set; }
 
-        /// <summary>
-        /// Segment ends that were set up for this timed traffic light
-        /// </summary>
+        /// <summary>Segment ends that were set up for this timed traffic light.</summary>
         private ICollection<ISegmentEndId> segmentEndIds = new HashSet<ISegmentEndId>();
 
         public override string ToString() {
@@ -952,7 +950,7 @@ namespace TrafficManager.TrafficLight.Impl {
 
         /// <summary>
         /// Moves all custom segment lights that are associated with an invalid segment to a special
-        /// container for later reuse
+        /// container for later reuse.
         /// </summary>
         private void BackUpInvalidStepSegments(ref NetNode node) {
 #if DEBUG

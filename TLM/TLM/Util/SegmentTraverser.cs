@@ -40,29 +40,21 @@ namespace TrafficManager.Util {
         }
 
         public class SegmentVisitData {
-            /// <summary>
-            /// Previously visited ext. segment
-            /// </summary>
+            /// <summary>Previously visited ext. segment.</summary>
             public ExtSegment PrevSeg;
 
-            /// <summary>
-            /// Current ext. segment
-            /// </summary>
+            /// <summary>Current ext. segment.</summary>
             public ExtSegment CurSeg;
 
-            /// <summary>
-            /// If true the current segment geometry has been reached on a path via the initial segment's start node
-            /// </summary>
+            /// <summary>If true the current segment geometry has been reached on a path via the
+            /// initial segment's start node.</summary>
             public bool ViaInitialStartNode;
 
-            /// <summary>
-            /// If true the current segment geometry has been reached on a path via the current segment's start node
-            /// </summary>
+            /// <summary>If true the current segment geometry has been reached on a path via the
+            /// current segment's start node.</summary>
             public bool ViaStartNode;
 
-            /// <summary>
-            /// If true this is the initial segment
-            /// </summary>
+            /// <summary>If true this is the initial segment.</summary>
             public bool Initial;
 
             public SegmentVisitData(ref ExtSegment prevSeg,
@@ -231,8 +223,8 @@ namespace TrafficManager.Util {
                     extSegEndMan.ExtSegmentEnds[extSegEndMan.GetIndex(nextSegmentId, nextIsStartNode)];
 
                 if (direction == TraverseDirection.AnyDirection ||
-                    (direction == TraverseDirection.Incoming && nextSegEnd.incoming) ||
-                    (direction == TraverseDirection.Outgoing && nextSegEnd.outgoing))
+                    (direction == TraverseDirection.Incoming && nextSegEnd.IsIncoming) ||
+                    (direction == TraverseDirection.Outgoing && nextSegEnd.IsOutgoing))
                 {
                     if (side == TraverseSide.AnySide) {
                         nextSegmentIds.Add(nextSegmentId);

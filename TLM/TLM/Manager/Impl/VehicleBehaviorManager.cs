@@ -1004,7 +1004,7 @@ namespace TrafficManager.Manager.Impl {
         /// <param name="position">current path position</param>
         /// <param name="targetNodeId">transit node</param>
         /// <param name="laneID">current lane</param>
-        /// <returns>true, if the vehicle may change segments, false otherwise.</returns>
+        /// <returns>true, if the vehicle may change segments.</returns>
         public bool MayChangeSegment(ushort frontVehicleId,
                                      ref Vehicle vehicleData,
                                      float sqrVelocity,
@@ -1058,7 +1058,7 @@ namespace TrafficManager.Manager.Impl {
         /// <param name="laneID">current lane</param>
         /// <param name="nextPosition">next path position</param>
         /// <param name="nextTargetNodeId">next target node</param>
-        /// <returns>true, if the vehicle may change segments, false otherwise.</returns>
+        /// <returns>true, if the vehicle may change segments.</returns>
         public bool MayChangeSegment(ushort frontVehicleId,
                                      ref Vehicle vehicleData,
                                      float sqrVelocity,

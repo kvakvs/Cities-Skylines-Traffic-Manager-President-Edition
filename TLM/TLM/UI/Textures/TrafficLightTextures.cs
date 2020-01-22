@@ -2,9 +2,7 @@ namespace TrafficManager.UI.Textures {
     using UnityEngine;
     using static TextureResources;
 
-    /// <summary>
-    /// Textures for UI controlling the traffic lights
-    /// </summary>
+    /// <summary>Textures for UI controlling the traffic lights.</summary>
     public static class TrafficLightTextures {
         public static readonly Texture2D RedLight;
         public static readonly Texture2D RedLightForwardLeft;

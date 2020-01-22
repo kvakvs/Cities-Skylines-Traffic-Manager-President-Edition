@@ -894,11 +894,11 @@
         /// <summary>
         /// Handles a path-finding success for activated Parking AI.
         /// </summary>
-        /// <param name="instanceId">Citizen instance id</param>
-        /// <param name="instanceData">Citizen instance data</param>
+        /// <param name="instanceId">citizen instance id.</param>
+        /// <param name="instanceData">citizen instance data.</param>
         /// <param name="extInstance">Extended citizen instance data</param>
         /// <param name="extCitizen">Extended citizen data</param>
-        /// <param name="citizenData">Citizen data</param>
+        /// <param name="citizenData">citizen data.</param>
         /// <returns>soft path state</returns>
         protected ExtSoftPathState OnCitizenPathFindSuccess(ushort instanceId,
                                                             ref CitizenInstance instanceData,
@@ -1517,11 +1517,11 @@
         /// <summary>
         /// Handles a path-finding failure for citizen instances and activated Parking AI.
         /// </summary>
-        /// <param name="instanceId">Citizen instance id</param>
-        /// <param name="instanceData">Citizen instance data</param>
+        /// <param name="instanceId">citizen instance id.</param>
+        /// <param name="instanceData">citizen instance data.</param>
         /// <param name="extInstance">extended citizen instance information</param>
         /// <param name="extCitizen">extended citizen information</param>
-        /// <returns>if true path-finding may be repeated (path mode has been updated), false otherwise</returns>
+        /// <returns>if true path-finding may be repeated (path mode has been updated).</returns>
         protected ExtSoftPathState OnCitizenPathFindFailure(ushort instanceId,
                                                             ref CitizenInstance instanceData,
                                                             ref ExtCitizenInstance extInstance,
@@ -1709,7 +1709,7 @@
         /// <param name="vehicleData">Vehicle data</param>
         /// <param name="driverInstanceData">Driver citizen instance data</param>
         /// <param name="driverExtInstance">extended citizen instance information of driver</param>
-        /// <returns>if true path-finding may be repeated (path mode has been updated), false otherwise</returns>
+        /// <returns>if true path-finding may be repeated (path mode has been updated).</returns>
         [UsedImplicitly]
         protected ExtSoftPathState OnCarPathFindFailure(ushort vehicleId,
                                                         ref Vehicle vehicleData,

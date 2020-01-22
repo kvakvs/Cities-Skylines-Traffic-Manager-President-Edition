@@ -6,9 +6,7 @@ namespace TrafficManager.UI.Textures {
     using TrafficManager.Util;
     using static TextureResources;
 
-    /// <summary>
-    /// Textures for UI controlling crossings, junctions and nodes
-    /// </summary>
+    /// <summary>Textures for UI controlling crossings, junctions and nodes.</summary>
     public static class JunctionUITextures {
         public static readonly Texture2D LaneChangeForbiddenTexture2D;
         public static readonly Texture2D LaneChangeAllowedTexture2D;

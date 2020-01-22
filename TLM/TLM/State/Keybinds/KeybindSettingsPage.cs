@@ -16,9 +16,7 @@ namespace TrafficManager.State.Keybinds {
                                 CreateUI_LaneConnector);
         }
 
-        /// <summary>
-        /// Fill Global keybinds section
-        /// </summary>
+        /// <summary>Fill Global keybinds section.</summary>
         private void CreateUI_Global() {
             AddReadOnlyKeybind(Translation.Options.Get("Keybind:Generic exit subtool key"),
                                ToolCancelViewOnly);
@@ -46,9 +44,7 @@ namespace TrafficManager.State.Keybinds {
                             SpeedLimitsTool);
         }
 
-        /// <summary>
-        /// Fill Lane Connector keybinds section
-        /// </summary>
+        /// <summary>Fill Lane Connector keybinds section.</summary>
         private void CreateUI_LaneConnector() {
             AddKeybindRowUI(Translation.Options.Get("Keybind.LaneConnector:Stay in lane"),
                             LaneConnectorStayInLane);

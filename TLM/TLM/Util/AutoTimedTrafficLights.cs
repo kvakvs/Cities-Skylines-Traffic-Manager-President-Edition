@@ -18,14 +18,14 @@ namespace TrafficManager.Util {
         private static readonly bool SeparateLanes = true;
 
         /// <summary>
-        /// allow cars to take the short turn whenever there is the opportunity. LHT is opposite
+        /// allow cars to take the short turn whenever there is the opportunity. LHT is opposite.
         /// </summary>
         private static readonly bool AllowShortTurns = true;
 
         /// <summary>
         /// Due to game limitations, sometimes allowing short turn can lead to car collisions, unless if
         /// timed traffic lights interface changes. should we currently do not setup lane connector. Should we
-        /// allow short turns in such situations anyways?
+        /// allow short turns in such situations anyways? To discuss.
         /// </summary>
         private static readonly bool AllowCollidingShortTurns = false;
 
@@ -39,13 +39,11 @@ namespace TrafficManager.Util {
         private static ref TrafficLightSimulation Sim(ushort nodeId) => ref tlsMan.TrafficLightSimulations[nodeId];
         private static ref ITimedTrafficLights TimedLight(ushort nodeId) => ref Sim(nodeId).timedLight;
 
-        /// <summary>
-        /// The directions toward which the traffic light is green
-        /// </summary>
+        /// <summary>The directions toward which the traffic light is green.</summary>
         private enum GreenDir {
             AllRed,
             AllGreen,
-            ShortOnly
+            ShortOnly,
         }
 
         public enum ErrorResult {
@@ -61,7 +59,7 @@ namespace TrafficManager.Util {
         /// roads without outgoing lanes are excluded as they do not need traffic lights
         /// the segments are arranged in a clockwise direction (Counter clock wise for LHT).
         /// </summary>
-        /// <param name="nodeId">the junction</param>
+        /// <param name="nodeId">the junction.</param>
         /// <returns>a list of segments aranged in counter clockwise direction.</returns>
         private static List<ushort> ArrangedSegments(ushort nodeId) {
             ClockDirection clockDir = RHT ? ClockDirection.CounterClockwise : ClockDirection.CounterClockwise;
@@ -83,19 +81,17 @@ namespace TrafficManager.Util {
         /// Adds an empty timed traffic light if it does not already exists.
         /// additionally allocates dedicated turning lanes if possible.
         /// </summary>
-        /// <param name="nodeId">the junction for which we want a traffic light</param>
-        /// <returns>true if sucessful</returns>
+        /// <param name="nodeId">the junction for which we want a traffic light.</param>
+        /// <returns>Whether sucessful.</returns>
         public static bool Add(ushort nodeId) {
             List<ushort> nodeGroup = new List<ushort>(1);
             nodeGroup.Add(nodeId);
             return tlsMan.SetUpTimedTrafficLight(nodeId, nodeGroup);
         }
 
-        /// <summary>
-        /// Creates and configures default traffic the input junction
-        /// </summary>
-        /// <param name="nodeId">input junction</param>
-        /// <returns>true if successful</returns>
+        /// <summary>Creates and configures default traffic the input junction.</summary>
+        /// <param name="nodeId">input junction.</param>
+        /// <returns>Whether successful.</returns>
         public static ErrorResult Setup(ushort nodeId) {
             if(tlsMan.HasTimedSimulation(nodeId)) {
                 return ErrorResult.TTLExists;
@@ -215,10 +211,10 @@ namespace TrafficManager.Util {
         /// <summary>
         /// Configures traffic light for and for all lane types at input segmentId, nodeId, and step.
         /// </summary>
-        /// <param name="step"></param>
-        /// <param name="nodeId"></param>
-        /// <param name="segmentId"></param>
-        /// <param name="m">Determines which directions are green</param>
+        /// <param name="step">TTL step.</param>
+        /// <param name="nodeId">Node id.</param>
+        /// <param name="segmentId">Segment id.</param>
+        /// <param name="m">Determines which directions are green.</param>
         private static void SetupHelper(ITimedTrafficLightsStep step, ushort nodeId, ushort segmentId, GreenDir m) {
             bool startNode = (bool)netService.IsStartNode(segmentId, nodeId);
 
@@ -278,7 +274,7 @@ namespace TrafficManager.Util {
 
         /// <summary>
         /// converst forward, short-turn and far-turn to mainLight, leftLigh, rightLight respectively according to
-        /// whether the traffic is RHT or LHT
+        /// whether the traffic is RHT or LHT.
         /// </summary>
         private static void SetStates(
             ICustomSegmentLight liveSegmentLight,
@@ -309,8 +305,8 @@ namespace TrafficManager.Util {
 
         /// <summary>filters out oneway roads from segList. Assumes all segments in seglist have outgoing lanes. </summary>
         /// <param name="segList"> List of segments returned by SWSegments. </param>
-        /// <param name="count">number of two way roads connected to the junction</param>
-        /// <returns>A list of all two way roads connected to the junction</returns>
+        /// <param name="count">number of two way roads connected to the junction.</param>
+        /// <returns>A list of all two way roads connected to the junction.</returns>
         private static List<ushort> TwoWayRoads(List<ushort> segList, out int count) {
             List<ushort> segList2 = new List<ushort>();
             foreach(var segId in segList) {
@@ -324,7 +320,7 @@ namespace TrafficManager.Util {
 
         /// <param name="nodeId"></param>
         /// <param name="count">number of all one way roads at input junction.</param>
-        /// <returns>list of all oneway roads connected to input junction</returns>
+        /// <returns>list of all oneway roads connected to input junction.</returns>
         private static List<ushort> OneWayRoads(ushort nodeId, out int count) {
             List<ushort> segList2 = new List<ushort>();
             ref NetNode node = ref Singleton<NetManager>.instance.m_nodes.m_buffer[nodeId];
@@ -387,10 +383,10 @@ namespace TrafficManager.Util {
         /// <summary>
         /// count the lanes going out or comming in a segment from inpout junctions.
         /// </summary>
-        /// <param name="segmentId"></param>
-        /// <param name="nodeId"></param>
-        /// <param name="outgoing">true if lanes our going out toward the junction</param>
-        /// <returns></returns>
+        /// <param name="segmentId">Segment id.</param>
+        /// <param name="nodeId">Node id.</param>
+        /// <param name="outgoing">true if lanes our going out toward the junction.</param>
+        /// <returns>Lane count.</returns>
         private static int CountLanes(ushort segmentId, ushort nodeId, bool outgoing = true) {
             return netService.GetSortedLanes(
                                 segmentId,

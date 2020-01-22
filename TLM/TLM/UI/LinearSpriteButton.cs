@@ -119,9 +119,7 @@
 
         public abstract void HandleClick(UIMouseEventParameter p);
 
-        /// <summary>
-        /// Override this to return non-null, and it will display a keybind tooltip
-        /// </summary>
+        /// <summary>Override this to return non-null, and it will display a keybind tooltip.</summary>
         public virtual KeybindSetting ShortcutKey => null;
 
         protected override void OnClick(UIMouseEventParameter p) {

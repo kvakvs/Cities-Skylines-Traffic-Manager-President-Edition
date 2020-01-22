@@ -7,9 +7,9 @@ namespace TrafficManager.API.Manager {
         /// <summary>
         /// Retrieves the array index for the given segment end id.
         /// </summary>
-        /// <param name="segmentId">segment id</param>
-        /// <param name="startNode">start node</param>
-        /// <returns>array index for the segment end id</returns>
+        /// <param name="segmentId">segment id.</param>
+        /// <param name="startNode">start node.</param>
+        /// <returns>array index for the segment end id.</returns>
         int GetIndex(ushort segmentId, bool startNode);
     }
 }

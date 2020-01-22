@@ -487,7 +487,7 @@ namespace TrafficManager.Manager.Impl {
                 NetNode.Flags.None &&
                 node.Info?.m_class?.m_service != ItemClass.Service.Beautification &&
                 !(isOneWay && segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, startNode)]
-                                       .outgoing) && node.CountSegments() > 2;
+                                       .IsOutgoing) && node.CountSegments() > 2;
 #if DEBUG
             if (DebugSwitch.JunctionRestrictions.Get()) {
                 Log._DebugFormat(
@@ -553,7 +553,7 @@ namespace TrafficManager.Manager.Impl {
             bool ret = (node.m_flags & NetNode.Flags.Junction) != NetNode.Flags.None &&
                        node.Info?.m_class?.m_service != ItemClass.Service.Beautification &&
                        !(isOneWay
-                         && segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, startNode)].outgoing);
+                         && segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, startNode)].IsOutgoing);
 
 #if DEBUG
             if (DebugSwitch.JunctionRestrictions.Get()) {

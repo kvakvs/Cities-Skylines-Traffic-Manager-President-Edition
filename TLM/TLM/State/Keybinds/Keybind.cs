@@ -16,8 +16,8 @@ namespace TrafficManager.State.Keybinds {
         /// <summary>
         /// Returns shortcut as a string in user's language. Modify for special handling.
         /// </summary>
-        /// <param name="k">The key</param>
-        /// <returns>The shortcut, example: "Ctrl + Alt + H"</returns>
+        /// <param name="k">The key.</param>
+        /// <returns>The shortcut, example: "Ctrl + Alt + H".</returns>
         public static string ToLocalizedString(SavedInputKey k) {
             if (k.value == SavedInputKey.Empty) {
                 return Translation.Options.Get("Keybind:None");

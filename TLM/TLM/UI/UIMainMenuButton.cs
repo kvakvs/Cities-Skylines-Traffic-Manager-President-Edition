@@ -75,9 +75,7 @@ namespace TrafficManager.UI {
             UpdateTooltip();
         }
 
-        /// <summary>
-        /// Reset the tooltip (or set for the first time), or if keybinding has changed
-        /// </summary>
+        /// <summary>Reset the tooltip (or set for the first time), or if keybinding has changed.</summary>
         public void UpdateTooltip() {
             tooltip = Translation.Menu.Get("Tooltip:Toggle Main Menu")
                       + GetTooltip();

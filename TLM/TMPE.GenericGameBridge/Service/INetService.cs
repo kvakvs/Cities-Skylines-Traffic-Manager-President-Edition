@@ -65,14 +65,14 @@ namespace GenericGameBridge.Service {
         /// Assembles a geometrically sorted list of lanes for the given segment.
         /// If the <paramref name="startNode"/> parameter is set only lanes supporting traffic to flow towards the given node are added to the list, otherwise all matched lanes are added.
         /// </summary>
-        /// <param name="segmentId">segment id</param>
-        /// <param name="segment">segment data</param>
-        /// <param name="startNode">reference node (optional)</param>
-        /// <param name="laneTypeFilter">lane type filter, lanes must match this filter mask</param>
-        /// <param name="vehicleTypeFilter">vehicle type filter, lanes must match this filter mask</param>
+        /// <param name="segmentId">segment id.</param>
+        /// <param name="segment">segment data.</param>
+        /// <param name="startNode">reference node (optional).</param>
+        /// <param name="laneTypeFilter">lane type filter, lanes must match this filter mask.</param>
+        /// <param name="vehicleTypeFilter">vehicle type filter, lanes must match this filter mask.</param>
         /// <param name="reverse">if true, lanes are ordered from right to left (relative to the
-        ///     segment's start node / the given node), otherwise from left to right</param>
-        /// <returns>sorted list of lanes for the given segment</returns>
+        ///     segment's start node / the given node), otherwise from left to right.</param>
+        /// <returns>sorted list of lanes for the given segment.</returns>
         IList<LanePos> GetSortedLanes(ushort segmentId,
                                       ref NetSegment segment,
                                       bool? startNode,
@@ -113,16 +113,16 @@ namespace GenericGameBridge.Service {
 
         bool? IsStartNode(ushort segmentId, ushort nodeId);
 
-        /// <summary>tail node>-------->head node</summary>
+        /// <summary>tail node>-------->head node.</summary>
         ushort GetHeadNode(ushort segmentId);
 
-        /// <summary>tail node>-------->head node</summary>
+        /// <summary>tail node>-------->head node.</summary>
         ushort GetHeadNode(ref NetSegment segment);
 
-        /// <summary>tail node>-------->head node</summary>
+        /// <summary>tail node>-------->head node.</summary>
         ushort GetTailNode(ushort segmentId);
 
-        /// <summary>tail node>-------->head node</summary>
+        /// <summary>tail node>-------->head node.</summary>
         ushort GetTailNode(ref NetSegment segment);
     }
 }

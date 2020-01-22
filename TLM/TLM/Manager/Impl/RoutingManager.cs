@@ -367,8 +367,8 @@ namespace TrafficManager.Manager.Impl {
             ExtSegmentEnd endSegEnd = segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, false)];
 
             SegmentRoutings[segmentId].highway = seg.highway;
-            SegmentRoutings[segmentId].startNodeOutgoingOneWay = seg.oneWay && startSegEnd.outgoing;
-            SegmentRoutings[segmentId].endNodeOutgoingOneWay = seg.oneWay && endSegEnd.outgoing;
+            SegmentRoutings[segmentId].startNodeOutgoingOneWay = seg.oneWay && startSegEnd.IsOutgoing;
+            SegmentRoutings[segmentId].endNodeOutgoingOneWay = seg.oneWay && endSegEnd.IsOutgoing;
 
             if (logRouting) {
                 Log._Debug("RoutingManager.RecalculateSegmentRoutingData: Calculated routing " +
@@ -504,11 +504,11 @@ namespace TrafficManager.Manager.Impl {
                     bool start = (bool)Constants.ServiceFactory.NetService.IsStartNode(segId, nextNodeId);
                     ExtSegmentEnd segEnd = segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segId, start)];
 
-                    if (segEnd.incoming) {
+                    if (segEnd.IsIncoming) {
                         ++numIncoming;
                     }
 
-                    if (segEnd.outgoing) {
+                    if (segEnd.IsOutgoing) {
                         ++numOutgoing;
                     }
                 }
@@ -525,7 +525,7 @@ namespace TrafficManager.Manager.Impl {
 
             // determine if highway rules should be applied
             bool onHighway = Options.highwayRules && nextAreOnlyOneWayHighways &&
-                             prevEnd.outgoing && prevSeg.oneWay && prevSeg.highway;
+                             prevEnd.IsOutgoing && prevSeg.oneWay && prevSeg.highway;
             bool applyHighwayRules = onHighway && nextIsSimpleJunction;
             bool applyHighwayRulesAtJunction = applyHighwayRules && nextIsRealJunction;
             bool iterateViaGeometry = applyHighwayRulesAtJunction &&
@@ -544,7 +544,7 @@ namespace TrafficManager.Manager.Impl {
                     "prevEndGeo.OutgoingOneWay={13} prevSegGeo.IsHighway()={14} iterateViaGeometry={15}",
                     segmentId, laneIndex, laneId, startNode, segmentId, nextSegmentId, nextNodeId,
                     onHighway, applyHighwayRules, applyHighwayRulesAtJunction, Options.highwayRules,
-                    nextIsSimpleJunction, nextAreOnlyOneWayHighways, prevEnd.outgoing && prevSeg.oneWay,
+                    nextIsSimpleJunction, nextAreOnlyOneWayHighways, prevEnd.IsOutgoing && prevSeg.oneWay,
                     prevSeg.highway, iterateViaGeometry);
                 Log._DebugFormat(
                     "RoutingManager.RecalculateLaneEndRoutingData({0}, {1}, {2}, {3}): " +

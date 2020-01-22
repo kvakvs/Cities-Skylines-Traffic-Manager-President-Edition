@@ -9,19 +9,21 @@
         /// <summary>
         /// Tries to park a passenger car near its current position.
         /// </summary>
-        /// <param name="vehicleID">vehicle id</param>
-        /// <param name="vehicleData">vehicle data</param>
-        /// <param name="vehicleInfo">vehicle info</param>
-        /// <param name="driverCitizenId">driver citizen id</param>
-        /// <param name="driverCitizenInstanceId">driver citizen instance id</param>
-        /// <param name="driverExtInstance">driver extended citizen instance</param>
-        /// <param name="targetBuildingId">target building id</param>
-        /// <param name="pathPos">current path position</param>
-        /// <param name="nextPath">next path unit id</param>
-        /// <param name="nextPositionIndex">next path position index</param>
-        /// <param name="segmentOffset">current segment offset</param>
-        /// <returns><code>true</code> if parking (will) succeed, <code>false</code> otherwise</returns>
-        bool ParkPassengerCar(ushort vehicleID,
+        /// <param name="vehicleId">vehicle id.</param>
+        /// <param name="vehicleData">vehicle data.</param>
+        /// <param name="vehicleInfo">vehicle info.</param>
+        /// <param name="driverCitizenId">driver citizen id.</param>
+        /// <param name="driverCitizen">Citizen.</param>
+        /// <param name="driverCitizenInstanceId">driver citizen instance id.</param>
+        /// <param name="driverInstance">Driver instance.</param>
+        /// <param name="driverExtInstance">driver extended citizen instance.</param>
+        /// <param name="targetBuildingId">target building id.</param>
+        /// <param name="pathPos">current path position.</param>
+        /// <param name="nextPath">next path unit id.</param>
+        /// <param name="nextPositionIndex">next path position index.</param>
+        /// <param name="segmentOffset">current segment offset.</param>
+        /// <returns>Whether the parking attempt succeeds.</returns>
+        bool ParkPassengerCar(ushort vehicleId,
                               ref Vehicle vehicleData,
                               VehicleInfo vehicleInfo,
                               uint driverCitizenId,
@@ -35,26 +37,24 @@
                               int nextPositionIndex,
                               out byte segmentOffset);
 
-        /// <summary>
-        /// Starts path-finding for a passenger car.
-        /// </summary>
-        /// <param name="vehicleID">vehicle id</param>
-        /// <param name="vehicleData">vehicle data</param>
+        /// <summary>Starts path-finding for a passenger car.</summary>
+        /// <param name="vehicleId">vehicle id.</param>
+        /// <param name="vehicleData">vehicle data.</param>
         /// <param name="vehicleInfo">vehicle info (in stock code, this is passed via
-        ///     VehicleAI.m_info. Don't know if this is actually always equal to vehicleData.Info)</param>
-        /// <param name="driverInstanceId">driver citizen instance id</param>
-        /// <param name="driverInstanceData">driver citizen instance data</param>
-        /// <param name="driverExtInstance">driver extended citizen instance</param>
-        /// <param name="startPos">start position</param>
-        /// <param name="endPos">end position</param>
-        /// <param name="startBothWays">allow considering both road sides at start position?</param>
-        /// <param name="endBothWays">allow considering both road sides at end position?</param>
-        /// <param name="undergroundTarget">is target in undeground?</param>
-        /// <param name="isHeavyVehicle">is this a heavy vehicle?</param>
-        /// <param name="hasCombustionEngine">does the vehicle have a combustion engine?</param>
-        /// <param name="ignoreBlocked">should blocked roads be ignored?</param>
-        /// <returns></returns>
-        bool StartPassengerCarPathFind(ushort vehicleID,
+        ///     VehicleAI.m_info. Don't know if this is actually always equal to vehicleData.Info).</param>
+        /// <param name="driverInstanceId">driver citizen instance id.</param>
+        /// <param name="driverInstanceData">driver citizen instance data.</param>
+        /// <param name="driverExtInstance">driver extended citizen instance.</param>
+        /// <param name="startPos">start position.</param>
+        /// <param name="endPos">end position.</param>
+        /// <param name="startBothWays">Whether to allow both road sides at start position.</param>
+        /// <param name="endBothWays">Whether to allow considering both road sides at end position.</param>
+        /// <param name="undergroundTarget">Whether target is undeground.</param>
+        /// <param name="isHeavyVehicle">Whether this is a heavy vehicle.</param>
+        /// <param name="hasCombustionEngine">Whether vehicle has a combustion engine.</param>
+        /// <param name="ignoreBlocked">Whether blocked roads should be ignored.</param>
+        /// <returns>Pathfind started success flag.</returns>
+        bool StartPassengerCarPathFind(ushort vehicleId,
                                        ref Vehicle vehicleData,
                                        VehicleInfo vehicleInfo,
                                        ushort driverInstanceId,
@@ -74,10 +74,10 @@
         ///     traffic light is active at the transit node
         /// space reservation is only allowed if the light is not red.
         /// </summary>
-        /// <param name="transitNodeId">transition node id</param>
-        /// <param name="sourcePos">source path position</param>
-        /// <param name="targetPos">target path position</param>
-        /// <returns></returns>
+        /// <param name="transitNodeId">transition node id.</param>
+        /// <param name="sourcePos">source path position.</param>
+        /// <param name="targetPos">target path position.</param>
+        /// <returns>Whether reservation was allowed.</returns>
         bool IsSpaceReservationAllowed(ushort transitNodeId,
                                        PathUnit.Position sourcePos,
                                        PathUnit.Position targetPos);
@@ -86,26 +86,28 @@
         /// Determines if the given vehicle is driven by a reckless driver.
         /// Note that the result is cached in VehicleState for individual vehicles.
         /// </summary>
-        /// <param name="vehicleId"></param>
-        /// <param name="vehicleData"></param>
-        /// <returns></returns>
+        /// <param name="vehicleId">Id in game.</param>
+        /// <param name="vehicleData">Accompanying data for the vehicle.</param>
+        /// <returns>Whether is a reckless driver.</returns>
         bool IsRecklessDriver(ushort vehicleId, ref Vehicle vehicleData);
 
         /// <summary>
         /// Identifies the best lane on the next segment.
         /// </summary>
-        /// <param name="vehicleId">queried vehicle</param>
-        /// <param name="vehicleData">vehicle data</param>
-        /// <param name="vehicleState">vehicle state</param>
-        /// <param name="currentLaneId">current lane id</param>
-        /// <param name="currentPathPos">current path position</param>
-        /// <param name="currentSegInfo">current segment info</param>
-        /// <param name="next1PathPos">1st next path position</param>
-        /// <param name="next1SegInfo">1st next segment info</param>
-        /// <param name="next2PathPos">2nd next path position</param>
-        /// <param name="next3PathPos">3rd next path position</param>
-        /// <param name="next4PathPos">4th next path position</param>
-        /// <returns>target position lane index</returns>
+        /// <param name="vehicleId">queried vehicle.</param>
+        /// <param name="vehicleData">vehicle data.</param>
+        /// <param name="vehicleState">vehicle state.</param>
+        /// <param name="currentLaneId">current lane id.</param>
+        /// <param name="currentPathPos">current path position.</param>
+        /// <param name="currentSegInfo">current segment info.</param>
+        /// <param name="next1PathPos">1st next path position.</param>
+        /// <param name="next1SegInfo">1st next segment info.</param>
+        /// <param name="next2PathPos">2nd next path position.</param>
+        /// <param name="next2SegInfo">3rd next segment info.</param>
+        /// <param name="next3PathPos">3rd next path position.</param>
+        /// <param name="next3SegInfo">4th next segment info.</param>
+        /// <param name="next4PathPos">4th next path position.</param>
+        /// <returns>target position lane index.</returns>
         int FindBestLane(ushort vehicleId,
                          ref Vehicle vehicleData,
                          ref ExtVehicle vehicleState,
@@ -123,9 +125,9 @@
         /// <summary>
         /// Determines if the given vehicle is allowed to find an alternative lane.
         /// </summary>
-        /// <param name="vehicleId">queried vehicle</param>
-        /// <param name="vehicleData">vehicle data</param>
-        /// <param name="vehicleState">vehicle state</param>
+        /// <param name="vehicleId">queried vehicle.</param>
+        /// <param name="vehicleData">vehicle data.</param>
+        /// <param name="vehicleState">vehicle state.</param>
         /// <returns></returns>
         bool MayFindBestLane(ushort vehicleId,
                              ref Vehicle vehicleData,
@@ -134,11 +136,11 @@
         /// <summary>
         /// Applies realistic speed multipliers to the given velocity.
         /// </summary>
-        /// <param name="speed">vehicle target velocity</param>
-        /// <param name="vehicleId">vehicle id</param>
-        /// <param name="extVehicle">ext. vehicle</param>
-        /// <param name="vehicleInfo">vehicle info</param>
-        /// <returns>modified target velocity</returns>
+        /// <param name="speed">vehicle target velocity.</param>
+        /// <param name="vehicleId">vehicle id.</param>
+        /// <param name="extVehicle">ext. vehicle.</param>
+        /// <param name="vehicleInfo">vehicle info.</param>
+        /// <returns>modified target velocity.</returns>
         float ApplyRealisticSpeeds(float speed,
                                    ushort vehicleId,
                                    ref ExtVehicle extVehicle,
@@ -147,15 +149,15 @@
         /// <summary>
         /// Calculates the target velocity for the given vehicle.
         /// </summary>
-        /// <param name="vehicleId">vehicle id</param>
-        /// <param name="extVehicle">ext. vehicle</param>
-        /// <param name="vehicleInfo">vehicle info</param>
-        /// <param name="position">current path position</param>
-        /// <param name="segment">segment data</param>
-        /// <param name="pos">current world position</param>
-        /// <param name="maxSpeed">vehicle target velocity</param>
-        /// <param name="emergency">specifies if the segment is currently used by emergency vehicles</param>
-        /// <returns>modified target velocity</returns>
+        /// <param name="vehicleId">vehicle id.</param>
+        /// <param name="extVehicle">ext. vehicle.</param>
+        /// <param name="vehicleInfo">vehicle info.</param>
+        /// <param name="position">current path position.</param>
+        /// <param name="segment">segment data.</param>
+        /// <param name="pos">current world position.</param>
+        /// <param name="maxSpeed">vehicle target velocity.</param>
+        /// <param name="emergency">specifies if the segment is currently used by emergency vehicles.</param>
+        /// <returns>modified target velocity.</returns>
         float CalcMaxSpeed(ushort vehicleId,
                            ref ExtVehicle extVehicle,
                            VehicleInfo vehicleInfo,

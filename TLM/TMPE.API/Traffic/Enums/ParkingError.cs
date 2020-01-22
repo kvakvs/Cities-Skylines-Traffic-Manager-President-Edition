@@ -1,6 +1,6 @@
 ﻿namespace TrafficManager.API.Traffic.Enums {
     /// <summary>
-    /// Represents the reason why a parked car could not be spawned
+    /// Represents the reason why a parked car could not be spawned.
     /// </summary>
     public enum ParkingError {
         /// <summary>
@@ -16,6 +16,6 @@
         /// <summary>
         /// The maximum allowed number of parked vehicles has been reached
         /// </summary>
-        LimitHit
+        LimitHit,
     }
 }

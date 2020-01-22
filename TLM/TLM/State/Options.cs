@@ -22,14 +22,10 @@ namespace TrafficManager.State {
         public static bool individualDrivingStyle = true;
         public static int recklessDrivers = 3;
 
-        /// <summary>
-        /// Option: buses may ignore lane arrows
-        /// </summary>
+        /// <summary>Option: buses may ignore lane arrows.</summary>
         public static bool relaxedBusses;
 
-        /// <summary>
-        /// debug option: all vehicles may ignore lane arrows
-        /// </summary>
+        /// <summary>debug option: all vehicles may ignore lane arrows.</summary>
         public static bool allRelaxed;
         public static bool evacBussesMayIgnoreRules;
         public static bool prioritySignsOverlay;
@@ -153,8 +149,8 @@ namespace TrafficManager.State {
         /// If the game is not loaded and warn is true, will display a warning about options being
         /// local to each savegame.
         /// </summary>
-        /// <param name="warn">Whether to display a warning popup</param>
-        /// <returns>The game is loaded</returns>
+        /// <param name="warn">Whether to display a warning popup.</param>
+        /// <returns>The game is loaded.</returns>
         internal static bool IsGameLoaded(bool warn = true) {
             if (SerializableDataExtension.StateLoading || LoadingExtension.IsGameLoaded) {
                 return true;

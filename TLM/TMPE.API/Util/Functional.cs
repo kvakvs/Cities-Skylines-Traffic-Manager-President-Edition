@@ -5,8 +5,7 @@ namespace TrafficManager.API.Util {
     /// <summary>
     /// Represents a void return type which may also carry an error.
     /// </summary>
-    /// <typeparam name="VALUE">Value type on success</typeparam>
-    /// <typeparam name="TError">Error type if failed</typeparam>
+    /// <typeparam name="TError">Error type if failed.</typeparam>
     [UsedImplicitly]
     public class VoidResult<TError> {
         private bool isOk_;
@@ -31,8 +30,8 @@ namespace TrafficManager.API.Util {
     /// <summary>
     /// Represents a return type which may carry an error instead.
     /// </summary>
-    /// <typeparam name="TValue">Value type on success</typeparam>
-    /// <typeparam name="TError">Error type if failed</typeparam>
+    /// <typeparam name="TValue">Value type on success.</typeparam>
+    /// <typeparam name="TError">Error type if failed.</typeparam>
     [UsedImplicitly]
     public class Result<TValue, TError> {
         private readonly bool isOk_;
@@ -56,7 +55,7 @@ namespace TrafficManager.API.Util {
         public bool IsError => !isOk_;
 
         /// <summary>
-        /// On success, retrieve the value
+        /// On success, retrieve the value.
         /// </summary>
         public TValue Value {
             get {
@@ -66,7 +65,7 @@ namespace TrafficManager.API.Util {
         }
 
         /// <summary>
-        /// On error retrieve the error
+        /// On error retrieve the error.
         /// </summary>
         public TError Error {
             get {

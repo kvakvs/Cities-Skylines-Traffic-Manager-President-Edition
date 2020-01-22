@@ -5,9 +5,7 @@ namespace TrafficManager.UI.Textures {
     using TrafficManager.Util;
     using UnityEngine;
 
-    /// <summary>
-    /// UI Textures for controlling road segments
-    /// </summary>
+    /// <summary>UI Textures for controlling road segments.</summary>
     public static class RoadUITextures {
         public static readonly IDictionary<PriorityType, Texture2D> PrioritySignTextures;
         public static readonly Texture2D SignRemove;

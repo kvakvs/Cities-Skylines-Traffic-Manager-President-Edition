@@ -19,14 +19,12 @@ namespace TrafficManager.Util.Caching {
         public void Add(TValue value) {
             Log._DebugIf(
                 Size >= MaxSize,
-                     () => $"Adding {value} to GenericArrayCache over the capacity {MaxSize}");
+                () => $"Adding {value} to GenericArrayCache over the capacity {MaxSize}");
             Values[Size] = value;
             Size++;
         }
 
-        /// <summary>
-        /// Resets the array to begin anew
-        /// </summary>
+        /// <summary>Resets the array to begin anew.</summary>
         public void Clear() {
             Size = 0;
         }

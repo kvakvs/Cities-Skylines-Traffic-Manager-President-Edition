@@ -68,12 +68,10 @@
             return reportSb.ToString();
         }
 
-        /// <summary>
-        /// Adds ordered report lines to the stringbuilder
-        /// </summary>
-        /// <param name="reportSb">StringBuilder where report lines are added</param>
-        /// <param name="orderedKeys">The data</param>
-        private void CreateReport(StringBuilder reportSb, List<string> orderedKeys) {
+        /// <summary>Adds ordered report lines to the stringbuilder.</summary>
+        /// <param name="reportSb">StringBuilder where report lines are added.</param>
+        /// <param name="orderedKeys">The data.</param>
+        private void CreateReport(StringBuilder reportSb, IEnumerable<string> orderedKeys) {
             foreach (string key in orderedKeys) {
                 BenchmarkProfile profile = Profiles[key];
                 reportSb.AppendFormat(

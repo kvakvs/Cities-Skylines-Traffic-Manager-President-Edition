@@ -301,7 +301,7 @@ namespace TrafficManager.Custom.PathFinding {
         /// <param name="allowTransport">public transport allowed?</param>
         /// <param name="allowUnderground">underground position allowed?</param>
         /// <param name="position">resulting path position</param>
-        /// <returns><code>true</code> if a position could be found, <code>false</code> otherwise</returns>
+        /// <returns>Whether a position could be found.</returns>
         public static bool FindCitizenPathPosition(Vector3 pos,
                                                    NetInfo.LaneType laneTypes,
                                                    VehicleInfo.VehicleType vehicleTypes,

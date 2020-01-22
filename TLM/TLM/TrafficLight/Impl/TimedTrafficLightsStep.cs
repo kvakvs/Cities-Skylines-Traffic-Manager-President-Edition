@@ -20,40 +20,34 @@ namespace TrafficManager.TrafficLight.Impl {
         : ITimedTrafficLightsStep
     {
         /// <summary>
-        /// The number of time units this traffic light remains in the current state at least
+        /// The number of time units this traffic light remains in the current state at least.
         /// </summary>
         public int MinTime { get; set; }
 
         /// <summary>
-        /// The number of time units this traffic light remains in the current state at most
+        /// The number of time units this traffic light remains in the current state at most.
         /// </summary>
         public int MaxTime { get; set; }
 
         /// <summary>
-        /// Indicates if waiting vehicles should be measured
+        /// Indicates if waiting vehicles should be measured.
         /// </summary>
         public StepChangeMetric ChangeMetric { get; set; }
 
         private uint startFrame;
 
-        /// <summary>
-        /// Indicates if the step is done (internal use only)
-        /// </summary>
+        /// <summary>Indicates if the step is done (internal use only).</summary>
         private bool stepDone;
 
-        /// <summary>
-        /// Frame when the GreenToRed phase started
-        /// </summary>
+        /// <summary>Frame when the GreenToRed phase started.</summary>
         private uint? endTransitionStart;
 
         /// <summary>
-        /// minimum mean "number of cars passing through" / "average segment length"
+        /// minimum mean "number of cars passing through" / "average segment length".
         /// </summary>
         public float CurrentFlow { get; private set; }
 
-        /// <summary>
-        ///	maximum mean "number of cars waiting for green" / "average segment length"
-        /// </summary>
+        /// <summary>maximum mean "number of cars waiting for green" / "average segment length".</summary>
         public float CurrentWait { get; private set; }
 
         public int PreviousStepRefIndex { get; set; } = -1;
@@ -128,9 +122,7 @@ namespace TrafficManager.TrafficLight.Impl {
             }
         }
 
-        /// <summary>
-        /// Checks if the green-to-red (=yellow) phase is finished
-        /// </summary>
+        /// <summary>Checks if the green-to-red (=yellow) phase is finished.</summary>
         /// <returns></returns>
         public bool IsEndTransitionDone() {
             if (!timedNode.IsMasterNode()) {
@@ -153,9 +145,7 @@ namespace TrafficManager.TrafficLight.Impl {
             return ret;
         }
 
-        /// <summary>
-        /// Checks if the green-to-red (=yellow) phase is currently active
-        /// </summary>
+        /// <summary>Checks if the green-to-red (=yellow) phase is currently active.</summary>
         /// <returns></returns>
         public bool IsInEndTransition() {
             if (!timedNode.IsMasterNode()) {
@@ -271,9 +261,7 @@ namespace TrafficManager.TrafficLight.Impl {
             return Constants.ServiceFactory.SimulationService.CurrentFrameIndex >> 6;
         }
 
-        /// <summary>
-        /// Updates "real-world" traffic light states according to the timed scripts
-        /// </summary>
+        /// <summary>Updates "real-world" traffic light states according to the timed scripts.</summary>
         public void UpdateLiveLights() {
             UpdateLiveLights(false);
         }
@@ -538,9 +526,7 @@ namespace TrafficManager.TrafficLight.Impl {
             return currentState;
         }
 
-        /// <summary>
-        /// Updates timed segment lights according to "real-world" traffic light states
-        /// </summary>
+        /// <summary>Updates timed segment lights according to "real-world" traffic light states.</summary>
         public void UpdateLights() {
             Log._Debug("TimedTrafficLightsStep.UpdateLights: Updating lights of timed traffic " +
                        $"light step @ {timedNode.NodeId}");
@@ -574,17 +560,13 @@ namespace TrafficManager.TrafficLight.Impl {
             }
         }
 
-        /// <summary>
-        /// Countdown value for min. time
-        /// </summary>
+        /// <summary>Countdown value for min. time.</summary>
         /// <returns></returns>
         public long MinTimeRemaining() {
             return Math.Max(0, startFrame + MinTime - GetCurrentFrame());
         }
 
-        /// <summary>
-        /// Countdown value for max. time
-        /// </summary>
+        /// <summary>Countdown value for max. time.</summary>
         /// <returns></returns>
         public long MaxTimeRemaining() {
             return Math.Max(0, startFrame + MaxTime - GetCurrentFrame());
@@ -739,12 +721,10 @@ namespace TrafficManager.TrafficLight.Impl {
                        : Math.Abs(metric) < FloatUtil.VERY_SMALL_FLOAT;
         }
 
-        /// <summary>
-        /// Calculates the current metrics for flowing and waiting vehicles
-        /// </summary>
-        /// <param name="wait"></param>
-        /// <param name="flow"></param>
-        /// <returns>true if the values could be calculated, false otherwise</returns>
+        /// <summary>Calculates the current metrics for flowing and waiting vehicles.
+        /// Returns: Whether the values could be calculated.</summary>
+        /// <param name="wait">Wait (output value).</param>
+        /// <param name="flow">Flow (output value).</param>
         public void CalcWaitFlow(bool countOnlyMovingIfGreen,
                                  int stepRefIndex,
                                  out float wait,

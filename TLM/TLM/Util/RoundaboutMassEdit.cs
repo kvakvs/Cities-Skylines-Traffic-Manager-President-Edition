@@ -202,7 +202,7 @@ namespace TrafficManager.Util {
         ///     a traversable segment (which has not been traversed before) is found.
         /// pass null if you are trying to see if segment is part of a round about.
         /// </param>
-        /// <returns>true if its a roundabout</returns>
+        /// <returns>Whether its a roundabout.</returns>
         public bool TraverseLoop(ushort segmentId, out List<ushort> segList) {
             this.segmentList.Clear();
             bool ret;
@@ -294,13 +294,15 @@ namespace TrafficManager.Util {
 
         /// <summary>
         /// Checks wheather the next segmentId looks like to be part of a roundabout.
-        /// Assumes prevSegmentId is oneway
+        /// Assumes prevSegmentId is oneway.
         /// </summary>
-        /// <param name="nextSegmentId"></param>
-        /// <param name="prevSegmentId"></param>
-        /// <param name="headNodeId">head node for prevSegmentId</param>
+        /// <param name="nextSegmentId">Next.</param>
+        /// <param name="prevSegmentId">Previous.</param>
+        /// <param name="headNodeId">head node for prevSegmentId.</param>
         /// <returns></returns>
-        private static bool IsPartofRoundabout( ushort nextSegmentId, ushort prevSegmentId, ushort headNodeId) {
+        private static bool IsPartofRoundabout(ushort nextSegmentId,
+                                               ushort prevSegmentId,
+                                               ushort headNodeId) {
             bool ret = nextSegmentId != 0 && nextSegmentId != prevSegmentId;
             ret &= segMan.CalculateIsOneWay(nextSegmentId);
             ret &= headNodeId == netService.GetTailNode(nextSegmentId);

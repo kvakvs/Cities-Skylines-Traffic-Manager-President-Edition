@@ -4,21 +4,17 @@
     public interface ITrafficMeasurementManager {
         // TODO define me!
 
-        /// <summary>
-        /// Traffic data per segment and lane
-        /// </summary>
+        /// <summary>Gets traffic data per segment and lane.</summary>
         LaneTrafficData[][] LaneTrafficData { get; }
 
-        /// <summary>
-        /// Traffic data per segment and traffic direction
-        /// </summary>
+        /// <summary>Gets traffic data per segment and traffic direction.</summary>
         SegmentDirTrafficData[] SegmentDirTrafficData { get; }
 
         /// <summary>
         /// Handles a segment before a simulation step is performed.
         /// </summary>
-        /// <param name="segmentId">segment id</param>
-        /// <param name="segment">segment data</param>
+        /// <param name="segmentId">segment id.</param>
+        /// <param name="segment">segment data.</param>
         void OnBeforeSimulationStep(ushort segmentId, ref NetSegment segment);
 
         ushort CalcLaneRelativeMeanSpeed(ushort segmentId,
