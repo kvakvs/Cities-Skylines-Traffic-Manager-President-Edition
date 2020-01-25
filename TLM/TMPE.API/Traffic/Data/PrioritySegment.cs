@@ -9,30 +9,30 @@ namespace TrafficManager.API.Traffic.Data {
         /// <summary>
         /// Priority sign at start node (default: None).
         /// </summary>
-        public PriorityType StartType;
+        public PriorityType startType;
 
         /// <summary>
         /// Priority sign at end node (default: None).
         /// </summary>
-        public PriorityType EndType;
+        public PriorityType endType;
 
         /// <inheritdoc />
         public override string ToString() {
             return string.Format(
                 "[PrioritySegment\n\tstartType = {0}\n\tendType = {1}\nPrioritySegment]",
-                StartType,
-                EndType);
+                startType,
+                endType);
         }
 
         [UsedImplicitly]
         public PrioritySegment(PriorityType startType, PriorityType endType) {
-            this.StartType = startType;
-            this.EndType = endType;
+            this.startType = startType;
+            this.endType = endType;
         }
 
         public void Reset() {
-            StartType = PriorityType.None;
-            EndType = PriorityType.None;
+            startType = PriorityType.None;
+            endType = PriorityType.None;
         }
 
         public bool IsDefault() {
@@ -41,8 +41,8 @@ namespace TrafficManager.API.Traffic.Data {
 
         public bool HasPrioritySignAtNode(bool startNode) {
             return startNode
-                       ? StartType != PriorityType.None
-                       : EndType != PriorityType.None;
+                       ? startType != PriorityType.None
+                       : endType != PriorityType.None;
         }
     }
 }

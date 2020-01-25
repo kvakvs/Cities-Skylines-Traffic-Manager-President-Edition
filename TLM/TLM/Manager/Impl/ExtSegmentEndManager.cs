@@ -83,8 +83,8 @@ namespace TrafficManager.Manager.Impl {
             }
 
             extSegmentEnd.nodeId = 0;
-            extSegmentEnd.IsOutgoing = false;
-            extSegmentEnd.IsIncoming = false;
+            extSegmentEnd.outgoing = false;
+            extSegmentEnd.incoming = false;
             extSegmentEnd.firstVehicleId = 0;
         }
 
@@ -272,7 +272,7 @@ namespace TrafficManager.Manager.Impl {
 
             ushort nodeId = Constants.ServiceFactory.NetService.GetSegmentNodeId(segmentId, startNode);
             segEnd.nodeId = nodeId;
-            CalculateIncomingOutgoing(segmentId, nodeId, out segEnd.IsIncoming, out segEnd.IsOutgoing);
+            CalculateIncomingOutgoing(segmentId, nodeId, out segEnd.incoming, out segEnd.outgoing);
 
             if (nodeIdBeforeRecalc != 0 && nodeIdBeforeRecalc != nodeId) {
                 Constants.ManagerFactory.ExtNodeManager.RemoveSegment(
@@ -434,7 +434,7 @@ namespace TrafficManager.Manager.Impl {
                 ExtSegmentEnd otherSegEnd =
                     ExtSegmentEnds[GetIndex(otherSegmentId, (bool)otherStartNode)];
 
-                if (!otherSegEnd.IsOutgoing) {
+                if (!otherSegEnd.outgoing) {
                     continue;
                 }
 

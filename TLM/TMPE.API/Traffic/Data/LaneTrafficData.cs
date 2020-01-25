@@ -3,42 +3,41 @@
 
     public struct LaneTrafficData {
         /// <summary>
-        /// Number of seen vehicles since last speed measurement.
+        /// Number of seen vehicles since last speed measurement
         /// </summary>
-        public ushort TrafficBuffer;
+        public ushort trafficBuffer;
 
         /// <summary>
-        /// Number of seen vehicles before last speed measurement.
+        /// Number of seen vehicles before last speed measurement
         /// </summary>
-        public ushort LastTrafficBuffer;
+        public ushort lastTrafficBuffer;
 
         /// <summary>
-        /// All-time max. traffic buffer.
+        /// All-time max. traffic buffer
         /// </summary>
-        public ushort MaxTrafficBuffer;
+        public ushort maxTrafficBuffer;
 
         /// <summary>
-        /// Accumulated speeds since last traffic measurement.
+        /// Accumulated speeds since last traffic measurement
         /// </summary>
-        public uint AccumulatedSpeeds;
+        public uint accumulatedSpeeds;
 
         /// <summary>
-        /// Current lane mean speed, per ten thousands.
+        /// Current lane mean speed, per ten thousands
         /// </summary>
-        public ushort MeanSpeed;
+        public ushort meanSpeed;
 
-        /// <inheritdoc />
         public override string ToString() {
             return string.Format(
-                "LaneTrafficData {{ trafficBuffer = {0}\n\tlastTrafficBuffer = {1}\n" +
+                "[LaneTrafficData\n\ttrafficBuffer = {0}\n\tlastTrafficBuffer = {1}\n" +
                 "\tmaxTrafficBuffer = {2}\n\ttrafficBuffer = {3}\n\taccumulatedSpeeds = {4}\n" +
-                "\tmeanSpeed = {5} }}",
-                TrafficBuffer,
-                LastTrafficBuffer,
-                MaxTrafficBuffer,
-                TrafficBuffer,
-                AccumulatedSpeeds,
-                MeanSpeed);
+                "\tmeanSpeed = {5}\nLaneTrafficData]",
+                trafficBuffer,
+                lastTrafficBuffer,
+                maxTrafficBuffer,
+                trafficBuffer,
+                accumulatedSpeeds,
+                meanSpeed);
         }
     }
 }

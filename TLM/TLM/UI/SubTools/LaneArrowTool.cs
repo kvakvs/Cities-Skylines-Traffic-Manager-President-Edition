@@ -138,7 +138,7 @@ namespace TrafficManager.UI.SubTools {
             bool bJunction = (nodesBuffer[nodeId].m_flags & NetNode.Flags.Junction) != 0;
 
             // Outgoing lanes toward the node is incomming lanes to the segment end.
-            return bJunction && segEnd.IsIncoming;
+            return bJunction && segEnd.incoming;
         }
 
         protected override ushort HoveredNodeId {

@@ -3,106 +3,108 @@
 
     public struct PathCreationArgs {
         /// <summary>
-        /// Extended path type.
+        /// Extended path type
         /// </summary>
-        public Enums.ExtPathType ExtPathType;
+        public ExtPathType extPathType;
 
         /// <summary>
-        /// Extended vehicle type.
+        /// Extended vehicle type
         /// </summary>
-        public Enums.ExtVehicleType ExtVehicleType;
+        public ExtVehicleType extVehicleType;
 
         /// <summary>
-        /// (optional) vehicle id.
+        /// (optional) vehicle id
         /// </summary>
-        public ushort VehicleId;
+        public ushort vehicleId;
 
         /// <summary>
-        /// Whether entity is already spawned.
+        /// is entity alredy spawned?
         /// </summary>
-        public bool Spawned;
+        public bool spawned;
 
         /// <summary>
-        /// Current build index.
+        /// Current build index
         /// </summary>
-        public uint BuildIndex;
+        public uint buildIndex;
 
         /// <summary>
-        /// Start position (first alternative).
+        /// Start position (first alternative)
         /// </summary>
-        public PathUnit.Position StartPosA;
+        public PathUnit.Position startPosA;
 
         /// <summary>
-        /// Start position (second alternative, opposite road side).
+        /// Start position (second alternative, opposite road side)
         /// </summary>
-        public PathUnit.Position StartPosB;
+        public PathUnit.Position startPosB;
 
         /// <summary>
-        /// End position (first alternative).
+        /// End position (first alternative)
         /// </summary>
-        public PathUnit.Position EndPosA;
+        public PathUnit.Position endPosA;
 
         /// <summary>
-        /// End position (second alternative, opposite road side).
+        /// End position (second alternative, opposite road side)
         /// </summary>
-        public PathUnit.Position EndPosB;
+        public PathUnit.Position endPosB;
 
         /// <summary>
-        /// (optional) position of the parked vehicle.
+        /// (optional) position of the parked vehicle
         /// </summary>
-        public PathUnit.Position VehiclePosition;
+        public PathUnit.Position vehiclePosition;
 
         /// <summary>
-        /// Allowed set of lane types.
+        /// Allowed set of lane types
         /// </summary>
-        public NetInfo.LaneType LaneTypes;
+        public NetInfo.LaneType laneTypes;
 
         /// <summary>
-        /// Allowed set of vehicle types.
+        /// Allowed set of vehicle types
         /// </summary>
-        public VehicleInfo.VehicleType VehicleTypes;
+        public VehicleInfo.VehicleType vehicleTypes;
 
         /// <summary>
-        /// Maximum allowed path length.
+        /// Maximum allowed path length
         /// </summary>
-        public float MaxLength;
+        public float maxLength;
 
         /// <summary>
-        /// Whether the path is calculated for a heavy vehicle.
+        /// Is the path calculated for a heavy vehicle?
         /// </summary>
-        public bool IsHeavyVehicle;
+        public bool isHeavyVehicle;
 
         /// <summary>
-        /// Whether the path is calculated for a vehicle with a combustion engine.
+        /// Is the path calculated for a vehicle with a combustion engine?
         /// </summary>
-        public bool HasCombustionEngine;
+        public bool hasCombustionEngine;
 
         /// <summary>
-        /// Whether blocked segments should be ignored.
+        /// Should blocked segments be ignored?
         /// </summary>
-        public bool IgnoreBlocked;
+        public bool ignoreBlocked;
 
         /// <summary>
-        /// Whether flooded segments should be ignored.
+        /// Should flooded segments be ignored?
         /// </summary>
-        public bool IgnoreFlooded;
+        public bool ignoreFlooded;
 
         /// <summary>
-        /// Whether path costs should be ignored.
+        /// Should path costs be ignored?
         /// </summary>
-        public bool IgnoreCosts;
+        public bool ignoreCosts;
 
         /// <summary>
-        /// Whether random parking should apply.
+        /// Should random parking apply?
         /// </summary>
-        public bool RandomParking;
+        public bool randomParking;
 
         /// <summary>
-        /// Whether the path should remain stable and not randomized.
+        /// Should the path be stable (and not randomized)?
         /// </summary>
-        public bool StablePath;
+        public bool stablePath;
 
-        /// <summary>Whether this is a high priority path.</summary>
-        public bool SkipQueue;
+        /// <summary>
+        /// Is this a high priority path?
+        /// </summary>
+        public bool skipQueue;
     }
 }

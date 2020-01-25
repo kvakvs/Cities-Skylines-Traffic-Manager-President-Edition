@@ -491,7 +491,7 @@ namespace TrafficManager.TrafficLight.Impl {
             var autoPedestrianLightState = RoadBaseAI.TrafficLightState.Green;
             bool lht = Constants.ServiceFactory.SimulationService.TrafficDrivesOnLeft;
 
-            if (!(segEnd.IsIncoming && seg.oneWay)) {
+            if (!(segEnd.incoming && seg.oneWay)) {
                 for (int i = 0; i < 8; ++i) {
                     ushort otherSegmentId = node.GetSegment(i);
 
@@ -504,7 +504,7 @@ namespace TrafficManager.TrafficLight.Impl {
                         otherSegmentId,
                         (bool)Constants.ServiceFactory.NetService.IsStartNode(otherSegmentId, NodeId));
 
-                    if (!segEndMan.ExtSegmentEnds[index0].IsIncoming) {
+                    if (!segEndMan.ExtSegmentEnds[index0].incoming) {
                         continue;
                     }
 

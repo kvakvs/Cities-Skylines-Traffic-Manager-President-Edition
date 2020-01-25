@@ -36,10 +36,6 @@ namespace TrafficManager.API.Util {
     public class Result<TValue, TError> {
         private readonly bool isOk_;
 
-        private TValue value_ { get; }
-
-        private TError error_ { get; }
-
         public Result(TValue value) {
             isOk_ = true;
             value_ = value;
@@ -49,6 +45,10 @@ namespace TrafficManager.API.Util {
             isOk_ = false;
             error_ = error;
         }
+
+        private TValue value_ { get; }
+
+        private TError error_ { get; }
 
         public bool IsOk => isOk_;
 

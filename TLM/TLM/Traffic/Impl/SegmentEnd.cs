@@ -336,7 +336,7 @@ namespace TrafficManager.Traffic.Impl {
                     segId,
                     (bool)Constants.ServiceFactory.NetService.IsStartNode(segId, NodeId));
 
-                if (!segEndMan.ExtSegmentEnds[index0].IsOutgoing) {
+                if (!segEndMan.ExtSegmentEnds[index0].outgoing) {
                     continue;
                 }
 

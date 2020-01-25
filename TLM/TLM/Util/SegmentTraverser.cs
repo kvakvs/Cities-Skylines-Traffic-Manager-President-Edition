@@ -223,8 +223,8 @@ namespace TrafficManager.Util {
                     extSegEndMan.ExtSegmentEnds[extSegEndMan.GetIndex(nextSegmentId, nextIsStartNode)];
 
                 if (direction == TraverseDirection.AnyDirection ||
-                    (direction == TraverseDirection.Incoming && nextSegEnd.IsIncoming) ||
-                    (direction == TraverseDirection.Outgoing && nextSegEnd.IsOutgoing))
+                    (direction == TraverseDirection.Incoming && nextSegEnd.incoming) ||
+                    (direction == TraverseDirection.Outgoing && nextSegEnd.outgoing))
                 {
                     if (side == TraverseSide.AnySide) {
                         nextSegmentIds.Add(nextSegmentId);

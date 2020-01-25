@@ -134,7 +134,7 @@ namespace TrafficManager.Manager.Impl {
             IExtSegmentManager segMan = Constants.ManagerFactory.ExtSegmentManager;
             IExtSegmentEndManager segEndMan = Constants.ManagerFactory.ExtSegmentEndManager;
 
-            if (segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, startNode)].IsOutgoing &&
+            if (segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, startNode)].outgoing &&
                 segMan.ExtSegments[segmentId].oneWay) {
                 reason = SetPrioritySignError.NotIncoming;
                 Log._DebugIf(

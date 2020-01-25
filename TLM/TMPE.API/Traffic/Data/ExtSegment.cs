@@ -2,50 +2,59 @@
     using System;
 
     public struct ExtSegment : IEquatable<ExtSegment> {
-        /// <summary>Segment id in game.</summary>
-        public readonly ushort SegmentId;
+        /// <summary>
+        /// Segment id
+        /// </summary>
+        public ushort segmentId;
 
-        /// <summary>Whether segment is valid (exists).</summary>
-        public bool IsValid;
+        /// <summary>
+        /// Segment valid?
+        /// </summary>
+        public bool valid;
 
-        /// <summary>Whether segment is one-way road.</summary>
-        public bool IsOneWay;
+        /// <summary>
+        /// Is one-way?
+        /// </summary>
+        public bool oneWay;
 
-        /// <summary>Whether segment is a highway road (special rules, no buildings).</summary>
-        public bool IsHighway;
+        /// <summary>
+        /// Is highway?
+        /// </summary>
+        public bool highway;
 
-        /// <summary>Whether the segment has a bus lane in it.</summary>
-        public bool HasBusLane;
+        /// <summary>
+        /// Has bus lane?
+        /// </summary>
+        public bool buslane;
 
-        /// <inheritdoc />
         public override string ToString() {
             return string.Format(
-                "ExtSegment {0} {{ segmentId={1}\n\tvalid={2}\n\toneWay={3}\n\thighway={4}\n" +
-                "\tbuslane={5} }}",
+                "[ExtSegment {0}\n\tsegmentId={1}\n\tvalid={2}\n\toneWay={3}\n\thighway={4}\n" +
+                "\tbuslane={5}\nExtSegment]",
                 base.ToString(),
-                SegmentId,
-                IsValid,
-                IsOneWay,
-                IsHighway,
-                HasBusLane);
+                segmentId,
+                valid,
+                oneWay,
+                highway,
+                buslane);
         }
 
         public ExtSegment(ushort segmentId) {
-            this.SegmentId = segmentId;
-            IsValid = false;
-            IsOneWay = false;
-            IsHighway = false;
-            HasBusLane = false;
+            this.segmentId = segmentId;
+            valid = false;
+            oneWay = false;
+            highway = false;
+            buslane = false;
         }
 
         public void Reset() {
-            IsOneWay = false;
-            IsHighway = false;
-            HasBusLane = false;
+            oneWay = false;
+            highway = false;
+            buslane = false;
         }
 
         public bool Equals(ExtSegment otherSeg) {
-            return SegmentId == otherSeg.SegmentId;
+            return segmentId == otherSeg.segmentId;
         }
 
         public override bool Equals(object other) {
@@ -54,9 +63,9 @@
         }
 
         public override int GetHashCode() {
-            const int prime = 31;
+            int prime = 31;
             int result = 1;
-            result = (prime * result) + SegmentId.GetHashCode();
+            result = prime * result + segmentId.GetHashCode();
             return result;
         }
     }

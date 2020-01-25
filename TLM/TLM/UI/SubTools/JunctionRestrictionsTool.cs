@@ -219,7 +219,7 @@ namespace TrafficManager.UI.SubTools {
                 }
 
                 bool startNode = (bool)Constants.ServiceFactory.NetService.IsStartNode(segmentId, nodeId);
-                bool incoming = segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, startNode)].IsIncoming;
+                bool incoming = segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, startNode)].incoming;
 
                 int numSignsPerRow = incoming ? 2 : 1;
 

@@ -253,7 +253,7 @@
                         ExtSegment seg = segMan.ExtSegments[segmentId];
                         ExtSegmentEnd segEnd =
                             segEndMan.ExtSegmentEnds[segEndMan.GetIndex(segmentId, startNode)];
-                        if (seg.oneWay && segEnd.IsOutgoing) {
+                        if (seg.oneWay && segEnd.outgoing) {
                             continue;
                         }
 

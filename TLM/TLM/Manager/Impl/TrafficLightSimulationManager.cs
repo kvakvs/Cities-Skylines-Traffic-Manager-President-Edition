@@ -429,7 +429,7 @@ namespace TrafficManager.Manager.Impl {
                 });
 
             Constants.ManagerFactory.CustomSegmentLightsManager.AddNodeLights(sim.nodeId);
-            sim.type = TrafficLightSimulationType.Manual;
+            sim.simType = TrafficLightSimulationType.Manual;
             return true;
         }
 
@@ -442,7 +442,7 @@ namespace TrafficManager.Manager.Impl {
                 return false;
             }
 
-            sim.type = TrafficLightSimulationType.None;
+            sim.simType = TrafficLightSimulationType.None;
             Constants.ManagerFactory.CustomSegmentLightsManager.RemoveNodeLights(sim.nodeId);
             return true;
         }
@@ -469,7 +469,7 @@ namespace TrafficManager.Manager.Impl {
 
             Constants.ManagerFactory.CustomSegmentLightsManager.AddNodeLights(sim.nodeId);
             sim.timedLight = new TimedTrafficLights(sim.nodeId, nodeGroup);
-            sim.type = TrafficLightSimulationType.Timed;
+            sim.simType = TrafficLightSimulationType.Timed;
             return true;
         }
 
@@ -478,7 +478,7 @@ namespace TrafficManager.Manager.Impl {
                 return false;
             }
 
-            sim.type = TrafficLightSimulationType.None;
+            sim.simType = TrafficLightSimulationType.None;
             ITimedTrafficLights timedLight = sim.timedLight;
             sim.timedLight = null;
 
