@@ -1,13 +1,13 @@
 namespace TrafficManager.UI {
+    using System;
+    using API.Util;
     using ColossalFramework.UI;
     using CSUtil.Commons;
-    using System;
-    using TrafficManager.API.Util;
-    using TrafficManager.State.Keybinds;
-    using TrafficManager.State;
-    using TrafficManager.UI.Textures;
-    using TrafficManager.Util;
+    using State;
+    using State.Keybinds;
+    using Textures;
     using UnityEngine;
+    using Util;
 
     public class UIMainMenuButton
         : UIButton,
@@ -23,7 +23,7 @@ namespace TrafficManager.UI {
         private const int BUTTON_WIDTH = 50;
         private const int BUTTON_HEIGHT = 50;
 
-        private UIDragHandle Drag { get; set; }
+        // private UIDragHandle Drag { get; set; }
 
         private IDisposable confDisposable_;
 
@@ -57,14 +57,14 @@ namespace TrafficManager.UI {
             // Enable button sounds.
             playAudioEvents = true;
 
-            var dragHandler = new GameObject("TMPE_MainButton_DragHandler");
-            dragHandler.transform.parent = transform;
-            dragHandler.transform.localPosition = Vector3.zero;
-            Drag = dragHandler.AddComponent<UIDragHandle>();
-
-            Drag.width = width;
-            Drag.height = height;
-            Drag.enabled = !GlobalConfig.Instance.Main.MainMenuButtonPosLocked;
+            // var dragHandler = new GameObject("TMPE_MainButton_DragHandler");
+            // dragHandler.transform.parent = transform;
+            // dragHandler.transform.localPosition = Vector3.zero;
+            // Drag = dragHandler.AddComponent<UIDragHandle>();
+            //
+            // Drag.width = width;
+            // Drag.height = height;
+            // Drag.enabled = !GlobalConfig.Instance.Main.MainMenuButtonPosLocked;
 
             // Set up the tooltip
             var uiView = GetUIView();
@@ -87,9 +87,9 @@ namespace TrafficManager.UI {
             confDisposable_?.Dispose();
         }
 
-        internal void SetPosLock(bool lck) {
-            Drag.enabled = !lck;
-        }
+        // internal void SetPosLock(bool lck) {
+        //     Drag.enabled = !lck;
+        // }
 
         protected override void OnClick(UIMouseEventParameter p) {
             try {
@@ -102,23 +102,23 @@ namespace TrafficManager.UI {
             }
         }
 
-        protected override void OnPositionChanged() {
-            GlobalConfig config = GlobalConfig.Instance;
-
-            bool posChanged = config.Main.MainMenuButtonX != (int)absolutePosition.x
-                              || config.Main.MainMenuButtonY != (int)absolutePosition.y;
-
-            if (posChanged) {
-                Log._Debug($"Button position changed to {absolutePosition.x}|{absolutePosition.y}");
-
-                config.Main.MainMenuButtonX = (int)absolutePosition.x;
-                config.Main.MainMenuButtonY = (int)absolutePosition.y;
-
-                GlobalConfig.WriteConfig();
-            }
-
-            base.OnPositionChanged();
-        }
+        // protected override void OnPositionChanged() {
+        //     GlobalConfig config = GlobalConfig.Instance;
+        //
+        //     bool posChanged = config.Main.MainMenuButtonX != (int)absolutePosition.x
+        //                       || config.Main.MainMenuButtonY != (int)absolutePosition.y;
+        //
+        //     if (posChanged) {
+        //         Log._Debug($"Button position changed to {absolutePosition.x}|{absolutePosition.y}");
+        //
+        //         config.Main.MainMenuButtonX = (int)absolutePosition.x;
+        //         config.Main.MainMenuButtonY = (int)absolutePosition.y;
+        //
+        //         GlobalConfig.WriteConfig();
+        //     }
+        //
+        //     base.OnPositionChanged();
+        // }
 
         internal void UpdateSprites() {
             if (!LoadingExtension.BaseUI.IsVisible()) {
@@ -147,21 +147,21 @@ namespace TrafficManager.UI {
                 m_PressedFgSprite = MAIN_MENU_BUTTON_FG_HOVERED;
             }
 
-            this.Invalidate();
+            Invalidate();
         }
 
         public void OnUpdate(GlobalConfig config) {
-            UpdatePosition(new Vector2(config.Main.MainMenuButtonX, config.Main.MainMenuButtonY));
+            // UpdatePosition(new Vector2(config.Main.MainMenuButtonX, config.Main.MainMenuButtonY));
         }
 
-        public void UpdatePosition(Vector2 pos) {
-            Rect rect = new Rect(pos.x, pos.y, BUTTON_WIDTH, BUTTON_HEIGHT);
-            Vector2 resolution = UIView.GetAView().GetScreenResolution();
-            VectorUtil.ClampRectToScreen(ref rect, resolution);
-            Log.Info($"Setting main menu button position to [{pos.x},{pos.y}]");
-            absolutePosition = rect.position;
-            Invalidate();
-        }
+        // public void UpdatePosition(Vector2 pos) {
+        //     Rect rect = new Rect(pos.x, pos.y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        //     Vector2 resolution = UIView.GetAView().GetScreenResolution();
+        //     VectorUtil.ClampRectToScreen(ref rect, resolution);
+        //     Log.Info($"Setting main menu button position to [{pos.x},{pos.y}]");
+        //     absolutePosition = rect.position;
+        //     Invalidate();
+        // }
 
         public void OnGUI() {
             if (!UIView.HasModalInput()
@@ -175,6 +175,36 @@ namespace TrafficManager.UI {
 
         private string GetTooltip() {
             return KeybindSettingsBase.ToggleMainMenu.ToLocalizedString("\n");
+        }
+
+        public static UITextureAtlas CreateAtlas() {
+            string[] spriteNames = {
+                MAIN_MENU_BUTTON_BG_BASE,
+                MAIN_MENU_BUTTON_BG_HOVERED,
+                MAIN_MENU_BUTTON_BG_ACTIVE,
+                MAIN_MENU_BUTTON_FG_BASE,
+                MAIN_MENU_BUTTON_FG_HOVERED,
+                MAIN_MENU_BUTTON_FG_ACTIVE,
+            };
+
+            UITextureAtlas atlas = TextureResources.CreateTextureAtlas(
+                "MainMenuAtlas",
+                spriteNames,
+                "MainMenu.");
+
+            UITextureAtlas defaultAtlas = TextureResources.GetAtlas("Ingame");
+            Texture2D[] textures = {
+                defaultAtlas["ToolbarIconGroup6Focused"].texture,
+                defaultAtlas["ToolbarIconGroup6Hovered"].texture,
+                defaultAtlas["ToolbarIconGroup6Normal"].texture,
+                defaultAtlas["ToolbarIconGroup6Pressed"].texture,
+                defaultAtlas["IconPolicyLeisure"].texture,
+                defaultAtlas["IconPolicyTourist"].texture,
+            };
+
+            TextureResources.AddTexturesInAtlas(atlas, textures);
+
+            return atlas;
         }
     }
 }

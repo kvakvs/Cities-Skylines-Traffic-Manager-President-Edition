@@ -74,10 +74,10 @@ namespace TrafficManager.State {
                                     languageLabels,
                                     languageIndex,
                                     OnLanguageChanged) as UIDropDown;
-            _lockButtonToggle = generalGroup.AddCheckbox(
-                                    T("General.Checkbox:Lock main menu button position"),
-                                    GlobalConfig.Instance.Main.MainMenuButtonPosLocked,
-                                    OnLockButtonChanged) as UICheckBox;
+            // _lockButtonToggle = generalGroup.AddCheckbox(
+            //                         T("General.Checkbox:Lock main menu button position"),
+            //                         GlobalConfig.Instance.Main.MainMenuButtonPosLocked,
+            //                         OnLockButtonChanged) as UICheckBox;
             _lockMenuToggle = generalGroup.AddCheckbox(
                                   T("General.Checkbox:Lock main menu window position"),
                                   GlobalConfig.Instance.Main.MainMenuPosLocked,
@@ -173,15 +173,15 @@ namespace TrafficManager.State {
             Options.RebuildOptions();
         }
 
-        private static void OnLockButtonChanged(bool newValue) {
-            Log._Debug($"Button lock changed to {newValue}");
-            if (Options.IsGameLoaded(false)) {
-                LoadingExtension.BaseUI.MainMenuButton.SetPosLock(newValue);
-            }
-
-            GlobalConfig.Instance.Main.MainMenuButtonPosLocked = newValue;
-            GlobalConfig.WriteConfig();
-        }
+        // private static void OnLockButtonChanged(bool newValue) {
+        //     Log._Debug($"Button lock changed to {newValue}");
+        //     if (Options.IsGameLoaded(false)) {
+        //         LoadingExtension.BaseUI.MainMenuButton.SetPosLock(newValue);
+        //     }
+        //
+        //     GlobalConfig.Instance.Main.MainMenuButtonPosLocked = newValue;
+        //     GlobalConfig.WriteConfig();
+        // }
 
         private static void OnLockMenuChanged(bool newValue) {
             Log._Debug($"Menu lock changed to {newValue}");

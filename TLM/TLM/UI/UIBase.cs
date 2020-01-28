@@ -6,7 +6,9 @@ namespace TrafficManager.UI {
     using UnityEngine;
 
     public class UIBase : UICustomControl {
-        public UIMainMenuButton MainMenuButton { get; }
+        private const string MAIN_MENU_BUTTON_ID = "TMPE_MainButton";
+
+        public GameObject MainMenuButton { get; }
 
         public MainMenuPanel MainMenu { get; private set; }
 
@@ -35,12 +37,12 @@ namespace TrafficManager.UI {
         public UIBase() {
             Log._Debug("##### Initializing UIBase.");
 
-            // Get the UIView object. This seems to be the top-level object for most
-            // of the UI.
+            // Get the UIView object. This seems to be the top-level object for most of the UI.
             UIView uiView = UIView.GetAView();
 
             // Add a new button to the view.
-            MainMenuButton = (UIMainMenuButton)uiView.AddUIComponent(typeof(UIMainMenuButton));
+            // MainMenuButton = (UIMainMenuButton)uiView.AddUIComponent(typeof(UIMainMenuButton));
+            MainMenuButton = ConstructMainMenuButton(uiView);
 
             // add the menu
             MainMenu = (MainMenuPanel)uiView.AddUIComponent(typeof(MainMenuPanel));
@@ -50,6 +52,28 @@ namespace TrafficManager.UI {
 #endif
 
             ToolMode = TrafficManagerMode.None;
+        }
+
+        private GameObject ConstructMainMenuButton(UIView uiView) {
+            GameObject maybeButton = GameObject.Find(MAIN_MENU_BUTTON_ID);
+            if (maybeButton != null) {
+                return maybeButton;
+            }
+
+            // Access the game main tool tab
+            UITabstrip tabstrip = ToolsModifierControl.mainToolbar.component as UITabstrip;
+
+            GameObject mainToolbarButtonTemplate = UITemplateManager.GetAsGameObject("MainToolbarButtonTemplate");
+            GameObject scrollSubpanelTemplate = UITemplateManager.GetAsGameObject("ScrollableSubPanelTemplate");
+
+            var b = tabstrip.AddTab(MAIN_MENU_BUTTON_ID,
+                                    mainToolbarButtonTemplate,
+                                    scrollSubpanelTemplate,
+                                    new Type[] { typeof(MainMenuButton_Panel) }) as UIButton;
+            b.atlas = UIMainMenuButton.CreateAtlas();
+
+            // var b = (UIMainMenuButton)uiView.AddUIComponent(typeof(UIMainMenuButton));
+            return b.gameObject;
         }
 
         ~UIBase() {
@@ -111,7 +135,7 @@ namespace TrafficManager.UI {
 #endif
             SetToolMode(TrafficManagerMode.Activated);
             _uiShown = true;
-            MainMenuButton.UpdateSprites();
+            // MainMenuButton.UpdateSprites();
             UIView.SetFocus(MainMenu);
         }
 
@@ -127,7 +151,7 @@ namespace TrafficManager.UI {
 
             SetToolMode(TrafficManagerMode.None);
             _uiShown = false;
-            MainMenuButton.UpdateSprites();
+            // MainMenuButton.UpdateSprites();
         }
 
         internal MainMenuPanel GetMenu() {
@@ -185,6 +209,9 @@ namespace TrafficManager.UI {
             } else {
                 Log.Warning("LoadingExtensions.DestroyTool: ToolsModifierControl.toolController is null!");
             }
+        }
+
+        public static void UpdateMainMenuButtonTooltip() {
         }
     }
 }

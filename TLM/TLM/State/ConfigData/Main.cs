@@ -5,12 +5,12 @@
     using TrafficManager.UI.SubTools.SpeedLimits;
 
     public class Main {
-        /// <summary>
-        /// Main menu button position
-        /// </summary>
-        public int MainMenuButtonX = 464;
-        public int MainMenuButtonY = 10;
-        public bool MainMenuButtonPosLocked = false;
+        // /// <summary>
+        // /// Main menu button position
+        // /// </summary>
+        // public int MainMenuButtonX = 464;
+        // public int MainMenuButtonY = 10;
+        // public bool MainMenuButtonPosLocked = false;
 
         /// <summary>
         /// Main menu position

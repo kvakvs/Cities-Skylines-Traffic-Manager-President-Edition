@@ -86,13 +86,13 @@
             GlobalConfig conf = new GlobalConfig();
 
             if (!resetAll && oldConfig != null) {
-                conf.Main.MainMenuButtonX = oldConfig.Main.MainMenuButtonX;
-                conf.Main.MainMenuButtonY = oldConfig.Main.MainMenuButtonY;
+                // conf.Main.MainMenuButtonX = oldConfig.Main.MainMenuButtonX;
+                // conf.Main.MainMenuButtonY = oldConfig.Main.MainMenuButtonY;
 
                 conf.Main.MainMenuX = oldConfig.Main.MainMenuX;
                 conf.Main.MainMenuY = oldConfig.Main.MainMenuY;
 
-                conf.Main.MainMenuButtonPosLocked = oldConfig.Main.MainMenuButtonPosLocked;
+                // conf.Main.MainMenuButtonPosLocked = oldConfig.Main.MainMenuButtonPosLocked;
                 conf.Main.MainMenuPosLocked = oldConfig.Main.MainMenuPosLocked;
 
                 conf.Main.GuiTransparency = oldConfig.Main.GuiTransparency;
