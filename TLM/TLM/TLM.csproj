@@ -303,6 +303,7 @@
     <Compile Include="UI\UIBase.cs" />
     <Compile Include="UI\MainMenu\DebugMenu.cs" />
     <Compile Include="Util\SegmentTraverser.cs" />
+    <Compile Include="U\MainMenu\MainMenuBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\light_1_1.png" />

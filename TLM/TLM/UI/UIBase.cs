@@ -1,3 +1,4 @@
+
 namespace TrafficManager.UI {
     using ColossalFramework.UI;
     using CSUtil.Commons;
@@ -6,9 +7,7 @@ namespace TrafficManager.UI {
     using UnityEngine;
 
     public class UIBase : UICustomControl {
-        private const string MAIN_MENU_BUTTON_ID = "TMPE_MainButton";
-
-        public GameObject MainMenuButton { get; }
+        public UIButton MainMenuButton { get; }
 
         public MainMenuPanel MainMenu { get; private set; }
 
@@ -34,6 +33,9 @@ namespace TrafficManager.UI {
 
         private bool _uiShown;
 
+        /// <summary>Gets or sets position for stuff placed onto main toolstrip.</summary>
+        private float defaultXPos_;
+
         public UIBase() {
             Log._Debug("##### Initializing UIBase.");
 
@@ -42,38 +44,16 @@ namespace TrafficManager.UI {
 
             // Add a new button to the view.
             // MainMenuButton = (UIMainMenuButton)uiView.AddUIComponent(typeof(UIMainMenuButton));
-            MainMenuButton = ConstructMainMenuButton(uiView);
+            MainMenuButton = U.MainMenu.MainMenuBuilder.ConstructMainMenuButton(out defaultXPos_);
 
             // add the menu
-            MainMenu = (MainMenuPanel)uiView.AddUIComponent(typeof(MainMenuPanel));
-            MainMenu.gameObject.AddComponent<CustomKeyHandler>();
+            // MainMenu = (MainMenuPanel)uiView.AddUIComponent(typeof(MainMenuPanel));
+            // MainMenu.gameObject.AddComponent<CustomKeyHandler>();
 #if DEBUG
             DebugMenu = (DebugMenuPanel)uiView.AddUIComponent(typeof(DebugMenuPanel));
 #endif
 
             ToolMode = TrafficManagerMode.None;
-        }
-
-        private GameObject ConstructMainMenuButton(UIView uiView) {
-            GameObject maybeButton = GameObject.Find(MAIN_MENU_BUTTON_ID);
-            if (maybeButton != null) {
-                return maybeButton;
-            }
-
-            // Access the game main tool tab
-            UITabstrip tabstrip = ToolsModifierControl.mainToolbar.component as UITabstrip;
-
-            GameObject mainToolbarButtonTemplate = UITemplateManager.GetAsGameObject("MainToolbarButtonTemplate");
-            GameObject scrollSubpanelTemplate = UITemplateManager.GetAsGameObject("ScrollableSubPanelTemplate");
-
-            var b = tabstrip.AddTab(MAIN_MENU_BUTTON_ID,
-                                    mainToolbarButtonTemplate,
-                                    scrollSubpanelTemplate,
-                                    new Type[] { typeof(MainMenuButton_Panel) }) as UIButton;
-            b.atlas = UIMainMenuButton.CreateAtlas();
-
-            // var b = (UIMainMenuButton)uiView.AddUIComponent(typeof(UIMainMenuButton));
-            return b.gameObject;
         }
 
         ~UIBase() {

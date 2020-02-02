@@ -176,35 +176,5 @@ namespace TrafficManager.UI {
         private string GetTooltip() {
             return KeybindSettingsBase.ToggleMainMenu.ToLocalizedString("\n");
         }
-
-        public static UITextureAtlas CreateAtlas() {
-            string[] spriteNames = {
-                MAIN_MENU_BUTTON_BG_BASE,
-                MAIN_MENU_BUTTON_BG_HOVERED,
-                MAIN_MENU_BUTTON_BG_ACTIVE,
-                MAIN_MENU_BUTTON_FG_BASE,
-                MAIN_MENU_BUTTON_FG_HOVERED,
-                MAIN_MENU_BUTTON_FG_ACTIVE,
-            };
-
-            UITextureAtlas atlas = TextureResources.CreateTextureAtlas(
-                "MainMenuAtlas",
-                spriteNames,
-                "MainMenu.");
-
-            UITextureAtlas defaultAtlas = TextureResources.GetAtlas("Ingame");
-            Texture2D[] textures = {
-                defaultAtlas["ToolbarIconGroup6Focused"].texture,
-                defaultAtlas["ToolbarIconGroup6Hovered"].texture,
-                defaultAtlas["ToolbarIconGroup6Normal"].texture,
-                defaultAtlas["ToolbarIconGroup6Pressed"].texture,
-                defaultAtlas["IconPolicyLeisure"].texture,
-                defaultAtlas["IconPolicyTourist"].texture,
-            };
-
-            TextureResources.AddTexturesInAtlas(atlas, textures);
-
-            return atlas;
-        }
     }
 }
