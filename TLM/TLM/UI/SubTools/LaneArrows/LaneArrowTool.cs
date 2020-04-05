@@ -1,7 +1,5 @@
 namespace TrafficManager.UI.SubTools.LaneArrows {
-    using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using ColossalFramework;
     using ColossalFramework.UI;
     using CSUtil.Commons;
@@ -9,11 +7,8 @@ namespace TrafficManager.UI.SubTools.LaneArrows {
     using TrafficManager.API.Traffic.Data;
     using TrafficManager.API.Traffic.Enums;
     using TrafficManager.Manager.Impl;
-    using TrafficManager.State;
     using TrafficManager.State.Keybinds;
     using TrafficManager.U;
-    using TrafficManager.U.Autosize;
-    using TrafficManager.U.Button;
     using TrafficManager.Util;
     using UnityEngine;
     using static TrafficManager.Util.Shortcuts;

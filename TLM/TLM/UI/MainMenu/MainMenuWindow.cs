@@ -5,16 +5,16 @@ namespace TrafficManager.UI.MainMenu {
     using CSUtil.Commons;
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using TrafficManager.API.Util;
     using TrafficManager.State.Keybinds;
     using TrafficManager.State;
     using TrafficManager.U;
     using UnityEngine;
 
-    public class MainMenuPanel
+    public class MainMenuWindow
         : U.Panel.BaseUWindowPanel,
-          IObserver<GlobalConfig> {
+          IObserver<GlobalConfig>
+    {
         public const int DEFAULT_MENU_X = 85;
         public const int DEFAULT_MENU_Y = 60;
         private const string GAMEOBJECT_NAME = "TMPE_MainMenuPanel";
@@ -77,10 +77,10 @@ namespace TrafficManager.UI.MainMenu {
               };
 
         /// <summary>List of buttons stores created UIButtons in order. </summary>
-        public List<BaseMenuButton> Buttons { get; private set; }
+        public List<BaseMenuButton> ButtonsList { get; private set; }
 
         /// <summary>Dict of buttons allows quick search by toolmode.</summary>
-        private Dictionary<ToolMode, BaseMenuButton> QuickFindButtons;
+        private Dictionary<ToolMode, BaseMenuButton> ButtonsDict;
 
         public UILabel VersionLabel { get; private set; }
 
@@ -107,12 +107,29 @@ namespace TrafficManager.UI.MainMenu {
             OnUpdate(conf);
 
             confDisposable = conf.Subscribe(this);
+            SetupWindow();
+            isStarted_ = true;
+        }
 
+        /// <summary>Called from constructor to setup own properties and events.</summary>
+        private void SetupWindow() {
             isVisible = false;
-
             backgroundSprite = "GenericPanel";
             color = new Color32(64, 64, 64, 240);
 
+            var dragHandler = new GameObject("TMPE_Menu_DragHandler");
+            dragHandler.transform.parent = transform;
+            dragHandler.transform.localPosition = Vector3.zero;
+            Drag = dragHandler.AddComponent<UIDragHandle>();
+            Drag.enabled = !GlobalConfig.Instance.Main.MainMenuPosLocked;
+
+            this.OnRescaleRequested();
+            eventVisibilityChanged += OnVisibilityChanged;
+        }
+
+        /// <summary>Called from ModUI to setup children for the window.</summary>
+        /// <param name="builder">The UI Builder.</param>
+        public void SetupControls(UiBuilder<MainMenuWindow> builder) {
             VersionLabel = AddUIComponent<VersionLabel>();
             StatsLabel = AddUIComponent<StatsLabel>();
 
@@ -128,8 +145,8 @@ namespace TrafficManager.UI.MainMenu {
             // By default the atlas will include backgrounds: DefaultRound-bg-normal
             HashSet<string> atlasKeysSet = tmpSkin.CreateAtlasKeyset();
 
-            QuickFindButtons = new Dictionary<ToolMode, BaseMenuButton>();
-            Buttons = new List<BaseMenuButton>();
+            ButtonsDict = new Dictionary<ToolMode, BaseMenuButton>();
+            ButtonsList = new List<BaseMenuButton>();
             foreach (MenuButtonDef buttonDef in MENU_BUTTON_TYPES) {
                 // Create and populate the panel with buttons
                 var newButton = AddUIComponent(buttonDef.ButtonType) as BaseMenuButton;
@@ -137,31 +154,21 @@ namespace TrafficManager.UI.MainMenu {
                 // Also ask each button what sprites they need
                 newButton.SetupButtonSkin(atlasKeysSet);
 
-                QuickFindButtons.Add(buttonDef.Mode, newButton);
-                Buttons.Add(newButton);
+                ButtonsDict.Add(buttonDef.Mode, newButton);
+                ButtonsList.Add(newButton);
             }
 
             // Create atlas and give it to all buttons
             allButtonsAtlas_ = tmpSkin.CreateAtlas(
-                                   "MainMenu.Tool",
-                                   50,
-                                   50,
-                                   512,
-                                   atlasKeysSet);
+                "MainMenu.Tool",
+                50,
+                50,
+                512,
+                atlasKeysSet);
 
-            foreach (BaseMenuButton b in Buttons) {
+            foreach (BaseMenuButton b in ButtonsList) {
                 b.atlas = allButtonsAtlas_;
             }
-
-            var dragHandler = new GameObject("TMPE_Menu_DragHandler");
-            dragHandler.transform.parent = transform;
-            dragHandler.transform.localPosition = Vector3.zero;
-            Drag = dragHandler.AddComponent<UIDragHandle>();
-            Drag.enabled = !GlobalConfig.Instance.Main.MainMenuPosLocked;
-
-            this.OnRescaleRequested();
-            eventVisibilityChanged += OnVisibilityChanged;
-            isStarted_ = true;
         }
 
         private void OnVisibilityChanged(UIComponent component, bool value) {
@@ -261,12 +268,12 @@ namespace TrafficManager.UI.MainMenu {
             float buttonSize = ScaledSize.GetButtonSize();
             float spacing = buttonSize / 8f;
 
-            layout.CountEnabledButtons(Buttons);
+            layout.CountEnabledButtons(ButtonsList);
 
             int placedInARow = 0;
             float x = spacing;
 
-            foreach (BaseMenuButton button in Buttons) {
+            foreach (BaseMenuButton button in ButtonsList) {
                 if (button.IsVisible()) {
                     button.Show();
                     button.relativePosition = new Vector3(x, y);
@@ -340,7 +347,7 @@ namespace TrafficManager.UI.MainMenu {
 
         /// <summary>For given button mode, send click.</summary>
         internal void ClickToolButton(ToolMode toolMode) {
-            if (QuickFindButtons.TryGetValue(toolMode, out var b)) {
+            if (ButtonsDict.TryGetValue(toolMode, out var b)) {
                 b.SimulateClick();
             }
         }

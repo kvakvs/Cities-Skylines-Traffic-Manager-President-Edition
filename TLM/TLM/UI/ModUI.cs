@@ -29,7 +29,7 @@ namespace TrafficManager.UI {
         public UI.MainMenu.MainMenuButton MainMenuButton { get; }
 
         /// <summary>Gets the floating tool panel with TM:PE tool buttons.</summary>
-        public UI.MainMenu.MainMenuPanel MainMenu { get; private set; }
+        public UI.MainMenu.MainMenuWindow MainMenu { get; }
 
 #if DEBUG
         public DebugMenuPanel DebugMenu { get; private set; }
@@ -72,21 +72,35 @@ namespace TrafficManager.UI {
 
             Log._Debug("##### Initializing ModUI.");
 
-            // Get the UIView object. This seems to be the top-level object for most
-            // of the UI.
             UIView uiView = UIView.GetAView();
 
             // Add a new button to the view.
             MainMenuButton = (MainMenuButton)uiView.AddUIComponent(typeof(MainMenuButton));
-
-            // add the menu
-            MainMenu = (MainMenuPanel)uiView.AddUIComponent(typeof(MainMenuPanel));
-            MainMenu.gameObject.AddComponent<CustomKeyHandler>();
+            MainMenu = CreateMainMenuWindow();
 #if DEBUG
             DebugMenu = (DebugMenuPanel)uiView.AddUIComponent(typeof(DebugMenuPanel));
 #endif
 
             ToolMode = TrafficManagerMode.None;
+        }
+
+        private MainMenuWindow CreateMainMenuWindow() {
+            UIView parent = UIView.GetAView();
+            MainMenuWindow window = (MainMenuWindow)parent.AddUIComponent(typeof(MainMenuWindow));
+
+            window.gameObject.AddComponent<CustomKeyHandler>();
+
+            using (var builder = new U.UiBuilder<MainMenuWindow>(window)) {
+                builder.ResizeFunction(r => { r.FitToChildren(); });
+                builder.SetPadding(Constants.UIPADDING);
+
+                window.SetupControls(builder);
+
+                // Resize everything correctly
+                builder.Done();
+            }
+
+            return window;
         }
 
         ~ModUI() {
@@ -141,7 +155,7 @@ namespace TrafficManager.UI {
                 Log.Error("Error on Show(): " + e);
             }
 
-            foreach (BaseMenuButton button in GetMenu().Buttons) {
+            foreach (BaseMenuButton button in GetMenu().ButtonsList) {
                 // TODO: move this to MainMenu UI classes
                 button.UpdateButtonImageAndTooltip();
             }
@@ -174,7 +188,7 @@ namespace TrafficManager.UI {
             MainMenuButton.UpdateButtonImageAndTooltip();
         }
 
-        internal MainMenuPanel GetMenu() {
+        internal MainMenuWindow GetMenu() {
             return MainMenu;
         }
 

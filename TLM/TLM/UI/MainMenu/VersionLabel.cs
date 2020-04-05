@@ -3,12 +3,12 @@ namespace TrafficManager.UI.MainMenu {
     using ColossalFramework.UI;
     using UnityEngine;
 
-    public class VersionLabel : UILabel {
+    public class VersionLabel : U.Label.ULabel {
         public override void Start() {
             // TODO use current size profile
             size = new Vector2(
                 ModUI.Instance.MainMenu.width,
-                MainMenuPanel.ScaledSize.GetTitlebarHeight());
+                MainMenuWindow.ScaledSize.GetTitlebarHeight());
             text = TrafficManagerMod.ModName;
 
             if(TrafficManagerMod.Instance.InGameHotReload) {

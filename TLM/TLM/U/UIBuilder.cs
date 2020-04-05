@@ -70,7 +70,6 @@ namespace TrafficManager.U {
         /// according to sizes and positions configured in USizePosition members of form controls.
         /// </summary>
         public void Done() {
-            // UResizer.UpdateHierarchy(this.Control);
             UResizer.UpdateControlRecursive(this.Control, null);
         }
 
