@@ -28,17 +28,16 @@ namespace TrafficManager.U.Panel {
             return resizerConfig_;
         }
 
+        /// <summary>Called by UResizer for every control to be 'resized'.</summary>
         public void OnResizerUpdate() { }
-
-        /// <summary>Called on screen resolution and UI scale change.</summary>
-        public abstract void OnRescaleRequested();
 
         /// <summary>Invoke rescaling handler, because possibly it has the new size now.</summary>
         /// <param name="previousResolution">Previous.</param>
         /// <param name="currentResolution">New.</param>
         protected override void OnResolutionChanged(Vector2 previousResolution,
                                                     Vector2 currentResolution) {
-            this.OnRescaleRequested();
+            // Call resize on all controls and recalculate again
+            UResizer.UpdateControlRecursive(this, null);
         }
 
         /// <summary>
@@ -47,7 +46,8 @@ namespace TrafficManager.U.Panel {
         /// </summary>
         /// <param name="uiScale">New UI scale</param>
         public void OnUpdate(ModUI.UIScaleNotification uiScale) {
-            this.OnRescaleRequested();
+            // Call resize on all controls and recalculate again
+            UResizer.UpdateControlRecursive(this, null);
         }
     }
 }

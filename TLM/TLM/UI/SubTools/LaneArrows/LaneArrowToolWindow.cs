@@ -185,9 +185,5 @@ namespace TrafficManager.UI.SubTools.LaneArrows {
             //         });
             // }
         }
-
-        public override void OnRescaleRequested() {
-            UResizer.UpdateControlRecursive(this, null);
-        }
     }
 }

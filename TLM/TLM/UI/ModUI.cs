@@ -76,31 +76,12 @@ namespace TrafficManager.UI {
 
             // Add a new button to the view.
             MainMenuButton = (MainMenuButton)uiView.AddUIComponent(typeof(MainMenuButton));
-            MainMenu = CreateMainMenuWindow();
+            MainMenu = MainMenuWindow.CreateMainMenuWindow();
 #if DEBUG
             DebugMenu = (DebugMenuPanel)uiView.AddUIComponent(typeof(DebugMenuPanel));
 #endif
 
             ToolMode = TrafficManagerMode.None;
-        }
-
-        private MainMenuWindow CreateMainMenuWindow() {
-            UIView parent = UIView.GetAView();
-            MainMenuWindow window = (MainMenuWindow)parent.AddUIComponent(typeof(MainMenuWindow));
-
-            window.gameObject.AddComponent<CustomKeyHandler>();
-
-            using (var builder = new U.UiBuilder<MainMenuWindow>(window)) {
-                builder.ResizeFunction(r => { r.FitToChildren(); });
-                builder.SetPadding(Constants.UIPADDING);
-
-                window.SetupControls(builder);
-
-                // Resize everything correctly
-                builder.Done();
-            }
-
-            return window;
         }
 
         ~ModUI() {
@@ -135,7 +116,6 @@ namespace TrafficManager.UI {
 #if DEBUG
                  UnityEngine.Object.Destroy(DebugMenu);
 #endif
-                 MainMenu.OnRescaleRequested();
             }
 
             // UIView uiView = UIView.GetAView();
@@ -155,12 +135,10 @@ namespace TrafficManager.UI {
                 Log.Error("Error on Show(): " + e);
             }
 
-            foreach (BaseMenuButton button in GetMenu().ButtonsList) {
-                // TODO: move this to MainMenu UI classes
-                button.UpdateButtonImageAndTooltip();
-            }
+            MainMenuWindow menuWindow = GetMenu();
+            menuWindow.UpdateButtons();
+            menuWindow.Show();
 
-            GetMenu().Show();
             LoadingExtension.TranslationDatabase.ReloadTutorialTranslations();
             LoadingExtension.TranslationDatabase.ReloadGuideTranslations();
             TrafficManagerTool.ShowAdvisor("MainMenu");

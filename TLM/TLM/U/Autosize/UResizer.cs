@@ -36,6 +36,10 @@ namespace TrafficManager.U.Autosize {
             PreviousSibling = previousSibling;
         }
 
+        public static void UpdateControl(UIComponent control) {
+            UpdateControlRecursive(control, null);
+        }
+
         /// <summary>
         /// Recursively descends down the GUI controls tree and calls OnResize on <see cref="ISmartSizableControl"/>
         /// implementors, then allows parents to adjust their size to the contents and so on.
@@ -141,6 +145,26 @@ namespace TrafficManager.U.Autosize {
                               : stackUnder.relativePosition + new Vector3(
                                     0f,
                                     stackUnder.height + spacing,
+                                    0f);
+            this.Control.relativePosition = pos;
+        }
+
+        /// <summary>Stacks vertically but starts a new line (resets X position to 0).</summary>
+        /// <param name="spacing">Step down by this many pixels.</param>
+        /// <param name="stackUnder">The control to use as a reference.</param>
+        public void StackVerticalNewRow(float spacing = 0f, UIComponent stackUnder = null) {
+            var padding = 0f;
+            if (this.Control.parent.GetComponent<UIComponent>() is ISmartSizableControl parent) {
+                padding = parent.GetResizerConfig().Padding;
+            }
+            if (stackUnder == null) {
+                stackUnder = this.PreviousSibling;
+            }
+            Vector3 pos = stackUnder == null
+                              ? new Vector3(padding, padding, 0f)
+                              : new Vector3(
+                                    padding,
+                                    stackUnder.relativePosition.y + stackUnder.height + spacing,
                                     0f);
             this.Control.relativePosition = pos;
         }

@@ -10,26 +10,24 @@ namespace TrafficManager.UI.MainMenu {
         /// <summary>How many buttons were enabled and placed.</summary>
         public int Count;
 
-        /// <summary>How many rows used, 1 or 2 (for window height).</summary>
-        public int Rows;
-
-        /// <summary>
-        /// What's max column used (for window width). This equals to max count of buttons
-        /// per row reached while placing the buttons.
-        /// </summary>
-        public int MaxCols;
+        // /// <summary>
+        // /// What's max column used (for window width). This equals to max count of buttons
+        // /// per row reached while placing the buttons.
+        // /// </summary>
+        // public int MaxCols;
 
         public MainMenuLayout() {
             Count = 0;
-            Rows = 1;
-            MaxCols = 0;
+            // MaxCols = 0;
         }
 
-        public void CountEnabledButtons(List<BaseMenuButton> buttons) {
+        /// <summary>For a list of Buttons, count those which are visible.</summary>
+        /// <param name="buttons">The list of <see cref="U.Button.UButton"/>.</param>
+        public void CountEnabledButtons(IEnumerable<MenuButtonDef> buttonDefs) {
             // Store the count buttons which are enabled
             Count = 0;
-            foreach (var b in buttons) {
-                if (b.IsVisible()) {
+            foreach (var bDef in buttonDefs) {
+                if (bDef.IsEnabledFunc()) {
                     Count++;
                 }
             }
