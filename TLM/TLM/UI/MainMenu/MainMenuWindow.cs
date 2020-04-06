@@ -6,6 +6,7 @@ namespace TrafficManager.UI.MainMenu {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using JetBrains.Annotations;
     using TrafficManager.API.Util;
     using TrafficManager.State.Keybinds;
@@ -21,7 +22,8 @@ namespace TrafficManager.UI.MainMenu {
     {
         public const int DEFAULT_MENU_X = 85;
         public const int DEFAULT_MENU_Y = 60;
-        private const string GAMEOBJECT_NAME = "TMPE_MainMenuPanel";
+
+        public UPanel InnerPanel { get; set; }
 
         /// <summary>Tool buttons occupy the left and bigger side of the main menu.</summary>
         private static readonly MenuButtonDef[] TOOL_BUTTON_DEFS
@@ -100,6 +102,7 @@ namespace TrafficManager.UI.MainMenu {
         /// <summary>Dict of buttons allows quick search by toolmode.</summary>
         private Dictionary<ToolMode, BaseMenuButton> ButtonsDict;
 
+        /// <summary>Used to determine drag box height.</summary>
         public UILabel VersionLabel { get; private set; }
 
         public UILabel StatsLabel { get; private set; }
@@ -118,7 +121,7 @@ namespace TrafficManager.UI.MainMenu {
         public override void Start() {
             base.Start();
 
-            U.UIUtil.MakeUniqueAndSetName(this.gameObject, GAMEOBJECT_NAME);
+            U.UIUtil.MakeUniqueAndSetName(this.gameObject, "TMPE_MainMenuWindow");
 
             GlobalConfig conf = GlobalConfig.Instance;
 
@@ -167,16 +170,9 @@ namespace TrafficManager.UI.MainMenu {
         /// <param name="builder">The UI Builder.</param>
         public void SetupControls(UiBuilder<MainMenuWindow> builder) {
             UILabel versionLabel = null;
-            using (var versionLabelB = builder.Label<VersionLabel>(string.Empty)) {
+            using (var versionLabelB = builder.Label<U.Label.ULabel>(TrafficManagerMod.ModName)) {
                 versionLabelB.ResizeFunction(r => r.StackVertical());
                 this.VersionLabel = versionLabel = versionLabelB.Control;
-            }
-
-            using (var statsLabelB = builder.Label<StatsLabel>(string.Empty)) {
-                statsLabelB.ResizeFunction(r => {
-                    r.StackHorizontal(spacing: 2 * Constants.UIPADDING);
-                });
-                this.StatsLabel = statsLabelB.Control;
             }
 
             // Create and populate list of background atlas keys, used by all buttons
@@ -194,46 +190,20 @@ namespace TrafficManager.UI.MainMenu {
             // Main menu contains 2 panels side by side, one for tool buttons and another for
             // despawn & clear buttons.
             ButtonsDict = new Dictionary<ToolMode, BaseMenuButton>();
+            U.Panel.UPanel leftPanel;
 
-            // This is tool buttons panel
-            using (UiBuilder<UPanel> leftPanelBuilder = builder.ChildPanel<U.Panel.UPanel>(
-                setupFn: panel => {
-                    panel.name = "TMPE_MainMenu_ToolPanel";
-                }))
-            {
-                leftPanelBuilder.SetPadding(Constants.UIPADDING);
+            using (var innerPanelB = builder.ChildPanel<U.Panel.UPanel>(setupFn: p => {
+                p.name = "TMPE_MainMenu_InnerPanel";
+            })) {
+                this.InnerPanel = innerPanelB.Control;
 
-                leftPanelBuilder.ResizeFunction(r => {
+                innerPanelB.ResizeFunction(r => {
                     r.StackVertical(spacing: 0f, stackUnder: versionLabel);
                     r.FitToChildren();
                 });
 
-                // Create actual button objects
-                ToolButtonsList = AddButtonsFromButtonDefinitions(
-                    leftPanelBuilder,
-                    atlasKeysSet,
-                    TOOL_BUTTON_DEFS,
-                    maxBreakAt: 5);
-            }
-
-            // This is toggle despawn and clear traffic panel
-            using (UiBuilder<UPanel> rightPanelBuilder = builder.ChildPanel<U.Panel.UPanel>(
-                setupFn: panel => {
-                    panel.name = "TMPE_MainMenu_ExtraPanel";
-                }))
-            {
-                rightPanelBuilder.SetPadding(Constants.UIPADDING);
-
-                rightPanelBuilder.ResizeFunction(r => {
-                    r.StackHorizontal();
-                    r.FitToChildren();
-                });
-
-                ExtraButtonsList = AddButtonsFromButtonDefinitions(
-                    rightPanelBuilder,
-                    atlasKeysSet,
-                    EXTRA_BUTTON_DEFS,
-                    maxBreakAt: 1);
+                AddButtonsResult toolButtonsResult = SetupControls_ToolPanel(innerPanelB, atlasKeysSet);
+                SetupControls_ExtraPanel(innerPanelB, atlasKeysSet, toolButtonsResult);
             }
 
             // Create atlas and give it to all buttons
@@ -250,33 +220,155 @@ namespace TrafficManager.UI.MainMenu {
             foreach (BaseMenuButton b in ExtraButtonsList) {
                 b.atlas = allButtonsAtlas_;
             }
+
+            // Stack following two label under this
+            // But since showPathFind stats label is not always visible we track the next thing,
+            // to stack with, in this variable
+            UIComponent stackUnder = this.InnerPanel;
+
+            // Pathfinder stats label (debug only)
+            if (Options.showPathFindStats) {
+                using (var statsLabelB = builder.Label<StatsLabel>(string.Empty)) {
+                    // Allow the label to hang outside the parent box
+                    UResizerConfig.From(statsLabelB.Control).ContributeToBoundingBox = false;
+
+                    UIComponent under = stackUnder; // copy for the closure to work
+                    statsLabelB.ResizeFunction(
+                        r => {
+                            // Extra 2x spacing because of form's inner padding
+                            r.StackVertical(
+                                spacing: 2f * Constants.UIPADDING,
+                                under);
+                        });
+                    stackUnder = this.StatsLabel = statsLabelB.Control;
+                }
+            }
+
+            // Hot Reload version label (debug only)
+            if (TrafficManagerMod.Instance.InGameHotReload) {
+                // Hot Reload version label (debug only)
+                string text = $"HOT RELOAD {Assembly.GetExecutingAssembly().GetName().Version}";
+                using (var hotReloadB = builder.Label<U.Label.ULabel>(text)) {
+                    // Allow the label to hang outside the parent box
+                    UResizerConfig.From(hotReloadB.Control).ContributeToBoundingBox = false;
+
+                    hotReloadB.ResizeFunction(
+                        r => {
+                            // If pathFind stats label above was not visible, we need extra spacing
+                            float extraSpacing = Options.showPathFindStats ? Constants.UIPADDING : 0f;
+                            r.StackVertical(spacing: extraSpacing + Constants.UIPADDING,
+                                            stackUnder);
+                        });
+                }
+            }
+        }
+
+        private AddButtonsResult SetupControls_ToolPanel(UiBuilder<UPanel> innerPanelB,
+                                                         HashSet<string> atlasKeysSet) {
+            // This is tool buttons panel
+            using (UiBuilder<UPanel> leftPanelB = innerPanelB.ChildPanel<U.Panel.UPanel>(
+                setupFn: panel => {
+                    panel.name = "TMPE_MainMenu_ToolPanel";
+                }))
+            {
+                leftPanelB.ResizeFunction(r => {
+                    r.StackVertical(spacing: 0f);
+                    r.FitToChildren();
+                });
+
+                // Create 2 rows of button objects
+                var toolButtonsResult = AddButtonsFromButtonDefinitions(
+                    leftPanelB,
+                    atlasKeysSet,
+                    TOOL_BUTTON_DEFS,
+                    minRowLength: 4,
+                    maxRowLength: 5);
+                ToolButtonsList = toolButtonsResult.Buttons;
+
+                return toolButtonsResult;
+            }
+        }
+
+        private void SetupControls_ExtraPanel(UiBuilder<UPanel> innerPanelB,
+                                              HashSet<string> atlasKeysSet,
+                                              AddButtonsResult toolButtonsResult) {
+            // This is toggle despawn and clear traffic panel
+            using (UiBuilder<UPanel> rightPanelB = innerPanelB.ChildPanel<U.Panel.UPanel>(
+                setupFn: p => {
+                    p.name = "TMPE_MainMenu_ExtraPanel";
+                    // Silver background panel
+                    p.atlas = TextureUtil.FindAtlas("Ingame");
+                    p.backgroundSprite = "GenericPanel";
+                }))
+            {
+                rightPanelB.ResizeFunction(r => {
+                    // Step to the right by 4px
+                    r.StackHorizontal(spacing: Constants.UIPADDING);
+                    r.FitToChildren();
+                });
+
+                // Create 1 or 2 rows of button objects
+                // Row count depends on whether tool buttons panel was 2 or 1 rows
+                var rowLength = toolButtonsResult.Layout.Rows == 2
+                                    ? 1
+                                    : EXTRA_BUTTON_DEFS.Length;
+                var extraButtonsResult = AddButtonsFromButtonDefinitions(
+                    rightPanelB,
+                    atlasKeysSet,
+                    EXTRA_BUTTON_DEFS,
+                    minRowLength: rowLength,
+                    maxRowLength: rowLength);
+                ExtraButtonsList = extraButtonsResult.Buttons;
+            }
+        }
+
+        /// <summary>Called by UResizer for every control to be 'resized'.</summary>
+        public override void OnAfterResizerUpdate() {
+            if (this.Drag != null) {
+                this.Drag.size = new Vector2(this.width, this.VersionLabel.height);
+            }
+        }
+
+        private struct AddButtonsResult {
+            public List<BaseMenuButton> Buttons;
+            public MainMenuLayout Layout;
         }
 
         /// <summary>Create buttons and add them to the given panel UIBuilder.</summary>
         /// <param name="builder">UI builder to use.</param>
         /// <param name="atlasKeysSet">Atlas keys to update for button images.</param>
         /// <param name="buttonDefs">Button defs collection to create from it.</param>
+        /// <param name="minRowLength">Shortest the row can be before breaking.</param>
+        /// <param name="maxRowLength">Longest the row can be before breaking.</param>
         /// <returns>A list of created buttons.</returns>
-        private List<BaseMenuButton> AddButtonsFromButtonDefinitions(
-            UiBuilder<UPanel> builder,
-            HashSet<string> atlasKeysSet,
-            IEnumerable<MenuButtonDef> buttonDefs,
-            int maxBreakAt)
+        private AddButtonsResult AddButtonsFromButtonDefinitions(UiBuilder<UPanel> builder,
+                                                                     HashSet<string> atlasKeysSet,
+                                                                     MenuButtonDef[] buttonDefs,
+                                                                     int minRowLength,
+                                                                     int maxRowLength)
         {
-            var list = new List<BaseMenuButton>();
+            AddButtonsResult result;
+            result.Buttons = new List<BaseMenuButton>();
 
             // Count the button objects and set their layout
-            MainMenuLayout layout = new MainMenuLayout();
-            layout.CountEnabledButtons(buttonDefs);
+            result.Layout = new MainMenuLayout();
+            result.Layout.CountEnabledButtons(buttonDefs);
             int placedInARow = 0;
 
             foreach (MenuButtonDef buttonDef in buttonDefs) {
+                if (!buttonDef.IsEnabledFunc()) {
+                    // Skip buttons which are not enabled
+                    continue;
+                }
+
                 // Create and populate the panel with buttons
                 var buttonBuilder = builder.Button<BaseMenuButton>(buttonDef.ButtonType);
 
                 // Count buttons in a row and break the line
-                placedInARow++;
-                bool doRowBreak = layout.IsRowBreak(placedInARow, maxBreakAt);
+                bool doRowBreak = result.Layout.IsRowBreak(placedInARow, minRowLength, maxRowLength);
+                Log._Debug(
+                    $"MainMenu: placed={placedInARow} rowL={minRowLength}/{maxRowLength} "
+                    + $"doBreak={doRowBreak} t={buttonDef.ButtonType}");
 
                 buttonBuilder.ResizeFunction(r => {
                     if (doRowBreak) {
@@ -290,6 +382,9 @@ namespace TrafficManager.UI.MainMenu {
 
                 if (doRowBreak) {
                     placedInARow = 0;
+                    result.Layout.Rows++;
+                } else {
+                    placedInARow++;
                 }
 
                 // Also ask each button what sprites they need
@@ -297,15 +392,19 @@ namespace TrafficManager.UI.MainMenu {
                 buttonBuilder.Control.name = $"TMPE_MainMenuButton_{buttonDef.ButtonType}";
 
                 ButtonsDict.Add(buttonDef.Mode, buttonBuilder.Control);
-                list.Add(buttonBuilder.Control);
+                result.Buttons.Add(buttonBuilder.Control);
             }
 
-            return list;
+            return result;
         }
 
         private void OnVisibilityChanged(UIComponent component, bool value) {
             VersionLabel.enabled = value;
-            StatsLabel.enabled = Options.showPathFindStats && value;
+
+            if (StatsLabel != null) {
+                // might not exist
+                StatsLabel.enabled = Options.showPathFindStats && value;
+            }
             UResizer.UpdateControl(this);
         }
 

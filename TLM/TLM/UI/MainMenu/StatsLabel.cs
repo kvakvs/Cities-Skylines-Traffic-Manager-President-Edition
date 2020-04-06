@@ -1,5 +1,4 @@
 ﻿namespace TrafficManager.UI.MainMenu {
-    using ColossalFramework.UI;
     using TrafficManager.Custom.PathFinding;
     using UnityEngine;
 
@@ -7,6 +6,7 @@
         private uint _previousValue = 0;
 
         public override void Start() {
+            base.Start();
             // size = new Vector2(
             //     ModUI.Instance.MainMenu.width / 2f,
             //     MainMenuWindow.ScaledSize.GetTitlebarHeight());

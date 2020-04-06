@@ -1,6 +1,7 @@
 namespace TrafficManager.U.Panel {
     using System;
     using ColossalFramework.UI;
+    using JetBrains.Annotations;
     using TrafficManager.API.Util;
     using TrafficManager.U.Autosize;
     using TrafficManager.UI;
@@ -16,6 +17,7 @@ namespace TrafficManager.U.Panel {
         private UResizerConfig resizerConfig_ = new UResizerConfig();
 
         /// <summary>On destroy this will unsubscribe from the UI Scale observable.</summary>
+        [UsedImplicitly]
         private IDisposable uiScaleUnbsubscriber_;
 
         /// <summary>Call this from your form constructor to enable tracking UI Scale changes.</summary>
@@ -28,8 +30,11 @@ namespace TrafficManager.U.Panel {
             return resizerConfig_;
         }
 
-        /// <summary>Called by UResizer for every control to be 'resized'.</summary>
-        public void OnResizerUpdate() { }
+        /// <summary>Called by UResizer for every control before it is to be 'resized'.</summary>
+        public virtual void OnBeforeResizerUpdate() { }
+
+        /// <summary>Called by UResizer for every control after it is to be 'resized'.</summary>
+        public virtual void OnAfterResizerUpdate() { }
 
         /// <summary>Invoke rescaling handler, because possibly it has the new size now.</summary>
         /// <param name="previousResolution">Previous.</param>

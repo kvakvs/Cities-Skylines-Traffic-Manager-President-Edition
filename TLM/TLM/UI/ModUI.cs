@@ -26,10 +26,10 @@ namespace TrafficManager.UI {
         }
 
         /// <summary>Gets the floating draggable button which shows and hides TM:PE UI.</summary>
-        public UI.MainMenu.MainMenuButton MainMenuButton { get; }
+        public UI.MainMenu.MainMenuButton MainMenuButton { get; set; }
 
         /// <summary>Gets the floating tool panel with TM:PE tool buttons.</summary>
-        public UI.MainMenu.MainMenuWindow MainMenu { get; }
+        public UI.MainMenu.MainMenuWindow MainMenu { get; set; }
 
 #if DEBUG
         public DebugMenuPanel DebugMenu { get; private set; }
@@ -72,16 +72,23 @@ namespace TrafficManager.UI {
 
             Log._Debug("##### Initializing ModUI.");
 
-            UIView uiView = UIView.GetAView();
-
-            // Add a new button to the view.
-            MainMenuButton = (MainMenuButton)uiView.AddUIComponent(typeof(MainMenuButton));
-            MainMenu = MainMenuWindow.CreateMainMenuWindow();
+            CreateMainMenuButtonAndWindow();
 #if DEBUG
+            UIView uiView = UIView.GetAView();
             DebugMenu = (DebugMenuPanel)uiView.AddUIComponent(typeof(DebugMenuPanel));
 #endif
 
             ToolMode = TrafficManagerMode.None;
+
+            // One time load
+            LoadingExtension.TranslationDatabase.ReloadTutorialTranslations();
+            LoadingExtension.TranslationDatabase.ReloadGuideTranslations();
+        }
+
+        private void CreateMainMenuButtonAndWindow() {
+            UIView uiView = UIView.GetAView();
+            MainMenuButton = (MainMenuButton)uiView.AddUIComponent(typeof(MainMenuButton));
+            MainMenu = MainMenuWindow.CreateMainMenuWindow();
         }
 
         ~ModUI() {
@@ -103,29 +110,38 @@ namespace TrafficManager.UI {
             }
         }
 
+        /// <summary>
+        /// Called from Options and Options-Maintenance tab, when features and options changed,
+        /// which might require rebuilding the main menu buttons.
+        /// </summary>
         internal void RebuildMenu() {
-            // Close();
+            bool wasOpen = MainMenu.isVisible;
+            Close();
 
             if (MainMenu != null) {
-//                 CustomKeyHandler keyHandler = MainMenu.GetComponent<CustomKeyHandler>();
-//                 if (keyHandler != null) {
-//                     UnityEngine.Object.Destroy(keyHandler);
-//                 }
-//
-//                 UnityEngine.Object.Destroy(MainMenu);
+                CustomKeyHandler keyHandler = MainMenu.GetComponent<CustomKeyHandler>();
+                if (keyHandler != null) {
+                    UnityEngine.Object.Destroy(keyHandler);
+                }
+
+                UnityEngine.Object.Destroy(MainMenu);
+                UnityEngine.Object.Destroy(MainMenuButton);
+                MainMenu = null;
+                MainMenuButton = null;
 #if DEBUG
-                 UnityEngine.Object.Destroy(DebugMenu);
+                UnityEngine.Object.Destroy(DebugMenu);
+                DebugMenu = null;
 #endif
             }
 
-            // UIView uiView = UIView.GetAView();
-            // MainMenu = (MainMenuPanel)uiView.AddUIComponent(typeof(MainMenuPanel));
-            // MainMenu.gameObject.AddComponent<CustomKeyHandler>();
-
+            CreateMainMenuButtonAndWindow();
 #if DEBUG
             UIView uiView = UIView.GetAView();
             DebugMenu = (DebugMenuPanel)uiView.AddUIComponent(typeof(DebugMenuPanel));
 #endif
+            if (wasOpen) {
+                Show();
+            }
         }
 
         public void Show() {
@@ -139,8 +155,6 @@ namespace TrafficManager.UI {
             menuWindow.UpdateButtons();
             menuWindow.Show();
 
-            LoadingExtension.TranslationDatabase.ReloadTutorialTranslations();
-            LoadingExtension.TranslationDatabase.ReloadGuideTranslations();
             TrafficManagerTool.ShowAdvisor("MainMenu");
 #if DEBUG
             GetDebugMenu().Show();

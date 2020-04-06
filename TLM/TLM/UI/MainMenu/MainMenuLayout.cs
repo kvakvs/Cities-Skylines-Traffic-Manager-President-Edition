@@ -8,7 +8,7 @@ namespace TrafficManager.UI.MainMenu {
     /// </summary>
     public class MainMenuLayout {
         /// <summary>How many buttons were enabled and placed.</summary>
-        public int Count;
+        private int count_;
 
         // /// <summary>
         // /// What's max column used (for window width). This equals to max count of buttons
@@ -17,18 +17,20 @@ namespace TrafficManager.UI.MainMenu {
         // public int MaxCols;
 
         public MainMenuLayout() {
-            Count = 0;
+            count_ = 0;
             // MaxCols = 0;
         }
+
+        public int Rows = 1;
 
         /// <summary>For a list of Buttons, count those which are visible.</summary>
         /// <param name="buttons">The list of <see cref="U.Button.UButton"/>.</param>
         public void CountEnabledButtons(IEnumerable<MenuButtonDef> buttonDefs) {
             // Store the count buttons which are enabled
-            Count = 0;
-            foreach (var bDef in buttonDefs) {
+            count_ = 0;
+            foreach (MenuButtonDef bDef in buttonDefs) {
                 if (bDef.IsEnabledFunc()) {
-                    Count++;
+                    count_++;
                 }
             }
         }
@@ -41,13 +43,13 @@ namespace TrafficManager.UI.MainMenu {
         /// <param name="placedInARow">Current row build progress.</param>
         /// <param name="maxRowLength">Max column where the row should be broken no matter what.</param>
         /// <returns>Whether to break the row right now.</returns>
-        public bool IsRowBreak(int placedInARow, int maxRowLength) {
-            if (Count <= 4) {
+        public bool IsRowBreak(int placedInARow, int minRowLength, int maxRowLength) {
+            if (count_ <= minRowLength) {
                 return false; // do not break if less than 4 buttons
             }
 
             // Breakpoint will be half of buttons, no less than 4, and no more than MaxRowLength
-            int breakPoint = Math.Min(maxRowLength, Math.Max(4, (Count + 1) / 2));
+            int breakPoint = Math.Min(maxRowLength, Math.Max(minRowLength, (count_ + 1) / 2));
             return placedInARow >= breakPoint;
         }
     }

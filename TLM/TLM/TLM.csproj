@@ -259,7 +259,6 @@
     <Compile Include="UI\MainMenu\MainMenuWindow.cs" />
     <Compile Include="UI\MainMenu\StatsLabel.cs" />
     <Compile Include="UI\MainMenu\ParkingRestrictionsButton.cs" />
-    <Compile Include="UI\MainMenu\VersionLabel.cs" />
     <Compile Include="UI\MainMenu\VehicleRestrictionsButton.cs" />
     <Compile Include="UI\MainMenu\ToggleTrafficLightsButton.cs" />
     <Compile Include="UI\MainMenu\TimedTrafficLightsButton.cs" />

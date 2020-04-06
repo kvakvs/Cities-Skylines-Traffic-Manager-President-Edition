@@ -7,9 +7,11 @@ namespace TrafficManager.U.Autosize {
     public interface ISmartSizableControl {
         UResizerConfig GetResizerConfig();
 
-        // /// <summary>
-        // /// Implement in child controls for extra actions while being updated from <see cref="UResizer"/>.
-        // /// </summary>
-        // void OnResizerUpdate();
+        /// <summary>
+        /// Implement in child controls for extra actions while being updated from <see cref="UResizer"/>.
+        /// Labels use this for UI scaling of their font.
+        /// </summary>
+        void OnBeforeResizerUpdate();
+        void OnAfterResizerUpdate();
     }
 }
